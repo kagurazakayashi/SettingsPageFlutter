@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Title</key>
+	<string>无线网络选项</string>
+	<key>StringsTable</key>
+	<string>wifi</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>启用无线局域网</string>
+			<key>Key</key>
+			<string>on_wifi</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>无线网络名称</string>
+			<key>Key</key>
+			<string>wifi_name</string>
+		</dict>
+		<dict>
+			<key>IsSecure</key>
+			<true/>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>无线网络密码</string>
+			<key>Key</key>
+			<string>wifi_pwd</string>
+		</dict>
+	</array>
+</dict>
+</plist>
