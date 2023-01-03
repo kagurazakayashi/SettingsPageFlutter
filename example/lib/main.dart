@@ -51,6 +51,17 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    SettingsPageLoader loader = SettingsPageLoader();
+    loader.loadPlistFile().then((value) {
+      print(value);
+    }).catchError((error) {
+      print('[!] Failed to load file: $error');
+    });
+  }
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has

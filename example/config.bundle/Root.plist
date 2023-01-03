@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Title</key>
+	<string>设备配置</string>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>DefaultValue</key>
+			<string>v0.0.1</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>版本</string>
+			<key>Key</key>
+			<string>var</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>这些选项决定了设备如何联网</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>网络选项</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>无线局域网设置</string>
+			<key>File</key>
+			<string>wifi</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>有线网络设置</string>
+			<key>File</key>
+			<string>net</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSSliderSpecifier</string>
+			<key>Key</key>
+			<string>mtu</string>
+			<key>DefaultValue</key>
+			<integer>200</integer>
+			<key>MinimumValue</key>
+			<integer>100</integer>
+			<key>MaximumValue</key>
+			<integer>500</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
