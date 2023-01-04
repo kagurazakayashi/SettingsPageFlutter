@@ -24,6 +24,55 @@ class SettingsPageLoader {
     if (dict == null) {
       throw Exception("Invalid plist file: $plistFilePath: no dict");
     }
-    return "";
+    Map dictChild = keysValsXmlNodeToMap(dict);
+    // print("Title: ${dictChild["Title"]}");
+    // print("StringsTable: ${dictChild["StringsTable"]}");
+    XmlElement preferenceSpecifiersE = dictChild["PreferenceSpecifiers"];
+    for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
+      XmlNode congigDict = preferenceSpecifiersE.children[i];
+      Map<String, dynamic> congigInfos = keysValsXmlNodeToMap(congigDict);
+      preferenceSpecifiers.add(congigInfos);
+    }
+    return preferenceSpecifiers.toString();
+  }
+
+  /// 將類似於 `<key></key><string></string><key></key><integer></integer><key></key><true/>` 這樣的 [node] 轉換為 [Map] 。
+  /// [node] 可以是 [XmlElement] 或 [XmlNode] 。
+  /// 可以識別的資料型別有: [String] , [int] , [bool] , [XmlElement] , [XmlNode] 。
+  Map<String, dynamic> keysValsXmlNodeToMap(dynamic node) {
+    Map<String, dynamic> map = {};
+    String key = "";
+    var children = node.children;
+    for (int i = 0; i < children.length; i++) {
+      XmlNode child = children[i];
+      if (child is XmlText) {
+        map[key] = child.text;
+      } else if (child is XmlElement) {
+        String type = child.name.toString();
+        if (type == "key") {
+          key = child.text;
+        } else if (key.isNotEmpty) {
+          switch (type) {
+            case "string":
+              map[key] = child.text;
+              break;
+            case "integer":
+              map[key] = int.parse(child.text);
+              break;
+            case "true":
+              map[key] = true;
+              break;
+            case "false":
+              map[key] = false;
+              break;
+            default:
+              map[key] = child;
+              break;
+          }
+          key = "";
+        }
+      }
+    }
+    return map;
   }
 }
