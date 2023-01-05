@@ -1,18 +1,22 @@
 library settingspageflutter;
 
 import 'package:flutter/services.dart';
+import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:xml/xml.dart';
 
 /// 配置檔案載入器
 class SettingsPageLoader {
-  String baseDir = "config.bundle/";
-  static String className = "SettingsPageLoader";
-  String title = "";
-  String stringsTable = "";
-  List<Map<String, dynamic>> preferenceSpecifiers = [];
+  String baseDir;
+
+  SettingsPageLoader({this.baseDir = "config.bundle/"}) {
+    if (!baseDir.endsWith("/")) {
+      baseDir += "/";
+    }
+  }
 
   /// 讀取一個 plist 檔名 [plistFileName] ，路徑基於 [baseDir] 屬性，不帶副檔名。
-  Future<String> loadPlistFile({String plistFileName = "Root"}) async {
+  Future<SettingsPageData> loadPlistFile({String plistFileName = "Root"}) async {
+    SettingsPageData data = SettingsPageData();
     String plistFilePath = "$baseDir$plistFileName.plist";
     String dataString = await rootBundle.loadString(plistFilePath);
     XmlDocument xmlDocument = XmlDocument.parse(dataString);
@@ -27,13 +31,15 @@ class SettingsPageLoader {
     Map dictChild = keysValsXmlNodeToMap(dict);
     // print("Title: ${dictChild["Title"]}");
     // print("StringsTable: ${dictChild["StringsTable"]}");
+    data.title = dictChild["Title"];
+    data.stringsTable = dictChild["StringsTable"];
     XmlElement preferenceSpecifiersE = dictChild["PreferenceSpecifiers"];
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
       Map<String, dynamic> congigInfos = keysValsXmlNodeToMap(congigDict);
-      preferenceSpecifiers.add(congigInfos);
+      data.preferenceSpecifiers.add(congigInfos);
     }
-    return preferenceSpecifiers.toString();
+    return data;
   }
 
   /// 將類似於 `<key></key><string></string><key></key><integer></integer><key></key><true/>` 這樣的 [node] 轉換為 [Map] 。
