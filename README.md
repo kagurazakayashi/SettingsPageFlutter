@@ -21,55 +21,62 @@
 | Number Pad              | phone         | 电话键盘 |
 | URL                     | url           | 网址键盘 |
 | Email Address           | emailAddress  | 邮件键盘 |
-| x                       | multiline     | 多行文本 |
+| Multi Line *            | multiline     | 多行文本 |
+
+`*`: 本插件特有项， Settings.bundle 中没有。
 
 ### 分组 (Group)
 
-| Settings.bundle          | MaterialApp | 功能         |
-| ------------------------ | ----------- | ------------ |
-| Group                    |             | 分组         |
-| Type                     |             | Group        |
-| Title                    | +           | 分组显示标题 |
-| FooterText               | x           | 分组底部文本 |
+| Settings.bundle | 功能         |
+| --------------- | ------------ |
+| Group           | 分组         |
+| Type            | Group        |
+| Title           | 分组显示标题 |
+| FooterText      | 分组底部文本 |
 
 ### 多项选择框 (Multi Value)
 
-| Settings.bundle | MaterialApp | 功能        |
-| --------------- | ----------- | ----------- |
-| Multi Value     |             | Widget 名称 |
-| Type            |             | Multi Value |
-| Identifier      | -           | 标识符      |
-| Title           | +           | 标题        |
-| Default Value   | +           | 默认值      |
-| Titles          | +           | 标题集合    |
-| Values          | +           | 值的集合    |
+| Settings.bundle | 功能        |
+| --------------- | ----------- |
+| Multi Value     | Widget 名称 |
+| Type            | Multi Value |
+| Identifier      | 标识符      |
+| Title           | 标题        |
+| Default Value   | 默认值      |
+| Titles          | 标题集合    |
+| Values          | 值的集合    |
 
 ### 滑动条 (Slider)
 
-| Settings.bundle          | MaterialApp | 功能        |
-| ------------------------ | ----------- | ----------- |
-| Slider                   | Slider      | Widget 名称 |
-| Type                     |             | Slider      |
-| Identifier               | -           | 标识符      |
-| Default Value            | value       | 默认值      |
-| Minimum Value            | min         | 最小值      |
-| Maximum Value            | max         | 最大值      |
-| Max Value Image Filename | x           | 最大端图片  |
-| Min Value Image Filename | x           | 最小端图片  |
+| Settings.bundle          | MaterialApp | Default | 功能        |
+| ------------------------ | ----------- | ------- | ----------- |
+| Slider                   | Slider      |         | Widget 名称 |
+| Type                     |             |         | Slider      |
+| Identifier               | -           |         | 标识符      |
+| Default Value            | value       | 0       | 默认值      |
+| Minimum Value            | min         | 0       | 最小值      |
+| Maximum Value            | max         | 100     | 最大值      |
+| Number Of Steps *        | divisions   | 1       | 步进大小    |
+| Title *                  | label       | ""      | 标题        |
+| Max Value Image Filename | x           |         | 最大端图片  |
+| Min Value Image Filename | x           |         | 最小端图片  |
+
+`*`: 本插件特有项， Settings.bundle 中没有。
 
 ### 文字输入框 (TextField)
 
-| Settings.bundle          | MaterialApp  | 功能         |
-| ------------------------ | -----------  | ------------ |
-| TextField                | TextField    | Widget 名称  |
-| Type                     |              | TextField    |
-| Identifier               | -            | 标识符       |
-| Title                    | labelText    | 标题         |
-| Default Value            | hintText     | 默认值       |
-| Autocorrection Style     | x            | 自动纠正拼写 |
-| Autocapitalization Style | x            | 自动大写     |
-| Text Field Is Secure     | obscureText  | 是否密文显示 |
-| keyboard Type            | keyboardType | 键盘样式     |
+| Settings.bundle          | MaterialApp        | 功能               |
+| ------------------------ | ------------------ | ------------------ |
+| TextField                | TextField          | Widget 名称        |
+| Type                     |                    | TextField          |
+| Identifier               | -                  | 标识符             |
+| Title                    | labelText          | 标题               |
+| Default Value            |                    | 默认值             |
+| Hint Text                | hintText           | 提示文本           |
+| Autocorrection Style     | autocorrect        | 自动纠正拼写       |
+| Autocapitalization Style | TextCapitalization | 自动大写(暂不支持) |
+| Text Field Is Secure     | obscureText        | 是否密文显示       |
+| keyboard Type            | keyboardType       | 键盘样式           |
 
 ### 标题框 (Title)
 
