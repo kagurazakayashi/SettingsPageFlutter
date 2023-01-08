@@ -54,12 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    SettingsPageLoader loader = SettingsPageLoader();
-    loader.loadPlistFile().then((value) {
-      print(value);
-    }).catchError((error) {
-      print('[!] Failed to load file: $error');
-    });
+    SettingsPageFlutter settingsPage = SettingsPageFlutter();
   }
 
   void _incrementCounter() {

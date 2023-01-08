@@ -3,18 +3,18 @@ library settingspageflutter;
 import 'package:flutter/material.dart';
 
 class SettingsPageUIBuilder {
-  // keyboardType
+  // 键盘类型 (keyboardType)
 
   Map<String, TextInputType> keyboardType = {
-    "Default": TextInputType.text,
-    "Numbers and Punctuation": TextInputType.number,
-    "URL": TextInputType.url,
-    "Number Pad": TextInputType.number,
-    "Email Address": TextInputType.emailAddress,
-    "Multi Line": TextInputType.multiline,
+    "Default": TextInputType.text, // 文字鍵盤
+    "Numbers and Punctuation": TextInputType.number, // 數字鍵盤
+    "URL": TextInputType.url, // 網址鍵盤
+    "Number Pad": TextInputType.phone, // 電話鍵盤
+    "Email Address": TextInputType.emailAddress, // 電子郵件鍵盤
+    "Multi Line": TextInputType.multiline, // 多行文字鍵盤
   };
 
-  // Group
+  // 分組 (Group)
 
   TextStyle uiGroupStyle = const TextStyle(
     fontSize: 12,
@@ -28,7 +28,7 @@ class SettingsPageUIBuilder {
     );
   }
 
-  // Title
+  // 標題框 (Title)
 
   TextStyle uiTitleStyle = const TextStyle();
 
@@ -39,7 +39,7 @@ class SettingsPageUIBuilder {
     );
   }
 
-  // Slider
+  // 滑動條 (Slider)
 
   Map<String, dynamic> uiSliderStyle = {};
 
@@ -57,7 +57,7 @@ class SettingsPageUIBuilder {
     );
   }
 
-  // TextField
+  // 文字輸入框 (TextField)
 
   Map<String, dynamic> uiTextFieldStyle = {};
   TextStyle uiTextFieldTextStyle = const TextStyle();
@@ -80,7 +80,7 @@ class SettingsPageUIBuilder {
     return [controller, textField];
   }
 
-  // Switch
+  // 開關 (Toggle Switch)
 
   Map<String, dynamic> uiSwitchStyle = {};
 
