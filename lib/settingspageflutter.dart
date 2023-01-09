@@ -1,6 +1,5 @@
 library settingspageflutter;
 
-import 'package:flutter/foundation.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
 import 'package:settingspageflutter/settingspageloader.dart';
 
@@ -14,7 +13,7 @@ class SettingsPageFlutter {
     log.i("init: baseDir=$baseDir, plistFileName=$plistFileName");
     SettingsPageLoader loader = SettingsPageLoader(baseDir: baseDir);
     loader.loadPlistFile().then((value) {
-      log.i(value.toString());
+      log.i("LOAD OK: stringsTable: ${value.stringsTable} , title: ${value.title} , preferenceSpecifiers: ${value.preferenceSpecifiers.length}");
     }).catchError((error) {
       log.e('Failed to load file: $error');
     });

@@ -10,6 +10,7 @@ class SettingsPageLoader {
   SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "Loader");
   String baseDir;
 
+  /// 需要指定一個儲存 plist 檔案的基本路徑 [baseDir] 目錄。
   SettingsPageLoader({this.baseDir = "config.bundle/"}) {
     if (!baseDir.endsWith("/")) {
       baseDir += "/";
@@ -21,6 +22,7 @@ class SettingsPageLoader {
     SettingsPageData data = SettingsPageData();
     String plistFilePath = "$baseDir$plistFileName.plist";
     String dataString = await rootBundle.loadString(plistFilePath);
+    log.i("- Load File: $plistFilePath , length: ${dataString.length} :");
     XmlDocument xmlDocument = XmlDocument.parse(dataString);
     XmlElement? plist = xmlDocument.getElement("plist");
     if (plist == null) {
@@ -35,14 +37,15 @@ class SettingsPageLoader {
       throw Exception(e);
     }
     Map dictChild = keysValsXmlNodeToMap(dict);
-    // print("Title: ${dictChild["Title"]}");
-    // print("StringsTable: ${dictChild["StringsTable"]}");
     data.title = dictChild["Title"];
     data.stringsTable = dictChild["StringsTable"];
     XmlElement preferenceSpecifiersE = dictChild["PreferenceSpecifiers"];
+    log.i("-");
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
       Map<String, dynamic> congigInfos = keysValsXmlNodeToMap(congigDict);
+      if (congigInfos.isEmpty) continue;
+      log.i("-");
       data.preferenceSpecifiers.add(congigInfos);
     }
     return data;
@@ -80,6 +83,11 @@ class SettingsPageLoader {
             default:
               map[key] = child;
               break;
+          }
+          if (type == "array") {
+            log.i("$key = ($type) (length: ${map[key].children.length}) :");
+          } else {
+            log.i("$key = ($type) ${map[key]}");
           }
           key = "";
         }
