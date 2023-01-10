@@ -45,6 +45,8 @@ class SettingsPageLoader {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
       Map<String, dynamic> congigInfos = keysValsXmlNodeToMap(congigDict);
       if (congigInfos.isEmpty) continue;
+      log.s("congigInfos");
+      print(congigInfos);
       log.i("-");
       data.preferenceSpecifiers.add(congigInfos);
     }

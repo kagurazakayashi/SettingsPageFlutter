@@ -50,8 +50,7 @@
 
 | Settings.bundle          | MaterialApp | Default | 功能        |
 | ------------------------ | ----------- | ------- | ----------- |
-| Slider                   | Slider      |         | Widget 名称 |
-| Type                     |             |         | Slider      |
+| PSSliderSpecifier        | Slider      |         | Widget 名称 |
 | Identifier               | -           |         | 标识符      |
 | Default Value            | value       | 0       | 默认值      |
 | Minimum Value            | min         | 0       | 最小值      |
@@ -67,7 +66,7 @@
 
 | Settings.bundle          | MaterialApp        | 功能               |
 | ------------------------ | ------------------ | ------------------ |
-| TextField                | TextField          | Widget 名称        |
+| PSTextFieldSpecifier     | TextField          | Widget 名称        |
 | Type                     |                    | TextField          |
 | Identifier               | -                  | 标识符             |
 | Title                    | labelText          | 标题               |
@@ -83,20 +82,19 @@
 | Settings.bundle | MaterialApp | 功能        |
 | --------------- | ----------- | ----------- |
 | Title           | Text        | Widget 名称 |
-| Type            |             | Title       |
 | Identifier      | -           | 标识符      |
 | Title           | Text        | 标题文本    |
 | Default Value   | x           | 默认值      |
 
 ### 开关 (Toggle Switch)
 
-| Settings.bundle | MaterialApp | 功能        |
-| --------------- | ----------- | ----------- |
-| Toggle Switch   | Switch      | Widget 名称 |
-| Type            |             | Title       |
-| Title           | Text        | 标题文本    |
-| Identifier      | -           | 标识符      |
-| Default Value   | value       | 默认值      |
+| Settings.bundle      | MaterialApp | 功能        |
+| -------------------- | ----------- | ----------- |
+| PSTextFieldSpecifier | Switch      | Widget 名称 |
+| Type                 |             | Title       |
+| Title                | Text        | 标题文本    |
+| Identifier           | -           | 标识符      |
+| Default Value        | value       | 默认值      |
 
 ## LICENSE
 
