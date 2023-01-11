@@ -1,5 +1,7 @@
 library settingspageflutter;
 
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
@@ -37,19 +39,49 @@ class SettingsPageLoader {
       throw Exception(e);
     }
     Map dictChild = keysValsXmlNodeToMap(dict);
-    data.title = dictChild["Title"];
-    data.stringsTable = dictChild["StringsTable"];
+    data.title = dictChild["Title"] ?? "Config";
+    data.stringsTable = dictChild["StringsTable"] ?? "";
     XmlElement preferenceSpecifiersE = dictChild["PreferenceSpecifiers"];
     log.i("-");
+    bool grouping = false;
+    Map<String, dynamic> configInfosT = {};
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
-      Map<String, dynamic> congigInfos = keysValsXmlNodeToMap(congigDict);
-      if (congigInfos.isEmpty) continue;
-      log.s("congigInfos");
-      print(congigInfos);
-      log.i("-");
-      data.preferenceSpecifiers.add(congigInfos);
+      Map<String, dynamic> cofigInfos = keysValsXmlNodeToMap(congigDict);
+      if (cofigInfos.isEmpty) continue;
+      // log.d("遇到分組 PSGroupSpecifier 物件，處理分組");
+      if ((cofigInfos["Type"] ?? "") == "PSGroupSpecifier") {
+        if (grouping) {
+          // log.d("處於分組狀態中，結束分組");
+          data.preferenceSpecifiers.add(configInfosT);
+          configInfosT = {};
+          grouping = false;
+        }
+        // log.d("不處於分組狀態中，開始分組");
+        List<Map<String, dynamic>> childs = [];
+        configInfosT = cofigInfos; // 延迟保存当前分组信息
+        configInfosT["Childs"] = childs; // 创建 Childs 项用于保存子项
+        grouping = true;
+      } else {
+        if (grouping) {
+          // log.d("處於分組狀態中，新增子項");
+          configInfosT["Childs"].add(cofigInfos);
+        } else {
+          // log.d("不處於分組狀態中，直接新增");
+          data.preferenceSpecifiers.add(cofigInfos);
+        }
+      }
+      String logstr = grouping ? "GROUP: ${data.title}/${configInfosT["Title"] ?? ""}" : "ROOT: ${data.title}";
+      log.i("- $logstr");
     }
+    if (grouping) {
+      // log.d("最終處於分組狀態中，結束分組");
+      data.preferenceSpecifiers.add(configInfosT);
+      configInfosT = {};
+      grouping = false;
+    }
+    log.s("data.preferenceSpecifiers");
+    log.i(data.preferenceSpecifiers.toString());
     return data;
   }
 
