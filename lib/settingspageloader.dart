@@ -1,7 +1,5 @@
 library settingspageflutter;
 
-import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
@@ -49,6 +47,11 @@ class SettingsPageLoader {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
       Map<String, dynamic> cofigInfos = keysValsXmlNodeToMap(congigDict);
       if (cofigInfos.isEmpty) continue;
+      String? chkItem = chkConfigItem(cofigInfos);
+      if (chkItem != null) {
+        log.e("ERR DATA: $cofigInfos");
+        throw Exception(chkItem);
+      }
       // log.d("遇到分組 PSGroupSpecifier 物件，處理分組");
       if ((cofigInfos["Type"] ?? "") == "PSGroupSpecifier") {
         if (grouping) {
@@ -80,9 +83,19 @@ class SettingsPageLoader {
       configInfosT = {};
       grouping = false;
     }
-    log.s("data.preferenceSpecifiers");
-    log.i(data.preferenceSpecifiers.toString());
     return data;
+  }
+
+  /// 檢查配置項 [cofigInfos] 中是否包含必要的屬性，如果不包含，則返回錯誤資訊。
+  String? chkConfigItem(Map<String, dynamic> cofigInfos) {
+    List<String> errs = [];
+    List<String> keys = ["Type"]; // , "Title"
+    for (String key in keys) {
+      if (!cofigInfos.containsKey(key)) {
+        errs.add("$key is empty");
+      }
+    }
+    return errs.isEmpty ? null : errs.join(", ");
   }
 
   /// 將類似於 `<key></key><string></string><key></key><integer></integer><key></key><true/>` 這樣的 [node] 轉換為 [Map] 。
