@@ -46,6 +46,21 @@ class SettingsPageLoader {
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
       Map<String, dynamic> cofigInfos = keysValsXmlNodeToMap(congigDict);
+      // 清理無效 key 或 value
+      if (cofigInfos.containsKey("")) {
+        cofigInfos.remove("");
+      }
+      for (String key in cofigInfos.keys) {
+        dynamic val = cofigInfos[key];
+        if (key.isEmpty || key.trim().isEmpty || val == null) {
+          cofigInfos.remove(key);
+        }
+        if (val is String) {
+          if (val.isEmpty || val.trim().isEmpty) {
+            cofigInfos.remove(key);
+          }
+        }
+      }
       if (cofigInfos.isEmpty) continue;
       String? chkItem = chkConfigItem(cofigInfos);
       if (chkItem != null) {
