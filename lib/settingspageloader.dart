@@ -11,7 +11,7 @@ class SettingsPageLoader {
   String baseDir;
 
   /// 需要指定一個儲存 plist 檔案的基本路徑 [baseDir] 目錄。
-  SettingsPageLoader({this.baseDir = "config.bundle/"}) {
+  SettingsPageLoader({this.baseDir = "Settings.bundle/"}) {
     if (!baseDir.endsWith("/")) {
       baseDir += "/";
     }

@@ -42,18 +42,6 @@
 			<key>File</key>
 			<string>net</string>
 		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSSliderSpecifier</string>
-			<key>Key</key>
-			<string>mtu</string>
-			<key>DefaultValue</key>
-			<integer>200</integer>
-			<key>MinimumValue</key>
-			<integer>100</integer>
-			<key>MaximumValue</key>
-			<integer>500</integer>
-		</dict>
 	</array>
 </dict>
 </plist>

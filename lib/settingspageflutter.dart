@@ -13,7 +13,7 @@ class SettingsPageFlutter {
 
   /// 開始載入根配置檔案
   /// 需要指定一個儲存 [plistFileName].plist 檔案的基本 [baseDir] 目錄。
-  SettingsPageFlutter({this.baseDir = "config.bundle/", this.plistFileName = "Root"}) {
+  SettingsPageFlutter({this.baseDir = "Settings.bundle/", this.plistFileName = "Root"}) {
     log.i("init: baseDir=$baseDir, plistFileName=$plistFileName");
     SettingsPageLoader loader = SettingsPageLoader(baseDir: baseDir);
     loader.loadPlistFile().then((SettingsPageData plistData) {
