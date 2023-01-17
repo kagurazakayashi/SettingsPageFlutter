@@ -2,6 +2,66 @@ import 'package:settingspageflutter/settingspagedebug.dart';
 import 'package:xml/xml.dart';
 
 class XMLDataTypeConvert {
+  /// 獲取 [element] 對應的數據類型。
+  static Type xmlElementType(XmlElement element) {
+    String type = element.name.toString();
+    switch (type) {
+      case "string":
+        return String;
+      case "integer":
+        return int;
+      case "true":
+        return bool;
+      case "false":
+        return bool;
+      case "array":
+        return List;
+      case "dict":
+        return Map;
+      default:
+        return String;
+    }
+  }
+
+  /// 將 [element] 轉換為對應的數據類型。
+  static dynamic xmlElementTypeConvert(XmlElement element) {
+    String type = element.name.toString();
+    String text = element.text;
+    switch (type) {
+      case "string":
+        return text;
+      case "integer":
+        return int.parse(text);
+      case "true":
+        return true;
+      case "false":
+        return false;
+      case "array":
+        {
+          List<dynamic> list = [];
+          for (XmlNode node in element.children) {
+            if (node.nodeType != XmlNodeType.ELEMENT) continue;
+            list.add(xmlElementTypeConvert(node as XmlElement));
+          }
+          return list;
+        }
+      case "dict":
+        {
+          Map<String, dynamic> map = {};
+          for (XmlNode node in element.children) {
+            if (node.nodeType != XmlNodeType.ELEMENT) continue;
+            XmlElement e = node as XmlElement;
+            String key = e.text;
+            dynamic val = xmlElementTypeConvert(e);
+            map[key] = val;
+          }
+          return map;
+        }
+      default:
+        return text;
+    }
+  }
+
   /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 XML 格式轉換為 Map
   static Map<String, dynamic> doubleArrayXmlNodeToMap(XmlElement key, XmlElement val, {logTitle = ""}) {
     SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
@@ -19,23 +79,7 @@ class XMLDataTypeConvert {
       if (nKey.nodeType != XmlNodeType.ELEMENT || nVal.nodeType != XmlNodeType.ELEMENT) {
         continue;
       }
-      switch (nVal.name.toString()) {
-        case "string":
-          map[nKey.text] = nVal.text;
-          break;
-        case "integer":
-          map[nKey.text] = int.parse(nVal.text);
-          break;
-        case "true":
-          map[nKey.text] = true;
-          break;
-        case "false":
-          map[nKey.text] = false;
-          break;
-        default:
-          map[nKey.text] = nVal;
-          break;
-      }
+      map[nKey.text] = XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement);
     }
     log.i("$logTitle = (Map) $map");
     return map;
