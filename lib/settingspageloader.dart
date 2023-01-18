@@ -3,6 +3,7 @@ library settingspageflutter;
 import 'package:flutter/services.dart';
 import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
+import 'package:settingspageflutter/utilities/xml_type_convert.dart';
 import 'package:xml/xml.dart';
 
 /// 配置檔案載入器
@@ -36,7 +37,7 @@ class SettingsPageLoader {
       log.e(e);
       throw Exception(e);
     }
-    Map dictChild = keysValsXmlNodeToMap(dict);
+    Map dictChild = XMLDataTypeConvert.keysValsXmlNodeToMap(dict);
     data.title = dictChild["Title"] ?? "Config";
     data.stringsTable = dictChild["StringsTable"] ?? "";
     XmlElement preferenceSpecifiersE = dictChild["PreferenceSpecifiers"];
@@ -45,7 +46,7 @@ class SettingsPageLoader {
     Map<String, dynamic> configInfosT = {};
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
-      Map<String, dynamic> cofigInfos = keysValsXmlNodeToMap(congigDict);
+      Map<String, dynamic> cofigInfos = XMLDataTypeConvert.keysValsXmlNodeToMap(congigDict);
       // 清理無效 key 或 value
       if (cofigInfos.containsKey("")) {
         cofigInfos.remove("");
@@ -67,8 +68,8 @@ class SettingsPageLoader {
         log.e("ERR DATA: $cofigInfos");
         throw Exception(chkItem);
       }
-      // log.d("遇到分組 PSGroupSpecifier 物件，處理分組");
       if ((cofigInfos["Type"] ?? "") == "PSGroupSpecifier") {
+        // log.d("遇到分組 PSGroupSpecifier 物件，額外處理");
         if (grouping) {
           // log.d("處於分組狀態中，結束分組");
           data.preferenceSpecifiers.add(configInfosT);
@@ -88,9 +89,16 @@ class SettingsPageLoader {
           // log.d("不處於分組狀態中，直接新增");
           data.preferenceSpecifiers.add(cofigInfos);
         }
+        if ((cofigInfos["Type"] ?? "") == "PSMultiValueSpecifier") {
+          // log.d("遇到多項選擇 PSMultiValueSpecifier 物件，額外處理");
+          String newTitleValueKey = "TitleValues";
+          cofigInfos[newTitleValueKey] = XMLDataTypeConvert.doubleArrayXmlNodeToMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
+          cofigInfos.remove("Titles");
+          cofigInfos.remove("Values");
+        }
       }
       String logstr = grouping ? "GROUP: ${data.title}/${configInfosT["Title"] ?? ""}" : "ROOT: ${data.title}";
-      log.i("- $logstr");
+      log.i("^ $logstr");
     }
     if (grouping) {
       // log.d("最終處於分組狀態中，結束分組");
@@ -98,6 +106,7 @@ class SettingsPageLoader {
       configInfosT = {};
       grouping = false;
     }
+    log.i("Load File OK: $plistFilePath , Title: ${data.title} , Table: ${data.stringsTable} , Specifiers length: ${data.preferenceSpecifiers.length}");
     return data;
   }
 
@@ -111,50 +120,5 @@ class SettingsPageLoader {
       }
     }
     return errs.isEmpty ? null : errs.join(", ");
-  }
-
-  /// 將類似於 `<key></key><string></string><key></key><integer></integer><key></key><true/>` 這樣的 [node] 轉換為 [Map] 。
-  /// [node] 可以是 [XmlElement] 或 [XmlNode] 。
-  /// 可以識別的資料型別有: [String] , [int] , [bool] , [XmlElement] , [XmlNode] 。
-  Map<String, dynamic> keysValsXmlNodeToMap(dynamic node) {
-    Map<String, dynamic> map = {};
-    String key = "";
-    var children = node.children;
-    for (int i = 0; i < children.length; i++) {
-      XmlNode child = children[i];
-      if (child is XmlText) {
-        map[key] = child.text;
-      } else if (child is XmlElement) {
-        String type = child.name.toString();
-        if (type == "key") {
-          key = child.text;
-        } else if (key.isNotEmpty) {
-          switch (type) {
-            case "string":
-              map[key] = child.text;
-              break;
-            case "integer":
-              map[key] = int.parse(child.text);
-              break;
-            case "true":
-              map[key] = true;
-              break;
-            case "false":
-              map[key] = false;
-              break;
-            default:
-              map[key] = child;
-              break;
-          }
-          if (type == "array") {
-            log.i("$key = ($type) (length: ${map[key].children.length}) :");
-          } else {
-            log.i("$key = ($type) ${map[key]}");
-          }
-          key = "";
-        }
-      }
-    }
-    return map;
   }
 }
