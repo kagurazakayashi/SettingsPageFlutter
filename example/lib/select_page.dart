@@ -5,7 +5,6 @@ import "package:bot_toast/bot_toast.dart";
 import "package:flutter/material.dart";
 import "package:settingspageflutter/settingspageloader.dart";
 import "package:settingspageflutter/widget/we_group_item.dart";
-import "package:settingspageflutter/widget/we_setting_page.dart";
 import "package:settingspageflutter/widget/we_size.dart";
 
 import "notification_center.dart";
@@ -46,9 +45,6 @@ class _SelectPageState extends State<SelectPage> {
       }
     }
 
-    for (Map<String, dynamic> e in _settingData) {
-      _data.add(e);
-    }
     postNames.add(nkey);
     NotificationCenter.instance.addObserver(nkey, (object) {
       setState(() {});
@@ -76,7 +72,6 @@ class _SelectPageState extends State<SelectPage> {
     weSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-          ),
       ),
       backgroundColor: Colors.grey[300],
       body: _settingData.isNotEmpty
