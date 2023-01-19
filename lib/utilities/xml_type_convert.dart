@@ -81,8 +81,30 @@ class XMLDataTypeConvert {
       }
       map[nKey.text] = XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement);
     }
-    log.i("$logTitle = (Map) $map");
+    log.i("$logTitle = (${map.runtimeType}) $map");
     return map;
+  }
+
+  static List<Map<String, dynamic>> doubleArrayXmlNodeToListMap(XmlElement key, XmlElement val, {String keyName = "Title", String valName = "Val", logTitle = ""}) {
+    SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
+    List<Map<String, dynamic>> list = [];
+    List<XmlNode> keys = key.children; // XmlNodeList<XmlNode>
+    List<XmlNode> vals = val.children; // XmlNodeList<XmlNode>
+    if (keys.length != vals.length) {
+      String e = "Invalid plist file: keys.length != vals.length";
+      SettingsPageFlutterDebug(className: "XMLConvert").e(e);
+      throw Exception(e);
+    }
+    for (int i = 0; i < keys.length; i++) {
+      XmlNode nKey = keys[i];
+      XmlNode nVal = vals[i];
+      if (nKey.nodeType != XmlNodeType.ELEMENT || nVal.nodeType != XmlNodeType.ELEMENT) {
+        continue;
+      }
+      list.add({keyName: nKey.text, valName: XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement)});
+    }
+    log.i("$logTitle = (${list.runtimeType}) $list");
+    return list;
   }
 
   /// 將類似於 `<key></key><string></string><key></key><integer></integer><key></key><true/>` 這樣的 [node] 轉換為 [Map] 。
@@ -121,7 +143,7 @@ class XMLDataTypeConvert {
               break;
           }
           if (type == "array") {
-            log.i("$key = ($type) (length: ${map[key].children.length}) :");
+            log.i("$key = ($type) (length: ${map[key].children.length})");
           } else {
             log.i("$key = ($type) ${map[key]}");
           }
@@ -139,5 +161,15 @@ class XMLDataTypeConvert {
       map[keys[i]] = vals[i];
     }
     return map;
+  }
+
+  /// 將 XmlElementArray [element] 轉換為 [List]。
+  static xmlArray2List(XmlElement element) {
+    List<dynamic> list = [];
+    for (XmlNode node in element.children) {
+      if (node.nodeType != XmlNodeType.ELEMENT) continue;
+      list.add(xmlElementTypeConvert(node as XmlElement));
+    }
+    return list;
   }
 }

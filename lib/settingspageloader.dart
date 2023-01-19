@@ -92,7 +92,9 @@ class SettingsPageLoader {
         if ((cofigInfos["Type"] ?? "") == "PSMultiValueSpecifier") {
           // log.d("遇到多項選擇 PSMultiValueSpecifier 物件，額外處理");
           String newTitleValueKey = "TitleValues";
-          cofigInfos[newTitleValueKey] = XMLDataTypeConvert.doubleArrayXmlNodeToMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
+          // cofigInfos[newTitleValueKey] = XMLDataTypeConvert.doubleArrayXmlNodeToMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
+          List<Map<String, dynamic>> nList = XMLDataTypeConvert.doubleArrayXmlNodeToListMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
+          cofigInfos["TitleValues"] = nList;
           cofigInfos.remove("Titles");
           cofigInfos.remove("Values");
         }
@@ -107,6 +109,7 @@ class SettingsPageLoader {
       grouping = false;
     }
     log.i("Load File OK: $plistFilePath , Title: ${data.title} , Table: ${data.stringsTable} , Specifiers length: ${data.preferenceSpecifiers.length}");
+    // log.i(data.preferenceSpecifiers);
     return data;
   }
 
