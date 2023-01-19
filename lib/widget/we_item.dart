@@ -1,27 +1,26 @@
 import "package:flutter/material.dart";
+import "package:settingspageflutter/widget/we_size.dart";
 
 class WeItem extends StatelessWidget {
   /// 处理分组的UI样式
-  /// 
+  ///
   /// Provides a group UI style
   const WeItem({
     Key? key,
     required this.child,
   }) : super(key: key);
+
   /// {@template settingspageflutter.widget.weitem.child}
   /// 组内的内容控件
-  /// 
+  ///
   /// group child
   /// {@endtemplate}
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Container(
-      width: size.width,
-      padding: const EdgeInsets.all(15),
-      margin: const EdgeInsets.all(2),
+      width: weSize.width,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.grey[300]!),

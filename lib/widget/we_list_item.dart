@@ -7,7 +7,7 @@ import "we_size.dart";
 
 class WeListItem extends StatelessWidget {
   /// 提供交互的控件
-  /// 
+  ///
   /// Provides an interactive control
   const WeListItem({
     Key? key,
@@ -78,7 +78,7 @@ class WeListItem extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.welistitem.data}
   /// 数据
-  /// 
+  ///
   /// Data
   /// {@endtemplate}
   final Map<String, dynamic> data;
@@ -124,7 +124,8 @@ class WeListItem extends StatelessWidget {
   /// }
   /// ```
   /// {@end-tool}
-  final Function(List<Map<String, dynamic>>? childs, String? file, String type)? onClick;
+  final Function(List<Map<String, dynamic>>? childs, String? file, String type)?
+      onClick;
 
   /// {@template settingspageflutter.widget.welistitem.onChanged}
   /// 值改变事件
@@ -233,11 +234,20 @@ class WeListItem extends StatelessWidget {
       };
     }
 
-    return SizedBox(
-      width: weSize.width - 86,
+    return Container(
+      margin: const EdgeInsets.all(7.0),
       child: InkWell(
+        focusColor: Colors.red,
+        hoverColor: Colors.blue[100],
+        splashColor: Colors.green,
+        highlightColor: Colors.yellow,
         onTap: onTap,
-        child: c,
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          margin: const EdgeInsets.all(2),
+          width: weSize.width - 86,
+          child: c,
+        ),
       ),
     );
   }

@@ -46,6 +46,7 @@ class WeGroupItem extends StatelessWidget {
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
+
   /// {@template flutter.material.appbar.leading}
   /// A widget to display before the toolbar's [title].
   ///
