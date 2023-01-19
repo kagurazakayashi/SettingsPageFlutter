@@ -42,6 +42,14 @@
 			<key>File</key>
 			<string>net</string>
 		</dict>
+		<dict>
+			<key>FooterText</key>
+			<string>这些选项决定了设备如何联网</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>网络选项</string>
+		</dict>
 	</array>
 </dict>
 </plist>

@@ -35,6 +35,8 @@
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
 			<string>无线网络名称</string>
+			<key>HintText</key>
+			<string>名称</string>
 			<key>Key</key>
 			<string>wifi_name</string>
 		</dict>
@@ -68,14 +70,14 @@
 			<key>MaximumValue</key>
 			<integer>500</integer>
 		</dict>
-		<dict>
+		<!-- <dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>无线网络地址设置</string>
 			<key>FooterText</key>
 			<string>错误的设置可能导致无法连接。</string>
-		</dict>
+		</dict> -->
 		<dict>
 			<key>Values</key>
 			<array>

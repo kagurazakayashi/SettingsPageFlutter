@@ -7,6 +7,7 @@
 ## Settings.bundle 和 MaterialApp 属性对照
 
 实现方式：
+
 - `-` 表示仅在事件回调中体现
 - `+` 会进行额外的实现
 - `x` 表示不支持
@@ -21,7 +22,7 @@
 | Number Pad              | phone         | 电话键盘 |
 | URL                     | url           | 网址键盘 |
 | Email Address           | emailAddress  | 邮件键盘 |
-| Multi Line *            | multiline     | 多行文本 |
+| Multi Line \*           | multiline     | 多行文本 |
 
 `*`: 本插件特有项， Settings.bundle 中没有。
 
@@ -36,65 +37,82 @@
 
 ### 多项选择框 (Multi Value)
 
-| Settings.bundle | 功能        |
-| --------------- | ----------- |
-| Multi Value     | Widget 名称 |
-| Type            | Multi Value |
-| Identifier      | 标识符      |
-| Title           | 标题        |
-| Default Value   | 默认值      |
-| Titles          | 标题集合    |
-| Values          | 值的集合    |
+key: `PSMultiValueSpecifier`
+
+| Settings.bundle | Default | 功能     | 类型   |
+| --------------- | ------- | -------- | ------ |
+| Key             | -       | 标识符   | String |
+| Title           | -       | 标题     | String |
+| Childs          | -       | 标题集合 | List   |
+
+### 多项选择框 (Multi Value) - 子项 (Childs)
+
+| Settings.bundle | Default | 功能   | 类型   |
+| --------------- | ------- | ------ | ------ |
+| Title           | -       | 标识符 | String |
+| Val             | -       | 标题   | String |
+
+ <!--            | Default Value | 默认值 | -->
 
 ### 滑动条 (Slider)
 
-| Settings.bundle          | MaterialApp | Default | 功能        |
-| ------------------------ | ----------- | ------- | ----------- |
-| PSSliderSpecifier        | Slider      |         | Widget 名称 |
-| Identifier               | -           |         | 标识符      |
-| Default Value            | value       | 0       | 默认值      |
-| Minimum Value            | min         | 0       | 最小值      |
-| Maximum Value            | max         | 100     | 最大值      |
-| Number Of Steps *        | divisions   | 1       | 步进大小    |
-| Title *                  | label       | ""      | 标题        |
+key: `PSSliderSpecifier`
+
+| Settings.bundle  | MaterialApp   | Default                 | 功能       | 类型   |
+| ---------------- | ------------- | ----------------------- | ---------- | ------ |
+| Key              | -             | -                       | 标识符     | String |
+| Title \*         | label         | ""                      | 标题       | String |
+| DefaultValue     | value         | 0                       | 默认值     | double |
+| MinimumValue     | min           | 0                       | 最小值     | double |
+| MaximumValue     | max           | 100                     | 最大值     | double |
+| accuracy         | -             | 0                       | 精度       | int    |
+| NumberOfSteps \* | divisions     | 1                       | 步进大小   | int    |
+| activeColor      | activeColor   | 0xFF2196F3(Colors.blue) | 活动颜色   | int    |
+| inactiveColor    | inactiveColor | 0xFF9E9E9E(Colors.grey) | 非活动颜色 | int    |
+
+<!-- | Key               | -           |         | 标识符      |
 | Max Value Image Filename | x           |         | 最大端图片  |
-| Min Value Image Filename | x           |         | 最小端图片  |
+| Min Value Image Filename | x           |         | 最小端图片  | -->
 
 `*`: 本插件特有项， Settings.bundle 中没有。
 
 ### 文字输入框 (TextField)
 
-| Settings.bundle          | MaterialApp        | 功能               |
-| ------------------------ | ------------------ | ------------------ |
-| PSTextFieldSpecifier     | TextField          | Widget 名称        |
-| Type                     |                    | TextField          |
-| Identifier               | -                  | 标识符             |
-| Title                    | labelText          | 标题               |
-| Default Value            |                    | 默认值             |
-| Hint Text                | hintText           | 提示文本           |
-| Autocorrection Style     | autocorrect        | 自动纠正拼写       |
-| Autocapitalization Style | TextCapitalization | 自动大写(暂不支持) |
-| Text Field Is Secure     | obscureText        | 是否密文显示       |
-| keyboard Type            | keyboardType       | 键盘样式           |
+key: `PSTextFieldSpecifier`
+
+| Settings.bundle         | MaterialApp        | Default | 功能               | 类型     |
+| ----------------------- | ------------------ | ------- | ------------------ | -------- |
+| Key                     | -                  | -       | 标识符             | String   |
+| Title                   | labelText          | ""      | 标题               | String   |
+| DefaultValue            | ""                 | ""      | 默认值             | String   |
+| HintText                | hintText           | ""      | 提示文本           | String   |
+| AutocorrectionStyle     | autocorrect        | false   | 自动纠正拼写       | bool     |
+| AutocapitalizationStyle | TextCapitalization | none    | 自动大写(暂不支持) | String   |
+| TextFieldIsSecure       | obscureText        | false   | 是否密文显示       | bool     |
+| KeyboardType            | keyboardType       | text    | 键盘样式           | String   |
+| ReturnKeyType           | textInputAction    | done    | 键盘回车键样式     | String   |
+| MaxLines                | maxLines           | 1       | 最大行数           | int      |
+| MaxLength               | maxLength          | null    | 最大长度           | int/null |
+| AutoFocus               | autofocus          | false   | 是否自动获取焦点   | bool     |
 
 ### 标题框 (Title)
 
 | Settings.bundle | MaterialApp | 功能        |
 | --------------- | ----------- | ----------- |
 | Title           | Text        | Widget 名称 |
-| Identifier      | -           | 标识符      |
+| Key             | -           | 标识符      |
 | Title           | Text        | 标题文本    |
 | Default Value   | x           | 默认值      |
 
 ### 开关 (Toggle Switch)
 
-| Settings.bundle      | MaterialApp | 功能        |
-| -------------------- | ----------- | ----------- |
-| PSTextFieldSpecifier | Switch      | Widget 名称 |
-| Type                 |             | Title       |
-| Title                | Text        | 标题文本    |
-| Identifier           | -           | 标识符      |
-| Default Value        | value       | 默认值      |
+key: `PSToggleSwitchSpecifier`
+
+| Settings.bundle | MaterialApp | Default | 功能     | 类型   |
+| --------------- | ----------- | ------- | -------- | ------ |
+| Key             | -           | -       | 标识符   | String |
+| Title           | Text        | -       | 标题文本 | String |
+| DefaultValue    | value       | -       | 默认值   | bool   |
 
 ## LICENSE
 

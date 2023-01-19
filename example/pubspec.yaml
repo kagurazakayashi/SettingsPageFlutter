@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   settingspageflutter:
     path: ../
+  bot_toast: ^4.0.3
 
 dev_dependencies:
   flutter_test:

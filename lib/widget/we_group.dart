@@ -13,7 +13,7 @@ class WeGroup extends StatelessWidget {
 
   final String? title;
   final String? foot;
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +23,28 @@ class WeGroup extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null)
-        Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-          child: Text(
-            title!,
-            style: tsGroupTag,
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: Align(
+              alignment:
+                  child != null ? Alignment.centerLeft : Alignment.center,
+              child: Text(
+                title!,
+                style: tsGroupTag,
+              ),
+            ),
           ),
-        ),
-        WeItem(child: child),
+        if (child != null) WeItem(child: child!),
         if (foot != null)
           Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-            child: Text(
-              foot!,
-              style: tsGroupTag,
+            child: Align(
+              alignment:
+                  child != null ? Alignment.centerLeft : Alignment.center,
+              child: Text(
+                foot!,
+                style: tsGroupTag,
+              ),
             ),
           ),
       ],
