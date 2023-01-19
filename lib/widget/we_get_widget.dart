@@ -49,7 +49,7 @@ Widget getWidget(
               style: tsMain,
             ),
           const SizedBox(width: 8),
-          Switch(value: val, onChanged: (val) => onChanged!(id, val, false))
+          Switch(value: val, onChanged: (val) => onChanged(id, val, false))
         ],
       );
       break;
@@ -239,12 +239,12 @@ Widget getWidget(
                 IconButton(
                   onPressed: () {
                     controller.text = "";
-                    onChanged!(id, "", false);
+                    onChanged(id, "", false);
                   },
                   icon: const Icon(Icons.cancel),
                 ),
               IconButton(
-                onPressed: () => onChanged!(id, controller.text, true),
+                onPressed: () => onChanged(id, controller.text, true),
                 icon: const Icon(Icons.check),
               ),
             ],
@@ -258,7 +258,7 @@ Widget getWidget(
         maxLines: maxLines,
         maxLength: maxLength,
         autofocus: autofocus,
-        onSubmitted: (val) => onChanged!(id, val, true),
+        onSubmitted: (val) => onChanged(id, val, true),
       );
       break;
     case "PSSliderSpecifier": //滑动条(Slider)
@@ -408,7 +408,7 @@ Widget getWidget(
                     divisions: divisions,
                     activeColor: activeColor,
                     inactiveColor: inactiveColor,
-                    onChanged: (val) => onChanged!(id, val, false),
+                    onChanged: (val) => onChanged(id, val, false),
                   ),
                 ),
                 Text(val.toStringAsFixed(accuracy), style: tsMainVal),
@@ -423,7 +423,6 @@ Widget getWidget(
       String val = "";
       switch (temp.runtimeType) {
         case String:
-          print('===== String =====');
           val = temp as String;
           try {
             Map tempMap = jsonDecode(val);
@@ -433,16 +432,13 @@ Widget getWidget(
           }
           break;
         case Map<String, dynamic>:
-          print('===== Map =====');
           val = (temp as Map).containsKey("Title") ? temp["Title"] : "";
           break;
         default:
-          print('===== default: ${temp.runtimeType}');
           if (temp.runtimeType.toString() == "_Map<String, dynamic>") {
             val = (temp as Map).containsKey("Title") ? temp["Title"] : "";
           }
       }
-      print(">>>data:$data 未知类型: $type val: $val temp: $temp");
       c = Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
         child: Row(

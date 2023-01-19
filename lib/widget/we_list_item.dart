@@ -99,13 +99,10 @@ class WeListItem extends StatelessWidget {
         if (isNext) {
           onClick!(childs, file, type);
         }
-        print('isNext:$isNext childs:$childs file:$file type:$type');
       };
     }
     if (type == "PSMultiValueSpecifier") {
       onTap = () {
-        print('data:$data');
-
         String? titleStr = data.containsKey("Title") ? data["Title"] : null;
         List<Map<String, dynamic>>? titleValues =
             data.containsKey("TitleValues") ? data["TitleValues"] : null;
@@ -139,15 +136,13 @@ class WeListItem extends StatelessWidget {
             data: titleValues,
           );
         })).then((value) {
-          print(value);
           if (value is Map) {
-            onChanged!(key, value, false);
+            onChanged(key, value, false);
           }
         });
       };
     }
 
-    // if (type == "PSMultiValueSpecifier") print('>>>fatherID:$fatherID child:$childs file:$file');
     return SizedBox(
       width: weSize.width - 86,
       child: InkWell(
