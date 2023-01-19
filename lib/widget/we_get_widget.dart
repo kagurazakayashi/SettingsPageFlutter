@@ -5,6 +5,45 @@ import "package:flutter/services.dart";
 
 import "we_textstyle.dart";
 
+/// 根据数据返回控件
+/// 
+/// * [data] 数据
+/// 
+/// * [onChanged] 数据改变时的回调
+/// 
+///   * [key] 为数据中的key`Key`的值,用于需要修改项的key
+///  
+///   * [value] 为数据中的key`Value`的值,用于需要修改项的value
+///  
+///   * [isTip] 用于判断是否需要提示，当前只有`PSTextFieldSpecifier`类型的项才会有提示
+/// 
+/// Returns a control based on data
+/// 
+/// * [data] data
+/// 
+/// * [onChanged] callback when data changes
+/// 
+///   * [key] is the value of the key `Key` in the data, used for the key of the item to be modified
+/// 
+///   * [value] is the value of the key `Value` in the data, used for the value of the item to be modified
+/// 
+///   * [isTip] is used to determine whether a prompt is needed. Currently, only items of type `PSTextFieldSpecifier` will have prompts
+/// {@tool snippet}
+/// ```
+/// onChanged: (key, value, isTip) {
+///   bool isUpLoad = weSetVal(_settingData, key, value);
+///   if (isUpLoad) {
+///     NotificationCenter.instance
+///         .postNotification(nkey, [key, value]);
+///     if (isTip) {
+///       BotToast.showText(
+///         text: 'K: $key - V: $value\n已修改',
+///       );
+///     }
+///   }
+/// }
+/// ```
+/// {@end-tool}
 Widget getWidget(
   Map<String, dynamic> data,
   final Function(String key, dynamic value, bool isTip) onChanged,
@@ -18,6 +57,8 @@ Widget getWidget(
   String? file = data.containsKey("File") ? data["File"] : null;
   List<Map<String, dynamic>>? titleValues =
       data.containsKey("TitleValues") ? data["TitleValues"] : null;
+
+  //根据类型返回控件
   switch (type) {
     case "PSToggleSwitchSpecifier": //开关(Switch)
       Object temp = data.containsKey("val")
@@ -477,6 +518,7 @@ Widget getWidget(
   return c;
 }
 
+///颜色字符串处理
 int colorStrHanlder(String colorStr) {
   if (colorStr.length < 6 || colorStr.length > 10) return -1;
   List<String> colorStrList = colorStr.split("x");

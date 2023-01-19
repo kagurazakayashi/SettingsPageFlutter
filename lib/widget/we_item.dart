@@ -1,14 +1,18 @@
 import "package:flutter/material.dart";
 
-import "we_textstyle.dart";
-
 class WeItem extends StatelessWidget {
+  /// 处理分组的UI样式
+  /// 
+  /// Provides a group UI style
   const WeItem({
     Key? key,
-    this.title,
     required this.child,
   }) : super(key: key);
-  final String? title;
+  /// {@template settingspageflutter.widget.weitem.child}
+  /// 组内的内容控件
+  /// 
+  /// group child
+  /// {@endtemplate}
   final Widget child;
 
   @override
@@ -30,19 +34,7 @@ class WeItem extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (title != null)
-            Text(
-              title!,
-              style: tsMain,
-            ),
-          child,
-        ],
-      ),
+      child: child,
     );
   }
 }
