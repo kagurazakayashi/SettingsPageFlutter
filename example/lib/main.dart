@@ -19,9 +19,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your applicati on.
   @override
   Widget build(BuildContext context) {
-    isIOS = Platform.isIOS;
+    if (Platform.isIOS || Platform.isMacOS) {
+      isIOS = true;
+    }
     isDark = window.platformBrightness == Brightness.dark;
-    print("isIOS: $isIOS isDark: $isDark");
     return isIOS
         ? CupertinoApp(
             title: 'Flutter Demo',

@@ -23,15 +23,13 @@ class SelectPage extends StatefulWidget {
   State<SelectPage> createState() => _SelectPageState();
 }
 
-class _SelectPageState extends State<SelectPage> {
+class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
   List _settingData = [];
   String nkey = "";
   String _title = "";
 
   @override
   void initState() {
-    // _data = widget.option;
-    print(">>>>>>>>> ${widget.option}");
     if (widget.option == null) {
       loadFile(widget.file);
     } else {
@@ -39,15 +37,18 @@ class _SelectPageState extends State<SelectPage> {
           widget.type == "PSMultiValueSpecifier" &&
           widget.option != null &&
           widget.option!.isNotEmpty) {
+        String title = widget.option![0].containsKey("Title")
+            ? widget.option![0]["Title"]
+            : "";
         List? titleValues = widget.option![0].containsKey("TitleValues")
             ? widget.option![0]["TitleValues"]
             : null;
+        _title = title;
         _settingData = titleValues!;
       } else {
         _settingData = widget.option!;
       }
     }
-    // if (widget.fatherID == null) {
     nkey = "upload";
     for (var i = 0; i < 1000; i++) {
       if (NotificationCenter.instance.postNameMap.containsKey(nkey)) {
@@ -59,17 +60,8 @@ class _SelectPageState extends State<SelectPage> {
     NotificationCenter.instance.addObserver(nkey, (object) {
       setState(() {});
     });
-    // }
+    setTextStyle(isDark: isDark);
     super.initState();
-  }
-
-  void loadFile(String fileName) {
-    SettingsPageLoader().loadPlistFile(plistFileName: fileName).then((value) {
-      _settingData = value.preferenceSpecifiers;
-      _title = value.title;
-      print(">> _settingData: ${value.stringsTable}");
-      setState(() {});
-    });
   }
 
   @override
@@ -79,9 +71,24 @@ class _SelectPageState extends State<SelectPage> {
   }
 
   @override
+  void didChangePlatformBrightness() {
+    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    setTextStyle(isDark: isDark);
+    setState(() {});
+    super.didChangePlatformBrightness();
+  }
+
+  void loadFile(String fileName) {
+    SettingsPageLoader().loadPlistFile(plistFileName: fileName).then((value) {
+      _settingData = value.preferenceSpecifiers;
+      _title = value.title;
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     setSize(MediaQuery.of(context).size);
-    setTextStyle(isDark: isDark);
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
