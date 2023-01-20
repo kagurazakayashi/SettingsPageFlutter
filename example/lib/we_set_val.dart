@@ -3,7 +3,7 @@ bool weSetVal(List data, String id, dynamic val) {
     String eid = eMain.containsKey("Key") ? eMain["Key"] : "";
     List? echilds = eMain.containsKey("Childs") ? eMain["Childs"] : null;
     if (eid == id) {
-      eMain["val"] = val;
+      eMain["Value"] = val;
       return true;
     }
     if (echilds == null) {

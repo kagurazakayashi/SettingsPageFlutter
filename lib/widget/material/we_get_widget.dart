@@ -60,8 +60,8 @@ Widget getWidget(
   //根据类型返回控件
   switch (type) {
     case "PSToggleSwitchSpecifier": //开关(Switch)
-      Object temp = data.containsKey("val")
-          ? data["val"]
+      Object temp = data.containsKey("Value")
+          ? data["Value"]
           : data.containsKey("DefaultValue")
               ? data["DefaultValue"]
               : false;
@@ -97,7 +97,7 @@ Widget getWidget(
       );
       break;
     case "PSTextFieldSpecifier": //文本框(TextField)
-      String val = data.containsKey("val") ? data["val"] : ""; //内容
+      String val = data.containsKey("Value") ? data["Value"] : ""; //内容
       String label = data.containsKey('Title') ? data['Title'] : ""; //标签
       String hintText = data.containsKey('HintText')
           ? data['HintText']
@@ -357,8 +357,8 @@ Widget getWidget(
           break;
       }
       //当前值,如果val不存在,则使用DefaultValue
-      temp = data.containsKey("val")
-          ? data["val"]
+      temp = data.containsKey("Value")
+          ? data["Value"]
           : data.containsKey("DefaultValue")
               ? data["DefaultValue"]
               : false;
@@ -473,7 +473,7 @@ Widget getWidget(
       );
       break;
     default: //其他
-      dynamic temp = data.containsKey("val") ? data["val"] : "";
+      dynamic temp = data.containsKey("Value") ? data["Value"] : "";
       String val = "";
       switch (temp.runtimeType) {
         case String:
