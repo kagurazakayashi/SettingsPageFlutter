@@ -4,6 +4,7 @@ import "package:settingspageflutter/settingspageloader.dart";
 import "package:settingspageflutter/widget/material/we_group_item.dart";
 import "package:settingspageflutter/widget/we_set_style.dart";
 
+import "data.dart";
 import "notification_center.dart";
 import "we_set_val.dart";
 
@@ -24,7 +25,6 @@ class _SelectPageState extends State<SelectPage> {
   List _settingData = [];
   String nkey = "";
   String _title = "";
-  final bool _isDark = false;
 
   @override
   void initState() {
@@ -68,20 +68,20 @@ class _SelectPageState extends State<SelectPage> {
   @override
   Widget build(BuildContext context) {
     setSize(MediaQuery.of(context).size);
-    setTextStyle(isDark: _isDark);
+    setTextStyle(isDark: isDark);
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
-        backgroundColor: _isDark ? Colors.black26 : Colors.blue,
+        backgroundColor: isDark ? Colors.black26 : Colors.blue,
       ),
-      backgroundColor: _isDark ? Colors.grey[900] : Colors.grey[300],
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
       body: _settingData.isNotEmpty
           ? ListView.builder(
               itemCount: _settingData.length,
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
                 return WeGroupItem(
-                  isDark: _isDark,
+                  isDark: isDark,
                   // decoration: BoxDecoration(
                   //   color: Colors.white,
                   //   border: Border.all(color: Colors.grey[300]!),

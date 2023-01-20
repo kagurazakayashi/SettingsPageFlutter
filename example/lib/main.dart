@@ -1,8 +1,12 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'cupertino_select_page.dart';
+import 'data.dart';
 import 'select_page.dart';
 
 void main() {
@@ -15,22 +19,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your applicati on.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      builder: BotToastInit(), //1.调用BotToastInit
-      navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
-      debugShowCheckedModeBanner: false,
-      home: const SelectPage(),
-    );
-    // return CupertinoApp(
-    //   title: 'Flutter Demo',
-    //   builder: BotToastInit(), //1.调用BotToastInit
-    //   navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
-    //   debugShowCheckedModeBanner: false,
-    //   home: const CupertinoSelectPage(),
-    // );
+    isIOS = Platform.isIOS;
+    isDark = window.platformBrightness == Brightness.dark;
+    print("isIOS: $isIOS isDark: $isDark");
+    return isIOS
+        ? CupertinoApp(
+            title: 'Flutter Demo',
+            builder: BotToastInit(), //1.调用BotToastInit
+            navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
+            debugShowCheckedModeBanner: false,
+            home: const CupertinoSelectPage(),
+          )
+        : MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            builder: BotToastInit(), //1.调用BotToastInit
+            navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
+            debugShowCheckedModeBanner: false,
+            home: const SelectPage(),
+          );
   }
 }
