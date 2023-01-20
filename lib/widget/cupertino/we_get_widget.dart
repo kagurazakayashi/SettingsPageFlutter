@@ -1,31 +1,31 @@
 import "dart:convert";
 
-import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
 
-import "we_textstyle.dart";
+import "../we_textstyle.dart";
 
 /// 根据数据返回控件
-/// 
+///
 /// * [data] 数据
-/// 
+///
 /// * [onChanged] 数据改变时的回调
-/// 
+///
 ///   * [key] 为数据中的key`Key`的值,用于需要修改项的key
-///  
+///
 ///   * [value] 为数据中的key`Value`的值,用于需要修改项的value
-///  
+///
 ///   * [isTip] 用于判断是否需要提示，当前只有`PSTextFieldSpecifier`类型的项才会有提示
-/// 
+///
 /// Returns a control based on data
-/// 
+///
 /// * [data] data
-/// 
+///
 /// * [onChanged] callback when data changes
-/// 
+///
 ///   * [key] is the value of the key `Key` in the data, used for the key of the item to be modified
-/// 
+///
 ///   * [value] is the value of the key `Value` in the data, used for the value of the item to be modified
-/// 
+///
 ///   * [isTip] is used to determine whether a prompt is needed. Currently, only items of type `PSTextFieldSpecifier` will have prompts
 /// {@tool snippet}
 /// ```
@@ -79,18 +79,22 @@ Widget getWidget(
           }
           break;
       }
-      c = Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (title != null)
-            Text(
-              title,
-              style: tsMain,
-            ),
-          const SizedBox(width: 8),
-          Switch(value: val, onChanged: (val) => onChanged(id, val, false))
-        ],
+      c = SizedBox(
+        height: 55,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (title != null)
+              Text(
+                title,
+                style: tsMain,
+              ),
+            const SizedBox(width: 8),
+            CupertinoSwitch(
+                value: val, onChanged: (val) => onChanged(id, val, false))
+          ],
+        ),
       );
       break;
     case "PSTextFieldSpecifier": //文本框(TextField)
@@ -265,40 +269,45 @@ Widget getWidget(
       }
 
       TextEditingController controller = TextEditingController(text: val);
-      c = TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: tsGroupTag,
-          hintText: hintText,
-          hintStyle: tsGroupTag,
-          suffixIcon: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (controller.text.isNotEmpty)
-                IconButton(
-                  onPressed: () {
-                    controller.text = "";
-                    onChanged(id, "", false);
-                  },
-                  icon: const Icon(Icons.cancel),
-                ),
-              IconButton(
-                onPressed: () => onChanged(id, controller.text, true),
-                icon: const Icon(Icons.check),
+      c = Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Text("$label: ", style: tsMain),
+          Expanded(
+            child: CupertinoTextField(
+              controller: controller,
+              suffix: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (controller.text.isNotEmpty)
+                    CupertinoButton(
+                      onPressed: () {
+                        controller.text = "";
+                        onChanged(id, "", false);
+                      },
+                      child: const Icon(CupertinoIcons.clear_thick_circled),
+                    ),
+                  CupertinoButton(
+                    onPressed: () => onChanged(id, controller.text, true),
+                    child: const Icon(CupertinoIcons.checkmark_alt),
+                  ),
+                ],
               ),
-            ],
+              placeholder: hintText,
+              placeholderStyle: tsGroupTag,
+              decoration: const BoxDecoration(border: null),
+              autocorrect: autoCorrect,
+              textCapitalization: autoCapitalization,
+              obscureText: obscureText,
+              keyboardType: keyboardType,
+              textInputAction: textInputAction,
+              maxLines: maxLines,
+              maxLength: maxLength,
+              autofocus: autofocus,
+              onSubmitted: (val) => onChanged(id, val, true),
+            ),
           ),
-        ),
-        autocorrect: autoCorrect,
-        textCapitalization: autoCapitalization,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction,
-        maxLines: maxLines,
-        maxLength: maxLength,
-        autofocus: autofocus,
-        onSubmitted: (val) => onChanged(id, val, true),
+        ],
       );
       break;
     case "PSSliderSpecifier": //滑动条(Slider)
@@ -308,8 +317,8 @@ Widget getWidget(
       int? divisions; //分段数
       int accuracy = 0; //分段数
       // String label = ""; //默认值标签
-      Color activeColor = Colors.blue; //激活颜色
-      Color inactiveColor = Colors.grey; //未激活颜色
+      Color activeColor = CupertinoColors.activeBlue; //激活颜色
+      Color inactiveColor = CupertinoColors.white; //未激活颜色
       //最小值
       Object temp =
           data.containsKey("MinimumValue") ? data["MinimumValue"] : 0.0;
@@ -426,36 +435,39 @@ Widget getWidget(
           break;
       }
 
-      c = Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (title != null)
-            Text(
-              title,
-              style: tsMain,
-            ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: Slider(
-                    value: val,
-                    min: min,
-                    max: max,
-                    divisions: divisions,
-                    activeColor: activeColor,
-                    inactiveColor: inactiveColor,
-                    onChanged: (val) => onChanged(id, val, false),
+      c = SizedBox(
+        height: 55,
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (title != null)
+              Text(
+                title,
+                style: tsMain,
+              ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: CupertinoSlider(
+                      value: val,
+                      min: min,
+                      max: max,
+                      divisions: divisions,
+                      activeColor: activeColor,
+                      thumbColor: inactiveColor,
+                      onChanged: (val) => onChanged(id, val, false),
+                    ),
                   ),
-                ),
-                Text(val.toStringAsFixed(accuracy), style: tsMainVal),
-              ],
-            ),
-          )
-        ],
+                  Text(val.toStringAsFixed(accuracy), style: tsMain),
+                ],
+              ),
+            )
+          ],
+        ),
       );
       break;
     default: //其他
@@ -480,37 +492,40 @@ Widget getWidget(
           }
       }
       c = Padding(
-        padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (title != null)
-              Text(
-                title,
-                style: tsMain,
-              ),
-            const SizedBox(width: 8),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+        padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+        child: SizedBox(
+          height: 39,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (title != null)
                 Text(
-                  val,
-                  style: tsMainVal,
+                  title,
+                  style: tsMain,
                 ),
-                if (childs != null || file != null || titleValues != null)
-                  const SizedBox(width: 5),
-                if (childs != null || file != null || titleValues != null)
-                  Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
-                    weight: 1000,
-                    color: Colors.grey[500]!,
+              const SizedBox(width: 8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    val,
+                    style: tsMainVal,
                   ),
-              ],
-            )
-          ],
+                  if (childs != null || file != null || titleValues != null)
+                    const SizedBox(width: 5),
+                  if (childs != null || file != null || titleValues != null)
+                    const Icon(
+                      CupertinoIcons.right_chevron,
+                      size: 16,
+                      weight: 1000,
+                      color: CupertinoColors.systemGrey2,
+                    ),
+                ],
+              )
+            ],
+          ),
         ),
       );
   }

@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 
-import "we_size.dart";
+import "../we_size.dart";
+
 
 class WeSelectItemPage extends StatelessWidget {
   const WeSelectItemPage({

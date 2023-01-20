@@ -1,5 +1,3 @@
-List<String> postNames = <String>[];
-
 typedef GetObject = Function(dynamic object);
 
 class NotificationCenter {

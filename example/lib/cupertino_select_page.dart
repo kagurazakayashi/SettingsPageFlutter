@@ -1,14 +1,14 @@
 import "package:bot_toast/bot_toast.dart";
-import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
 import "package:settingspageflutter/settingspageloader.dart";
-import "package:settingspageflutter/widget/material/we_group_item.dart";
+import "package:settingspageflutter/widget/cupertino/we_group_item.dart";
 import "package:settingspageflutter/widget/we_size.dart";
 
 import "notification_center.dart";
 import "we_set_val.dart";
 
-class SelectPage extends StatefulWidget {
-  const SelectPage({
+class CupertinoSelectPage extends StatefulWidget {
+  const CupertinoSelectPage({
     super.key,
     this.option,
     this.file = "Root",
@@ -17,10 +17,10 @@ class SelectPage extends StatefulWidget {
   final String file;
 
   @override
-  State<SelectPage> createState() => _SelectPageState();
+  State<CupertinoSelectPage> createState() => _CupertinoSelectPageState();
 }
 
-class _SelectPageState extends State<SelectPage> {
+class _CupertinoSelectPageState extends State<CupertinoSelectPage> {
   List _settingData = [];
   String nkey = "";
   String _title = "";
@@ -67,29 +67,17 @@ class _SelectPageState extends State<SelectPage> {
   @override
   Widget build(BuildContext context) {
     setSize(MediaQuery.of(context).size);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
+    return CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(_title),
       ),
-      backgroundColor: Colors.grey[300],
-      body: _settingData.isNotEmpty
+      backgroundColor: CupertinoColors.systemGrey5,
+      child: _settingData.isNotEmpty
           ? ListView.builder(
               itemCount: _settingData.length,
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
-                return WeGroupItem(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[300]!,
-                        blurRadius: 5,
-                        spreadRadius: 3,
-                      ),
-                    ],
-                  ),
+                return WeCupertinoGroupItem(
                   data: o,
                   onClick: (childs, file, type) {
                     if (type == "PSMultiValueSpecifier") {
@@ -99,8 +87,8 @@ class _SelectPageState extends State<SelectPage> {
                     }
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectPage(
+                      CupertinoPageRoute(
+                        builder: (context) => CupertinoSelectPage(
                           file: file != null && file.isNotEmpty ? file : "root",
                         ),
                       ),

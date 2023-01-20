@@ -43,6 +43,24 @@
 			<string>net</string>
 		</dict>
 		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>MTU调整</string>
+			<key>Type</key>
+			<string>PSSliderSpecifier</string>
+			<key>Key</key>
+			<string>root_net_mtu</string>
+			<key>DefaultValue</key>
+			<integer>200</integer>
+			<key>MinimumValue</key>
+			<integer>100</integer>
+			<key>MaximumValue</key>
+			<integer>500</integer>
+		</dict>
+		<dict>
 			<key>FooterText</key>
 			<string>这些选项决定了设备如何联网</string>
 			<key>Type</key>

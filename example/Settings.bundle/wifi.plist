@@ -64,20 +64,22 @@
 			<key>Key</key>
 			<string>net_mtu</string>
 			<key>DefaultValue</key>
-			<integer>200</integer>
+			<integer>220</integer>
 			<key>MinimumValue</key>
 			<integer>100</integer>
 			<key>MaximumValue</key>
 			<integer>500</integer>
+			<key>NumberOfSteps</key>
+			<integer>10</integer>
 		</dict>
-		<!-- <dict>
+		<dict>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>无线网络地址设置</string>
 			<key>FooterText</key>
 			<string>错误的设置可能导致无法连接。</string>
-		</dict> -->
+		</dict>
 		<dict>
 			<key>Values</key>
 			<array>

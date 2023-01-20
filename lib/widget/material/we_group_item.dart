@@ -42,6 +42,8 @@ class WeGroupItem extends StatelessWidget {
     this.toolbarTextStyle,
     this.titleTextStyle,
     this.systemOverlayStyle,
+
+    this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
@@ -586,6 +588,11 @@ class WeGroupItem extends StatelessWidget {
   /// See also:
   ///  * [SystemChrome.setSystemUIOverlayStyle]
   final SystemUiOverlayStyle? systemOverlayStyle;
+  
+  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// 条目样式
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
 
   /// {@template settingspageflutter.widget.wegroupitem.data}
   /// plist 文件中的数据
@@ -693,6 +700,7 @@ class WeGroupItem extends StatelessWidget {
           ? WeGroup(
               title: titleStr,
               foot: foot,
+              decoration: decoration,
               child: childs != null && childs.isNotEmpty
                   ? WeColumn(
                       title: title,
@@ -727,6 +735,7 @@ class WeGroupItem extends StatelessWidget {
                   : null,
             )
           : WeItem(
+            decoration:decoration,
               child: WeListItem(
                 title: title,
                 leading: leading,

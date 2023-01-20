@@ -1,14 +1,20 @@
-import "package:flutter/material.dart";
+import "package:flutter/cupertino.dart";
 import "package:settingspageflutter/widget/we_size.dart";
 
-class WeItem extends StatelessWidget {
+class WeCupertinoItem extends StatelessWidget {
   /// 处理分组的UI样式
   ///
   /// Provides a group UI style
-  const WeItem({
+  const WeCupertinoItem({
     Key? key,
+    this.decoration,
     required this.child,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// 条目样式
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
 
   /// {@template settingspageflutter.widget.weitem.child}
   /// 组内的内容控件
@@ -21,18 +27,10 @@ class WeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: weSize.width,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.grey[300]!),
-        borderRadius: const BorderRadius.all(Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[350]!,
-            blurRadius: 5,
-            spreadRadius: 3,
-          ),
-        ],
-      ),
+      decoration: decoration ?? BoxDecoration(
+              color: CupertinoColors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
       child: child,
     );
   }

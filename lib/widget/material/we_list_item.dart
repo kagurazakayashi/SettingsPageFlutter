@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:settingspageflutter/widget/we_get_widget.dart";
-import "package:settingspageflutter/widget/we_select_item_page.dart";
 
-import "we_size.dart";
+import "../we_size.dart";
+import "we_get_widget.dart";
+import "we_select_item_page.dart";
 
 class WeListItem extends StatelessWidget {
   /// 提供交互的控件
@@ -235,16 +235,17 @@ class WeListItem extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.all(7.0),
+      margin: const EdgeInsets.only(left: 10, right: 10),
       child: InkWell(
-        focusColor: Colors.red,
-        hoverColor: Colors.blue[100],
-        splashColor: Colors.green,
-        highlightColor: Colors.yellow,
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(8),
-          margin: const EdgeInsets.all(2),
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 3,
+            bottom: 3,
+          ),
+          margin: const EdgeInsets.all(1),
           width: weSize.width - 86,
           child: c,
         ),

@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
+import "../we_textstyle.dart";
 import "we_item.dart";
-import "we_textstyle.dart";
 
 class WeGroup extends StatelessWidget {
   /// 处理数据中的组(`PSGroupSpecifier`)控件
@@ -11,6 +11,7 @@ class WeGroup extends StatelessWidget {
     Key? key,
     required this.title,
     this.foot,
+    this.decoration,
     required this.child,
   }) : super(key: key);
 
@@ -52,6 +53,11 @@ class WeGroup extends StatelessWidget {
   /// {@endtemplate}
   final String? foot;
 
+  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// 条目样式
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
+
   /// {@template settingspageflutter.widget.wegroup.child}
   /// 组内的内容控件
   ///
@@ -87,7 +93,7 @@ class WeGroup extends StatelessWidget {
               ),
             ),
           ),
-        if (child != null) WeItem(child: child!),
+        if (child != null) WeItem(decoration: decoration, child: child!),
         if (foot != null)
           Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 3.0),

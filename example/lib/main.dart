@@ -1,8 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:settingspageflutter/settingspageflutter.dart';
 
-import 'select_page.dart';
+import 'cupertino_select_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,25 +15,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your applicati on.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    // return MaterialApp(
+    //   title: 'Flutter Demo',
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.blue,
+    //   ),
+    //   builder: BotToastInit(), //1.调用BotToastInit
+    //   navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
+    //   debugShowCheckedModeBanner: false,
+    //   home: const SelectPage(),
+    //   // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    // );
+    return CupertinoApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
       builder: BotToastInit(), //1.调用BotToastInit
       navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
       debugShowCheckedModeBanner: false,
-      home: const SelectPage(),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const CupertinoSelectPage(),
     );
   }
 }
