@@ -5,6 +5,9 @@ import 'package:flutter/foundation.dart';
 
 /// 輸出除錯資訊類
 class SettingsPageFlutterDebug {
+  /// 輸出除錯資訊的開關。在預設情況下，取 kDebugMode 的值（根據當前模式自動決定是否輸出）。
+  static bool printInfo = kDebugMode;
+
   static String libraryName = "SettingsPageFlutter";
   String className = "";
 
@@ -16,7 +19,7 @@ class SettingsPageFlutterDebug {
   /// 輸出除錯資訊 [info]
   /// [notOnlyDebug] 為 true 時，即使非除錯模式也會輸出除錯資訊
   void d(String info, {notOnlyDebug = false}) {
-    if (kDebugMode || notOnlyDebug) {
+    if (printInfo || notOnlyDebug) {
       print("[D/$libraryName$className ${timeString()}] $info");
     }
   }
@@ -24,7 +27,7 @@ class SettingsPageFlutterDebug {
   /// 輸出資訊 [info]
   /// [notOnlyDebug] 為 true 時，即使非除錯模式也會輸出資訊
   void i(String info, {notOnlyDebug = false}) {
-    if (kDebugMode || notOnlyDebug) {
+    if (printInfo || notOnlyDebug) {
       print("[I/$libraryName$className ${timeString()}] $info");
     }
   }
@@ -32,7 +35,7 @@ class SettingsPageFlutterDebug {
   /// 輸出警告資訊 [info]
   /// [notOnlyDebug] 為 true 時，即使非除錯模式也會輸出警告資訊
   void w(String info, {notOnlyDebug = false}) {
-    if (kDebugMode || notOnlyDebug) {
+    if (printInfo || notOnlyDebug) {
       print("[W/$libraryName$className ${timeString()}] $info");
     }
   }
@@ -40,7 +43,7 @@ class SettingsPageFlutterDebug {
   /// 輸出錯誤資訊 [info]
   /// [notOnlyDebug] 為 true 時，即使非除錯模式也會輸出錯誤資訊
   void e(String info, {notOnlyDebug = false}) {
-    if (kDebugMode || notOnlyDebug) {
+    if (printInfo || notOnlyDebug) {
       print("[E/$libraryName$className ${timeString()}] $info");
     }
   }
@@ -59,7 +62,7 @@ class SettingsPageFlutterDebug {
   /// [separatorCharMaxNum] 分隔符最大數量（隨著 [info] 的長度而減少）
   /// [separatorChar] 分隔符
   void s(String info, {int separatorCharMaxNum = 20, String separatorChar = "="}) {
-    if (kDebugMode) {
+    if (printInfo) {
       String outInfo = "";
       int separatorCharNum = separatorCharMaxNum - info.length ~/ 2;
       if (separatorCharNum > 0) {
