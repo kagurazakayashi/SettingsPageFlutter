@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:settingspageflutter/widget/we_textstyle.dart";
 
 import "../we_size.dart";
-
 
 class WeSelectItemPage extends StatelessWidget {
   const WeSelectItemPage({
@@ -37,6 +37,8 @@ class WeSelectItemPage extends StatelessWidget {
     this.toolbarTextStyle,
     this.titleTextStyle,
     this.systemOverlayStyle,
+    this.isDark = false,
+    this.decoration,
     required this.data,
   }) : super(key: key);
   final Widget? leading;
@@ -69,12 +71,30 @@ class WeSelectItemPage extends StatelessWidget {
   final TextStyle? toolbarTextStyle;
   final TextStyle? titleTextStyle;
   final SystemUiOverlayStyle? systemOverlayStyle;
-  
+
+  /// {@template settingspageflutter.widget.weselectitempage.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.weselectitempage.decoration}
+  /// 条目样式
+  /// 
+  /// Item style
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
+
   /// {@template settingspageflutter.widget.weselectitempage.data}
   /// Data
-  /// 
+  ///
   /// format:
-  /// 
+  ///
   /// ```dart
   /// [
   ///  {
@@ -102,7 +122,8 @@ class WeSelectItemPage extends StatelessWidget {
         elevation: elevation,
         shadowColor: shadowColor,
         shape: shape,
-        backgroundColor: backgroundColor,
+        backgroundColor:
+            backgroundColor ?? (isDark ? Colors.black26 : Colors.blue),
         foregroundColor: foregroundColor,
         brightness: brightness,
         iconTheme: iconTheme,
@@ -120,7 +141,7 @@ class WeSelectItemPage extends StatelessWidget {
         titleTextStyle: titleTextStyle,
         systemOverlayStyle: systemOverlayStyle,
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
       body: Column(
         children: data!.map((e) {
           String titleStr = e.containsKey("Title") ? e["Title"] : "";
@@ -131,7 +152,8 @@ class WeSelectItemPage extends StatelessWidget {
               left: 15.0,
               right: 15.0,
             ),
-            child: InkWell(
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 Navigator.pop(context, e);
               },
@@ -139,13 +161,16 @@ class WeSelectItemPage extends StatelessWidget {
                 width: weSize.width,
                 padding: const EdgeInsets.all(15),
                 margin: const EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey[300]!),
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                ),
+                decoration: decoration ??
+                    BoxDecoration(
+                      color: isDark ? Colors.black38 : Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                 child: Center(
-                  child: Text(titleStr),
+                  child: Text(
+                    titleStr,
+                    style: tsMain,
+                  ),
                 ),
               ),
             ),

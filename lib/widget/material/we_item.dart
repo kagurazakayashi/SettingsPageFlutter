@@ -9,10 +9,24 @@ class WeItem extends StatelessWidget {
     Key? key,
     this.decoration,
     required this.child,
+    this.isDark = false,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.weitem.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
 
   /// {@template settingspageflutter.widget.weitem.decoration}
   /// 条目样式
+  /// 
+  /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
@@ -29,7 +43,7 @@ class WeItem extends StatelessWidget {
       width: weSize.width,
       decoration: decoration ??
           BoxDecoration(
-            color: Colors.white,
+            color: isDark ? Colors.black38 : Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
       child: child,

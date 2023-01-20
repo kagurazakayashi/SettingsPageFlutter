@@ -43,13 +43,14 @@ class WeGroupItem extends StatelessWidget {
     this.titleTextStyle,
     this.systemOverlayStyle,
 
+    this.isDark = false,
     this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
 
-  /// {@template flutter.material.appbar.leading}
+  /// {@template settingspageflutter.widget.wegroupitem.leading}
   /// A widget to display before the toolbar's [title].
   ///
   /// Typically the [leading] widget is an [Icon] or an [IconButton].
@@ -98,7 +99,7 @@ class WeGroupItem extends StatelessWidget {
   ///  * [Scaffold.drawer], in which the [Drawer] is usually placed.
   final Widget? leading;
 
-  /// {@template flutter.material.appbar.automaticallyImplyLeading}
+  /// {@template settingspageflutter.widget.wegroupitem.automaticallyImplyLeading}
   /// Controls whether we should try to imply the leading widget if null.
   ///
   /// If true and [leading] is null, automatically try to deduce what the leading
@@ -107,7 +108,7 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final bool automaticallyImplyLeading;
 
-  /// {@template flutter.material.appbar.title}
+  /// {@template settingspageflutter.widget.wegroupitem.title}
   /// The primary widget displayed in the app bar.
   ///
   /// Becomes the middle component of the [NavigationToolbar] built by this widget.
@@ -143,7 +144,7 @@ class WeGroupItem extends StatelessWidget {
   /// ```
   final Widget? title;
 
-  /// {@template flutter.material.appbar.actions}
+  /// {@template settingspageflutter.widget.wegroupitem.actions}
   /// A list of Widgets to display in a row after the [title] widget.
   ///
   /// Typically these widgets are [IconButton]s representing common operations.
@@ -185,7 +186,7 @@ class WeGroupItem extends StatelessWidget {
   /// {@end-tool}
   final List<Widget>? actions;
 
-  /// {@template flutter.material.appbar.flexibleSpace}
+  /// {@template settingspageflutter.widget.wegroupitem.flexibleSpace}
   /// This widget is stacked behind the toolbar and the tab bar. Its height will
   /// be the same as the app bar's overall height.
   ///
@@ -197,7 +198,7 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final Widget? flexibleSpace;
 
-  /// {@template flutter.material.appbar.bottom}
+  /// {@template settingspageflutter.widget.wegroupitem.bottom}
   /// This widget appears across the bottom of the app bar.
   ///
   /// Typically a [TabBar]. Only widgets that implement [PreferredSizeWidget] can
@@ -209,7 +210,7 @@ class WeGroupItem extends StatelessWidget {
   ///  * [PreferredSize], which can be used to give an arbitrary widget a preferred size.
   final PreferredSizeWidget? bottom;
 
-  /// {@template flutter.material.appbar.elevation}
+  /// {@template settingspageflutter.widget.wegroupitem.elevation}
   /// The z-coordinate at which to place this app bar relative to its parent.
   ///
   /// This property controls the size of the shadow below the app bar if
@@ -237,7 +238,7 @@ class WeGroupItem extends StatelessWidget {
   ///    shadow.
   final double? elevation;
 
-  /// {@template flutter.material.appbar.scrolledUnderElevation}
+  /// {@template settingspageflutter.widget.wegroupitem.scrolledUnderElevation}
   /// The elevation that will be used if this app bar has something
   /// scrolled underneath it.
   ///
@@ -266,7 +267,7 @@ class WeGroupItem extends StatelessWidget {
   /// else for more complicated layouts.
   final ScrollNotificationPredicate notificationPredicate;
 
-  /// {@template flutter.material.appbar.shadowColor}
+  /// {@template settingspageflutter.widget.wegroupitem.shadowColor}
   /// The color of the shadow below the app bar.
   ///
   /// If this property is null, then [AppBarTheme.shadowColor] of
@@ -280,7 +281,7 @@ class WeGroupItem extends StatelessWidget {
   ///  * [shape], which defines the shape of the app bar and its shadow.
   final Color? shadowColor;
 
-  /// {@template flutter.material.appbar.surfaceTintColor}
+  /// {@template settingspageflutter.widget.wegroupitem.surfaceTintColor}
   /// The color of the surface tint overlay applied to the app bar's
   /// background color to indicate elevation.
   ///
@@ -291,7 +292,7 @@ class WeGroupItem extends StatelessWidget {
   ///   * [Material.surfaceTintColor], which described this feature in more detail.
   final Color? surfaceTintColor;
 
-  /// {@template flutter.material.appbar.shape}
+  /// {@template settingspageflutter.widget.wegroupitem.shape}
   /// The shape of the app bar's [Material] as well as its shadow.
   ///
   /// If this property is null, then [AppBarTheme.shape] of
@@ -309,7 +310,7 @@ class WeGroupItem extends StatelessWidget {
   ///  * [shadowColor], which is the color of the shadow below the app bar.
   final ShapeBorder? shape;
 
-  /// {@template flutter.material.appbar.backgroundColor}
+  /// {@template settingspageflutter.widget.wegroupitem.backgroundColor}
   /// The fill color to use for an app bar's [Material].
   ///
   /// If null, then the [AppBarTheme.backgroundColor] is used. If that value is also
@@ -334,7 +335,7 @@ class WeGroupItem extends StatelessWidget {
   ///    is light or dark.
   final Color? backgroundColor;
 
-  /// {@template flutter.material.appbar.foregroundColor}
+  /// {@template settingspageflutter.widget.wegroupitem.foregroundColor}
   /// The default color for [Text] and [Icon]s within the app bar.
   ///
   /// If null, then [AppBarTheme.foregroundColor] is used. If that
@@ -359,7 +360,7 @@ class WeGroupItem extends StatelessWidget {
   ///    is light or dark.
   final Color? foregroundColor;
 
-  /// {@template flutter.material.appbar.brightness}
+  /// {@template settingspageflutter.widget.wegroupitem.brightness}
   /// This property is deprecated, please use [systemOverlayStyle] instead.
   ///
   /// Determines the brightness of the [SystemUiOverlayStyle]: for
@@ -391,7 +392,7 @@ class WeGroupItem extends StatelessWidget {
   )
   final Brightness? brightness;
 
-  /// {@template flutter.material.appbar.iconTheme}
+  /// {@template settingspageflutter.widget.wegroupitem.iconTheme}
   /// The color, opacity, and size to use for toolbar icons.
   ///
   /// If this property is null, then a copy of [ThemeData.iconTheme]
@@ -405,7 +406,7 @@ class WeGroupItem extends StatelessWidget {
   ///    in the [actions] list.
   final IconThemeData? iconTheme;
 
-  /// {@template flutter.material.appbar.actionsIconTheme}
+  /// {@template settingspageflutter.widget.wegroupitem.actionsIconTheme}
   /// The color, opacity, and size to use for the icons that appear in the app
   /// bar's [actions].
   ///
@@ -423,7 +424,7 @@ class WeGroupItem extends StatelessWidget {
   ///  * [iconTheme], which defines the appearance of all of the toolbar icons.
   final IconThemeData? actionsIconTheme;
 
-  /// {@template flutter.material.appbar.textTheme}
+  /// {@template settingspageflutter.widget.wegroupitem.textTheme}
   /// This property is deprecated, please use [toolbarTextStyle] and
   /// [titleTextStyle] instead.
   ///
@@ -440,7 +441,7 @@ class WeGroupItem extends StatelessWidget {
   )
   final TextTheme? textTheme;
 
-  /// {@template flutter.material.appbar.primary}
+  /// {@template settingspageflutter.widget.wegroupitem.primary}
   /// Whether this app bar is being displayed at the top of the screen.
   ///
   /// If true, the app bar's toolbar elements and [bottom] widget will be
@@ -449,7 +450,7 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final bool primary;
 
-  /// {@template flutter.material.appbar.centerTitle}
+  /// {@template settingspageflutter.widget.wegroupitem.centerTitle}
   /// Whether the title should be centered.
   ///
   /// If this property is null, then [AppBarTheme.centerTitle] of
@@ -458,14 +459,14 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final bool? centerTitle;
 
-  /// {@template flutter.material.appbar.excludeHeaderSemantics}
+  /// {@template settingspageflutter.widget.wegroupitem.excludeHeaderSemantics}
   /// Whether the title should be wrapped with header [Semantics].
   ///
   /// Defaults to false.
   /// {@endtemplate}
   final bool excludeHeaderSemantics;
 
-  /// {@template flutter.material.appbar.titleSpacing}
+  /// {@template settingspageflutter.widget.wegroupitem.titleSpacing}
   /// The spacing around [title] content on the horizontal axis. This spacing is
   /// applied even if there is no [leading] content or [actions]. If you want
   /// [title] to take all the space available, set this value to 0.0.
@@ -476,7 +477,7 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final double? titleSpacing;
 
-  /// {@template flutter.material.appbar.toolbarOpacity}
+  /// {@template settingspageflutter.widget.wegroupitem.toolbarOpacity}
   /// How opaque the toolbar part of the app bar is.
   ///
   /// A value of 1.0 is fully opaque, and a value of 0.0 is fully transparent.
@@ -487,7 +488,7 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final double toolbarOpacity;
 
-  /// {@template flutter.material.appbar.bottomOpacity}
+  /// {@template settingspageflutter.widget.wegroupitem.bottomOpacity}
   /// How opaque the bottom part of the app bar is.
   ///
   /// A value of 1.0 is fully opaque, and a value of 0.0 is fully transparent.
@@ -498,21 +499,21 @@ class WeGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final double bottomOpacity;
 
-  /// {@template flutter.material.appbar.toolbarHeight}
+  /// {@template settingspageflutter.widget.wegroupitem.toolbarHeight}
   /// Defines the height of the toolbar component of an [AppBar].
   ///
   /// By default, the value of [toolbarHeight] is [kToolbarHeight].
   /// {@endtemplate}
   final double? toolbarHeight;
 
-  /// {@template flutter.material.appbar.leadingWidth}
+  /// {@template settingspageflutter.widget.wegroupitem.leadingWidth}
   /// Defines the width of [leading] widget.
   ///
   /// By default, the value of [leadingWidth] is 56.0.
   /// {@endtemplate}
   final double? leadingWidth;
 
-  /// {@template flutter.material.appbar.backwardsCompatibility}
+  /// {@template settingspageflutter.widget.wegroupitem.backwardsCompatibility}
   /// This property is deprecated and is false by default.
   ///
   /// If true, preserves the original defaults for the [backgroundColor],
@@ -534,7 +535,7 @@ class WeGroupItem extends StatelessWidget {
   )
   final bool? backwardsCompatibility;
 
-  /// {@template flutter.material.appbar.toolbarTextStyle}
+  /// {@template settingspageflutter.widget.wegroupitem.toolbarTextStyle}
   /// The default text style for the AppBar's [leading], and
   /// [actions] widgets, but not its [title].
   ///
@@ -551,7 +552,7 @@ class WeGroupItem extends StatelessWidget {
   ///    the widgets in a subtree.
   final TextStyle? toolbarTextStyle;
 
-  /// {@template flutter.material.appbar.titleTextStyle}
+  /// {@template settingspageflutter.widget.wegroupitem.titleTextStyle}
   /// The default text style for the AppBar's [title] widget.
   ///
   /// If this property is null, then [AppBarTheme.titleTextStyle] of
@@ -569,7 +570,7 @@ class WeGroupItem extends StatelessWidget {
   ///    the widgets in a subtree.
   final TextStyle? titleTextStyle;
 
-  /// {@template flutter.material.appbar.systemOverlayStyle}
+  /// {@template settingspageflutter.widget.wegroupitem.systemOverlayStyle}
   /// Specifies the style to use for the system overlays that overlap the AppBar.
   ///
   /// This property is only used if [backwardsCompatibility] is false (the default).
@@ -589,8 +590,21 @@ class WeGroupItem extends StatelessWidget {
   ///  * [SystemChrome.setSystemUIOverlayStyle]
   final SystemUiOverlayStyle? systemOverlayStyle;
   
-  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// {@template settingspageflutter.widget.wegroupitem.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wegroupitem.decoration}
   /// 条目样式
+  /// 
+  /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
@@ -700,6 +714,7 @@ class WeGroupItem extends StatelessWidget {
           ? WeGroup(
               title: titleStr,
               foot: foot,
+              isDark: isDark,
               decoration: decoration,
               child: childs != null && childs.isNotEmpty
                   ? WeColumn(
@@ -728,6 +743,8 @@ class WeGroupItem extends StatelessWidget {
                       toolbarTextStyle: toolbarTextStyle,
                       titleTextStyle: titleTextStyle,
                       systemOverlayStyle: systemOverlayStyle,
+                      isDark: isDark,
+                      decoration: decoration,
                       childs: childs,
                       onClick: onClick,
                       onChanged: onChanged,
@@ -735,6 +752,7 @@ class WeGroupItem extends StatelessWidget {
                   : null,
             )
           : WeItem(
+            isDark: isDark,
             decoration:decoration,
               child: WeListItem(
                 title: title,
@@ -762,6 +780,8 @@ class WeGroupItem extends StatelessWidget {
                 toolbarTextStyle: toolbarTextStyle,
                 titleTextStyle: titleTextStyle,
                 systemOverlayStyle: systemOverlayStyle,
+                isDark: isDark,
+                decoration: decoration,
                 data: data,
                 onClick: onClick,
                 onChanged: onChanged,

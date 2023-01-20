@@ -1,6 +1,7 @@
 import "package:flutter/cupertino.dart";
 
 import "../we_size.dart";
+import "../we_textstyle.dart";
 import "default.dart";
 
 class WeCupertinoSelectItemPage extends StatelessWidget {
@@ -17,6 +18,8 @@ class WeCupertinoSelectItemPage extends StatelessWidget {
     this.brightness,
     this.padding,
     this.transitionBetweenRoutes = true,
+    this.isDark = false,
+    this.decoration,
     required this.data,
   }) : super(key: key);
   final Widget? leading;
@@ -31,7 +34,25 @@ class WeCupertinoSelectItemPage extends StatelessWidget {
   final Border? border;
   final bool transitionBetweenRoutes;
 
-  /// {@template settingspageflutter.widget.weselectitempage.data}
+  /// {@template settingspageflutter.widget.wecupertinoselectitempage.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wecupertinoselectitempage.decoration}
+  /// 条目样式
+  /// 
+  /// Item style
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
+
+  /// {@template settingspageflutter.widget.wecupertinoselectitempage.data}
   /// Data
   ///
   /// format:
@@ -93,14 +114,18 @@ class WeCupertinoSelectItemPage extends StatelessWidget {
                       width: weSize.width,
                       padding: const EdgeInsets.all(15),
                       margin: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: CupertinoColors.white,
-                        border: Border.all(color: CupertinoColors.systemGrey5),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                      ),
+                      decoration: decoration ??
+                          BoxDecoration(
+                            color: isDark
+                                ? CupertinoColors.darkBackgroundGray
+                                : CupertinoColors.white,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                       child: Center(
-                        child: Text(titleStr),
+                        child: Text(
+                          titleStr,
+                          style: tsMain,
+                        ),
                       ),
                     ),
                   ),

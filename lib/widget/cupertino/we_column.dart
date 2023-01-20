@@ -25,6 +25,8 @@ class WeCupertinoColumn extends StatelessWidget {
     this.brightness,
     this.padding,
     this.transitionBetweenRoutes = true,
+    this.isDark = false,
+    this.decoration,
     this.childs,
     this.onClick,
     required this.onChanged,
@@ -41,14 +43,31 @@ class WeCupertinoColumn extends StatelessWidget {
   final Border? border;
   final bool transitionBetweenRoutes;
 
-  /// {@template settingspageflutter.widget.wecolumn.childs}
+  /// {@template settingspageflutter.widget.wecupertinocolumn.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wecupertinocolumn.decoration}
+  /// 条目样式
+  /// 
+  /// Item style
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
+  /// {@template settingspageflutter.widget.wecupertinocolumn.childs}
   /// 组内项数据
   ///
   /// group item data
   /// {@endtemplate}
   final List<Map<String, dynamic>>? childs;
 
-  /// {@template settingspageflutter.widget.wecolumn.onClick}
+  /// {@template settingspageflutter.widget.wecupertinocolumn.onClick}
   /// 点击事件
   ///
   /// 数据中的key`Childs`或`File`不为空时，点击事件才会触发
@@ -92,7 +111,7 @@ class WeCupertinoColumn extends StatelessWidget {
   final Function(List<Map<String, dynamic>>? childs, String? file, String type)?
       onClick;
 
-  /// {@template settingspageflutter.widget.wecolumn.onChanged}
+  /// {@template settingspageflutter.widget.wecupertinocolumn.onChanged}
   /// 值改变事件
   ///
   /// 用于返回根据Key修改值
@@ -182,6 +201,8 @@ class WeCupertinoColumn extends StatelessWidget {
                 padding: padding,
                 border: border,
                 transitionBetweenRoutes: transitionBetweenRoutes,
+                isDark: isDark,
+                decoration: decoration,
                 data: e,
                 onClick: onClick,
                 onChanged: onChanged,

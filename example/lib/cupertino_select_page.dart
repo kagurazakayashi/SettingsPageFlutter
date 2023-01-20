@@ -2,7 +2,7 @@ import "package:bot_toast/bot_toast.dart";
 import "package:flutter/cupertino.dart";
 import "package:settingspageflutter/settingspageloader.dart";
 import "package:settingspageflutter/widget/cupertino/we_group_item.dart";
-import "package:settingspageflutter/widget/we_size.dart";
+import "package:settingspageflutter/widget/we_set_style.dart";
 
 import "notification_center.dart";
 import "we_set_val.dart";
@@ -24,6 +24,7 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage> {
   List _settingData = [];
   String nkey = "";
   String _title = "";
+  final bool _isDark = true;
 
   @override
   void initState() {
@@ -67,6 +68,7 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage> {
   @override
   Widget build(BuildContext context) {
     setSize(MediaQuery.of(context).size);
+    setTextStyle(isDark: _isDark);
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text(_title),
@@ -78,6 +80,7 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage> {
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
                 return WeCupertinoGroupItem(
+                  isDark: _isDark,
                   data: o,
                   onClick: (childs, file, type) {
                     if (type == "PSMultiValueSpecifier") {

@@ -11,6 +11,7 @@ class WeGroup extends StatelessWidget {
     Key? key,
     required this.title,
     this.foot,
+    this.isDark = false,
     this.decoration,
     required this.child,
   }) : super(key: key);
@@ -53,8 +54,21 @@ class WeGroup extends StatelessWidget {
   /// {@endtemplate}
   final String? foot;
 
-  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// {@template settingspageflutter.widget.wegroup.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wegroup.decoration}
   /// 条目样式
+  /// 
+  /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
@@ -93,7 +107,12 @@ class WeGroup extends StatelessWidget {
               ),
             ),
           ),
-        if (child != null) WeItem(decoration: decoration, child: child!),
+        if (child != null)
+          WeItem(
+            isDark: isDark,
+            decoration: decoration,
+            child: child!,
+          ),
         if (foot != null)
           Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 3.0),

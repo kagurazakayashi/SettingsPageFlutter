@@ -43,6 +43,8 @@ class WeColumn extends StatelessWidget {
     this.toolbarTextStyle,
     this.titleTextStyle,
     this.systemOverlayStyle,
+    this.isDark = false,
+    this.decoration,
     this.childs,
     this.onClick,
     required this.onChanged,
@@ -77,6 +79,24 @@ class WeColumn extends StatelessWidget {
   final TextStyle? toolbarTextStyle;
   final TextStyle? titleTextStyle;
   final SystemUiOverlayStyle? systemOverlayStyle;
+
+  /// {@template settingspageflutter.widget.wecolumn.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wecolumn.decoration}
+  /// 条目样式
+  /// 
+  /// Item style
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
 
   /// {@template settingspageflutter.widget.wecolumn.childs}
   /// 组内项数据
@@ -222,6 +242,8 @@ class WeColumn extends StatelessWidget {
                 toolbarTextStyle: toolbarTextStyle,
                 titleTextStyle: titleTextStyle,
                 systemOverlayStyle: systemOverlayStyle,
+                isDark: isDark,
+                decoration: decoration,
                 data: e,
                 onClick: onClick,
                 onChanged: onChanged,

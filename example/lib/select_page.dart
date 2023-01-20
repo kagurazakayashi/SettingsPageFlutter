@@ -2,7 +2,7 @@ import "package:bot_toast/bot_toast.dart";
 import "package:flutter/material.dart";
 import "package:settingspageflutter/settingspageloader.dart";
 import "package:settingspageflutter/widget/material/we_group_item.dart";
-import "package:settingspageflutter/widget/we_size.dart";
+import "package:settingspageflutter/widget/we_set_style.dart";
 
 import "notification_center.dart";
 import "we_set_val.dart";
@@ -24,6 +24,7 @@ class _SelectPageState extends State<SelectPage> {
   List _settingData = [];
   String nkey = "";
   String _title = "";
+  final bool _isDark = false;
 
   @override
   void initState() {
@@ -67,29 +68,32 @@ class _SelectPageState extends State<SelectPage> {
   @override
   Widget build(BuildContext context) {
     setSize(MediaQuery.of(context).size);
+    setTextStyle(isDark: _isDark);
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
+        backgroundColor: _isDark ? Colors.black26 : Colors.blue,
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: _isDark ? Colors.grey[900] : Colors.grey[300],
       body: _settingData.isNotEmpty
           ? ListView.builder(
               itemCount: _settingData.length,
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
                 return WeGroupItem(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[300]!,
-                        blurRadius: 5,
-                        spreadRadius: 3,
-                      ),
-                    ],
-                  ),
+                  isDark: _isDark,
+                  // decoration: BoxDecoration(
+                  //   color: Colors.white,
+                  //   border: Border.all(color: Colors.grey[300]!),
+                  //   borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color: Colors.grey[300]!,
+                  //       blurRadius: 5,
+                  //       spreadRadius: 3,
+                  //     ),
+                  //   ],
+                  // ),
                   data: o,
                   onClick: (childs, file, type) {
                     if (type == "PSMultiValueSpecifier") {

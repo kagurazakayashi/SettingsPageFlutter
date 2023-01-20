@@ -41,6 +41,8 @@ class WeListItem extends StatelessWidget {
     this.toolbarTextStyle,
     this.titleTextStyle,
     this.systemOverlayStyle,
+    this.isDark = false,
+    this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
@@ -75,6 +77,24 @@ class WeListItem extends StatelessWidget {
   final TextStyle? toolbarTextStyle;
   final TextStyle? titleTextStyle;
   final SystemUiOverlayStyle? systemOverlayStyle;
+
+  /// {@template settingspageflutter.widget.welistitem.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.welistitem.decoration}
+  /// 条目样式
+  /// 
+  /// Item style
+  /// {@endtemplate}
+  final BoxDecoration? decoration;
 
   /// {@template settingspageflutter.widget.welistitem.data}
   /// 数据
@@ -224,6 +244,8 @@ class WeListItem extends StatelessWidget {
             toolbarTextStyle: toolbarTextStyle,
             titleTextStyle: titleTextStyle,
             systemOverlayStyle: systemOverlayStyle,
+            isDark: isDark,
+            decoration: decoration,
             data: titleValues,
           );
         })).then((value) {
@@ -236,7 +258,8 @@ class WeListItem extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(left: 10, right: 10),
-      child: InkWell(
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.only(

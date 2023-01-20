@@ -1,5 +1,5 @@
-import "package:flutter/material.dart";
-import 'package:flutter/services.dart';
+
+import 'package:flutter/cupertino.dart';
 
 import 'default.dart';
 import 'we_column.dart';
@@ -24,13 +24,14 @@ class WeCupertinoGroupItem extends StatelessWidget {
     this.brightness,
     this.padding,
     this.transitionBetweenRoutes = true,
+    this.isDark = false,
     this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.leading}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.leading}
   /// Widget to place at the start of the navigation bar. Normally a back button
   /// for a normal page or a cancel button for full page dialogs.
   ///
@@ -39,7 +40,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final Widget? leading;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.automaticallyImplyLeading}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.automaticallyImplyLeading}
   /// Controls whether we should try to imply the leading widget if null.
   ///
   /// If true and [leading] is null, automatically try to deduce what the [leading]
@@ -67,7 +68,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// This value cannot be null.
   final bool automaticallyImplyMiddle;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.previousPageTitle}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.previousPageTitle}
   /// Manually specify the previous route's title when automatically implying
   /// the leading back button.
   ///
@@ -88,7 +89,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// has a `title`.
   final Widget? middle;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.trailing}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.trailing}
   /// Widget to place at the end of the navigation bar. Normally additional actions
   /// taken on the page such as a search or edit function.
   /// {@endtemplate}
@@ -97,7 +98,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   // TODO(xster): https://github.com/flutter/flutter/issues/10469 implement
   // support for double row navigation bars.
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.backgroundColor}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.backgroundColor}
   /// The background color of the navigation bar. If it contains transparency, the
   /// tab bar will automatically produce a blurring effect to the content
   /// behind it.
@@ -106,7 +107,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final Color? backgroundColor;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.brightness}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.brightness}
   /// The brightness of the specified [backgroundColor].
   ///
   /// Setting this value changes the style of the system status bar. Typically
@@ -118,7 +119,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final Brightness? brightness;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.padding}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.padding}
   /// Padding for the contents of the navigation bar.
   ///
   /// If null, the navigation bar will adopt the following defaults:
@@ -133,14 +134,14 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final EdgeInsetsDirectional? padding;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.border}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.border}
   /// The border of the navigation bar. By default renders a single pixel bottom border side.
   ///
   /// If a border is null, the navigation bar will not display a border.
   /// {@endtemplate}
   final Border? border;
 
-  /// {@template flutter.cupertino.CupertinoNavigationBar.transitionBetweenRoutes}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.transitionBetweenRoutes}
   /// Whether to transition between navigation bars.
   ///
   /// When [transitionBetweenRoutes] is true, this navigation bar will transition
@@ -159,19 +160,32 @@ class WeCupertinoGroupItem extends StatelessWidget {
   /// {@endtemplate}
   final bool transitionBetweenRoutes;
 
-  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.decoration}
   /// 条目样式
+  /// 
+  /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
-  /// {@template settingspageflutter.widget.wegroupitem.data}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.data}
   /// plist 文件中的数据
   ///
   /// The data in the plist file
   /// {@endtemplate}
   final Map<String, dynamic> data;
 
-  /// {@template settingspageflutter.widget.wegroupitem.onClick}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.onClick}
   /// 点击事件
   ///
   /// 数据中的key`Childs`或`File`不为空时，点击事件才会触发
@@ -215,7 +229,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
   final Function(List<Map<String, dynamic>>? childs, String? file, String type)?
       onClick;
 
-  /// {@template settingspageflutter.widget.wegroupitem.onChanged}
+  /// {@template settingspageflutter.widget.wecupertinogroupitem.onChanged}
   /// 值改变事件
   ///
   /// 用于返回根据Key修改值
@@ -270,6 +284,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
           ? WeCupertinoGroup(
               title: titleStr,
               foot: foot,
+              isDark: isDark,
               decoration: decoration,
               child: childs != null && childs.isNotEmpty
                   ? WeCupertinoColumn(
@@ -284,6 +299,8 @@ class WeCupertinoGroupItem extends StatelessWidget {
                       padding: padding,
                       border: border,
                       transitionBetweenRoutes: transitionBetweenRoutes,
+                      isDark: isDark,
+                      decoration: decoration,
                       childs: childs,
                       onClick: onClick,
                       onChanged: onChanged,
@@ -291,6 +308,7 @@ class WeCupertinoGroupItem extends StatelessWidget {
                   : null,
             )
           : WeCupertinoItem(
+              isDark: isDark,
               decoration: decoration,
               child: WeCupertinoListItem(
                 leading: leading,
@@ -304,6 +322,8 @@ class WeCupertinoGroupItem extends StatelessWidget {
                 padding: padding,
                 border: border,
                 transitionBetweenRoutes: transitionBetweenRoutes,
+                isDark: isDark,
+                decoration: decoration,
                 data: data,
                 onClick: onClick,
                 onChanged: onChanged,

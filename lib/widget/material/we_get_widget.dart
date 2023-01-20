@@ -270,9 +270,10 @@ Widget getWidget(
       TextEditingController controller = TextEditingController(text: val);
       c = TextField(
         controller: controller,
+        style: tsMain,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: tsGroupTag,
+          labelStyle: tsMain,
           hintText: hintText,
           hintStyle: tsGroupTag,
           suffixIcon: Row(
@@ -284,14 +285,21 @@ Widget getWidget(
                     controller.text = "";
                     onChanged(id, "", false);
                   },
-                  icon: const Icon(Icons.cancel),
+                  icon: Icon(
+                    Icons.cancel,
+                    color: val == "" ? Colors.grey : Colors.blue,
+                  ),
                 ),
               IconButton(
                 onPressed: () => onChanged(id, controller.text, true),
-                icon: const Icon(Icons.check),
+                icon: const Icon(
+                  Icons.check,
+                  color: Colors.blue,
+                ),
               ),
             ],
           ),
+          border: InputBorder.none,
         ),
         autocorrect: autoCorrect,
         textCapitalization: autoCapitalization,
@@ -488,7 +496,7 @@ Widget getWidget(
       c = Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
         child: SizedBox(
-          height: 55,
+          height: 39,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

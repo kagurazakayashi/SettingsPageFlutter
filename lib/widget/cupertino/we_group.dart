@@ -1,4 +1,5 @@
-import "package:flutter/material.dart";
+
+import "package:flutter/cupertino.dart";
 
 import "../we_textstyle.dart";
 import "we_item.dart";
@@ -11,11 +12,12 @@ class WeCupertinoGroup extends StatelessWidget {
     Key? key,
     required this.title,
     this.foot,
+    this.isDark = false,
     this.decoration,
     required this.child,
   }) : super(key: key);
 
-  /// {@template settingspageflutter.widget.wegroup.title}
+  /// {@template settingspageflutter.widget.wecupertinogroup.title}
   /// 组标题
   ///
   /// 该属性为必填项
@@ -34,7 +36,7 @@ class WeCupertinoGroup extends StatelessWidget {
   /// {@endtemplate}
   final String? title;
 
-  /// {@template settingspageflutter.widget.wegroup.foot}
+  /// {@template settingspageflutter.widget.wecupertinogroup.foot}
   /// 组尾
   ///
   /// 该属性为选填项
@@ -53,12 +55,25 @@ class WeCupertinoGroup extends StatelessWidget {
   /// {@endtemplate}
   final String? foot;
 
-  /// {@template settingspageflutter.widget.weitem.decoration}
+  /// {@template settingspageflutter.widget.wecupertinogroup.isDark}
+  /// 是否为暗黑模式
+  /// 
+  /// 默认为false
+  /// 
+  /// Is it dark mode
+  /// 
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDark;
+
+  /// {@template settingspageflutter.widget.wecupertinogroup.decoration}
   /// 条目样式
+  /// 
+  /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
 
-  /// {@template settingspageflutter.widget.wegroup.child}
+  /// {@template settingspageflutter.widget.wecupertinogroup.child}
   /// 组内的内容控件
   ///
   /// 该属性为必填项
@@ -93,7 +108,12 @@ class WeCupertinoGroup extends StatelessWidget {
               ),
             ),
           ),
-        if (child != null) WeCupertinoItem(decoration: decoration, child: child!),
+        if (child != null)
+          WeCupertinoItem(
+            isDark: isDark,
+            decoration: decoration,
+            child: child!,
+          ),
         if (foot != null)
           Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 3.0),
