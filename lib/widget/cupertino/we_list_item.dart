@@ -1,9 +1,7 @@
 import "package:flutter/cupertino.dart";
 
 import "../we_size.dart";
-import "default.dart";
 import "we_get_widget.dart";
-import "we_select_item_page.dart";
 
 class WeCupertinoListItem extends StatelessWidget {
   /// 提供交互的控件
@@ -11,34 +9,12 @@ class WeCupertinoListItem extends StatelessWidget {
   /// Provides an interactive control
   const WeCupertinoListItem({
     Key? key,
-    this.leading,
-    this.automaticallyImplyLeading = true,
-    this.automaticallyImplyMiddle = true,
-    this.previousPageTitle,
-    this.middle,
-    this.trailing,
-    this.border = kDefaultNavBarBorder,
-    this.backgroundColor,
-    this.brightness,
-    this.padding,
-    this.transitionBetweenRoutes = true,
     this.isDark = false,
     this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
-  final Widget? leading;
-  final bool automaticallyImplyLeading;
-  final bool automaticallyImplyMiddle;
-  final String? previousPageTitle;
-  final Widget? middle;
-  final Widget? trailing;
-  final Color? backgroundColor;
-  final Brightness? brightness;
-  final EdgeInsetsDirectional? padding;
-  final Border? border;
-  final bool transitionBetweenRoutes;
 
   /// {@template settingspageflutter.widget.wecupertinolistitem.isDark}
   /// 是否为暗黑模式
@@ -151,7 +127,6 @@ class WeCupertinoListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String key = data.containsKey("Key") ? data["Key"] : "";
     String type = data.containsKey("Type") ? data["Type"] : "";
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
@@ -176,35 +151,7 @@ class WeCupertinoListItem extends StatelessWidget {
     }
     if (type == "PSMultiValueSpecifier") {
       onTap = () {
-        String? titleStr = data.containsKey("Title") ? data["Title"] : null;
-        List<Map<String, dynamic>>? titleValues =
-            data.containsKey("TitleValues") ? data["TitleValues"] : null;
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!");
-        Navigator.push(
-          context,
-          CupertinoPageRoute(
-            builder: (context) => WeCupertinoSelectItemPage(
-              leading: leading,
-              automaticallyImplyLeading: automaticallyImplyLeading,
-              previousPageTitle: previousPageTitle,
-              middle: titleStr != null ? Text(titleStr) : middle,
-              automaticallyImplyMiddle: automaticallyImplyMiddle,
-              trailing: trailing,
-              backgroundColor: backgroundColor,
-              brightness: brightness,
-              padding: padding,
-              border: border,
-              transitionBetweenRoutes: transitionBetweenRoutes,
-              isDark: isDark,
-              decoration: decoration,
-              data: titleValues,
-            ),
-          ),
-        ).then((value) {
-          if (value is Map) {
-            onChanged(key, value, false);
-          }
-        });
+        onClick!([data], null, type);
       };
     }
 

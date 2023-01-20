@@ -278,6 +278,7 @@ Widget getWidget(
               controller: controller,
               suffix: Row(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (controller.text.isNotEmpty)
                     CupertinoButton(

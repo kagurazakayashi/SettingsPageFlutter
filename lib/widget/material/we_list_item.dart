@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
-import "package:flutter/services.dart";
 
 import "../we_size.dart";
 import "we_get_widget.dart";
-import "we_select_item_page.dart";
 
 class WeListItem extends StatelessWidget {
   /// 提供交互的控件
@@ -11,87 +9,27 @@ class WeListItem extends StatelessWidget {
   /// Provides an interactive control
   const WeListItem({
     Key? key,
-    this.leading,
-    this.automaticallyImplyLeading = true,
-    this.title,
-    this.actions,
-    this.flexibleSpace,
-    this.bottom,
-    this.elevation,
-    this.scrolledUnderElevation,
-    this.notificationPredicate = defaultScrollNotificationPredicate,
-    this.shadowColor,
-    this.surfaceTintColor,
-    this.shape,
-    this.backgroundColor,
-    this.foregroundColor,
-    this.brightness,
-    this.iconTheme,
-    this.actionsIconTheme,
-    this.textTheme,
-    this.primary = true,
-    this.centerTitle,
-    this.excludeHeaderSemantics = false,
-    this.titleSpacing,
-    this.toolbarOpacity = 1.0,
-    this.bottomOpacity = 1.0,
-    this.toolbarHeight,
-    this.leadingWidth,
-    this.backwardsCompatibility,
-    this.toolbarTextStyle,
-    this.titleTextStyle,
-    this.systemOverlayStyle,
     this.isDark = false,
     this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
-  final Widget? leading;
-  final bool automaticallyImplyLeading;
-  final Widget? title;
-  final List<Widget>? actions;
-  final Widget? flexibleSpace;
-  final PreferredSizeWidget? bottom;
-  final double? elevation;
-  final double? scrolledUnderElevation;
-  final ScrollNotificationPredicate notificationPredicate;
-  final Color? shadowColor;
-  final Color? surfaceTintColor;
-  final ShapeBorder? shape;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final Brightness? brightness;
-  final IconThemeData? iconTheme;
-  final IconThemeData? actionsIconTheme;
-  final TextTheme? textTheme;
-  final bool primary;
-  final bool? centerTitle;
-  final bool excludeHeaderSemantics;
-  final double? titleSpacing;
-  final double toolbarOpacity;
-  final double bottomOpacity;
-  final double? toolbarHeight;
-  final double? leadingWidth;
-  final bool? backwardsCompatibility;
-  final TextStyle? toolbarTextStyle;
-  final TextStyle? titleTextStyle;
-  final SystemUiOverlayStyle? systemOverlayStyle;
 
   /// {@template settingspageflutter.widget.welistitem.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.welistitem.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -189,7 +127,6 @@ class WeListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String key = data.containsKey("Key") ? data["Key"] : "";
     String type = data.containsKey("Type") ? data["Type"] : "";
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
@@ -214,45 +151,7 @@ class WeListItem extends StatelessWidget {
     }
     if (type == "PSMultiValueSpecifier") {
       onTap = () {
-        String? titleStr = data.containsKey("Title") ? data["Title"] : null;
-        List<Map<String, dynamic>>? titleValues =
-            data.containsKey("TitleValues") ? data["TitleValues"] : null;
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return WeSelectItemPage(
-            title: titleStr != null ? Text(titleStr) : title,
-            leading: leading,
-            actions: actions,
-            flexibleSpace: flexibleSpace,
-            bottom: bottom,
-            elevation: elevation,
-            shadowColor: shadowColor,
-            shape: shape,
-            backgroundColor: backgroundColor,
-            foregroundColor: foregroundColor,
-            brightness: brightness,
-            iconTheme: iconTheme,
-            actionsIconTheme: actionsIconTheme,
-            textTheme: textTheme,
-            primary: primary,
-            centerTitle: centerTitle,
-            titleSpacing: titleSpacing,
-            toolbarOpacity: toolbarOpacity,
-            bottomOpacity: bottomOpacity,
-            toolbarHeight: toolbarHeight,
-            leadingWidth: leadingWidth,
-            backwardsCompatibility: backwardsCompatibility,
-            toolbarTextStyle: toolbarTextStyle,
-            titleTextStyle: titleTextStyle,
-            systemOverlayStyle: systemOverlayStyle,
-            isDark: isDark,
-            decoration: decoration,
-            data: titleValues,
-          );
-        })).then((value) {
-          if (value is Map) {
-            onChanged(key, value, false);
-          }
-        });
+        onClick!([data], null, type);
       };
     }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:settingspageflutter/widget/we_size.dart';
 
-import 'default.dart';
 import 'we_list_item.dart';
 
 class WeCupertinoColumn extends StatelessWidget {
@@ -14,34 +13,12 @@ class WeCupertinoColumn extends StatelessWidget {
   /// If it is multiple items, add a separator between each item
   const WeCupertinoColumn({
     Key? key,
-    this.leading,
-    this.automaticallyImplyLeading = true,
-    this.automaticallyImplyMiddle = true,
-    this.previousPageTitle,
-    this.middle,
-    this.trailing,
-    this.border = kDefaultNavBarBorder,
-    this.backgroundColor,
-    this.brightness,
-    this.padding,
-    this.transitionBetweenRoutes = true,
     this.isDark = false,
     this.decoration,
     this.childs,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
-  final Widget? leading;
-  final bool automaticallyImplyLeading;
-  final bool automaticallyImplyMiddle;
-  final String? previousPageTitle;
-  final Widget? middle;
-  final Widget? trailing;
-  final Color? backgroundColor;
-  final Brightness? brightness;
-  final EdgeInsetsDirectional? padding;
-  final Border? border;
-  final bool transitionBetweenRoutes;
 
   /// {@template settingspageflutter.widget.wecupertinocolumn.isDark}
   /// 是否为暗黑模式
@@ -190,17 +167,6 @@ class WeCupertinoColumn extends StatelessWidget {
                 );
               }
               return WeCupertinoListItem(
-                leading: leading,
-                automaticallyImplyLeading: automaticallyImplyLeading,
-                previousPageTitle: previousPageTitle,
-                middle: middle,
-                automaticallyImplyMiddle: automaticallyImplyMiddle,
-                trailing: trailing,
-                backgroundColor: backgroundColor,
-                brightness: brightness,
-                padding: padding,
-                border: border,
-                transitionBetweenRoutes: transitionBetweenRoutes,
                 isDark: isDark,
                 decoration: decoration,
                 data: e,

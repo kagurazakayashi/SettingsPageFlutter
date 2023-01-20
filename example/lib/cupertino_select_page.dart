@@ -13,9 +13,11 @@ class CupertinoSelectPage extends StatefulWidget {
     super.key,
     this.option,
     this.file = "Root",
+    this.type,
   });
   final List? option;
   final String file;
+  final String? type;
 
   @override
   State<CupertinoSelectPage> createState() => _CupertinoSelectPageState();
@@ -32,7 +34,17 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage> {
     if (widget.option == null) {
       loadFile(widget.file);
     } else {
-      _settingData = widget.option!;
+      if (widget.type != null &&
+          widget.type == "PSMultiValueSpecifier" &&
+          widget.option != null &&
+          widget.option!.isNotEmpty) {
+        List? titleValues = widget.option![0].containsKey("TitleValues")
+            ? widget.option![0]["TitleValues"]
+            : null;
+        _settingData = titleValues!;
+      } else {
+        _settingData = widget.option!;
+      }
     }
     // if (widget.fatherID == null) {
     nkey = "upload";
@@ -79,36 +91,59 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage> {
               itemCount: _settingData.length,
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
-                return WeCupertinoGroupItem(
-                  isDark: isDark,
-                  data: o,
-                  onClick: (childs, file, type) {
-                    if (type == "PSMultiValueSpecifier") {
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: widget.type == "PSMultiValueSpecifier"
+                      ? () {
+                          Navigator.pop(context, o);
+                        }
+                      : null,
+                  child: WeCupertinoGroupItem(
+                    isDark: isDark,
+                    data: o,
+                    onClick: (childs, file, type) {
                       BotToast.showText(
-                        text: "Multi Value",
+                        text: "type: $type",
                       );
-                    }
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => CupertinoSelectPage(
-                          file: file != null && file.isNotEmpty ? file : "root",
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => CupertinoSelectPage(
+                            option: childs,
+                            file:
+                                file != null && file.isNotEmpty ? file : "root",
+                            type: type,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  onChanged: (key, value, isTip) {
-                    bool isUpLoad = weSetVal(_settingData, key, value);
-                    if (isUpLoad) {
-                      NotificationCenter.instance
-                          .postNotification(nkey, [key, value]);
-                      if (isTip) {
-                        BotToast.showText(
-                          text: 'K: $key - V: $value\n已修改',
-                        );
+                      ).then((value) {
+                        Map data = {};
+                        if (type == "PSMultiValueSpecifier" &&
+                            childs != null &&
+                            childs.isNotEmpty) {
+                          data = childs[0];
+                          String key =
+                              data.containsKey("Key") ? data["Key"] : "";
+                          bool isUpLoad = weSetVal(_settingData, key, value);
+                          if (isUpLoad) {
+                            NotificationCenter.instance
+                                .postNotification(nkey, [key, value]);
+                          }
+                        }
+                      });
+                    },
+                    onChanged: (key, value, isTip) {
+                      bool isUpLoad = weSetVal(_settingData, key, value);
+                      if (isUpLoad) {
+                        NotificationCenter.instance
+                            .postNotification(nkey, [key, value]);
+                        if (isTip) {
+                          BotToast.showText(
+                            text: 'K: $key - V: $value\n已修改',
+                          );
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 );
               },
             )

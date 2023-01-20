@@ -13,9 +13,11 @@ class SelectPage extends StatefulWidget {
     super.key,
     this.option,
     this.file = "Root",
+    this.type,
   });
   final List? option;
   final String file;
+  final String? type;
 
   @override
   State<SelectPage> createState() => _SelectPageState();
@@ -29,10 +31,21 @@ class _SelectPageState extends State<SelectPage> {
   @override
   void initState() {
     // _data = widget.option;
+    print(">>>>>>>>> ${widget.option}");
     if (widget.option == null) {
       loadFile(widget.file);
     } else {
-      _settingData = widget.option!;
+      if (widget.type != null &&
+          widget.type == "PSMultiValueSpecifier" &&
+          widget.option != null &&
+          widget.option!.isNotEmpty) {
+        List? titleValues = widget.option![0].containsKey("TitleValues")
+            ? widget.option![0]["TitleValues"]
+            : null;
+        _settingData = titleValues!;
+      } else {
+        _settingData = widget.option!;
+      }
     }
     // if (widget.fatherID == null) {
     nkey = "upload";
@@ -80,48 +93,59 @@ class _SelectPageState extends State<SelectPage> {
               itemCount: _settingData.length,
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
-                return WeGroupItem(
-                  isDark: isDark,
-                  // decoration: BoxDecoration(
-                  //   color: Colors.white,
-                  //   border: Border.all(color: Colors.grey[300]!),
-                  //   borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  //   boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.grey[300]!,
-                  //       blurRadius: 5,
-                  //       spreadRadius: 3,
-                  //     ),
-                  //   ],
-                  // ),
-                  data: o,
-                  onClick: (childs, file, type) {
-                    if (type == "PSMultiValueSpecifier") {
+                return GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: widget.type == "PSMultiValueSpecifier"
+                      ? () {
+                          Navigator.pop(context, o);
+                        }
+                      : null,
+                  child: WeGroupItem(
+                    isDark: isDark,
+                    data: o,
+                    onClick: (childs, file, type) {
                       BotToast.showText(
-                        text: "Multi Value",
+                        text: "type: $type",
                       );
-                    }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SelectPage(
-                          file: file != null && file.isNotEmpty ? file : "root",
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SelectPage(
+                            option: childs,
+                            file:
+                                file != null && file.isNotEmpty ? file : "root",
+                            type: type,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  onChanged: (key, value, isTip) {
-                    bool isUpLoad = weSetVal(_settingData, key, value);
-                    if (isUpLoad) {
-                      NotificationCenter.instance
-                          .postNotification(nkey, [key, value]);
-                      if (isTip) {
-                        BotToast.showText(
-                          text: 'K: $key - V: $value\n已修改',
-                        );
+                      ).then((value) {
+                        Map data = {};
+                        if (type == "PSMultiValueSpecifier" &&
+                            childs != null &&
+                            childs.isNotEmpty) {
+                          data = childs[0];
+                          String key =
+                              data.containsKey("Key") ? data["Key"] : "";
+                          bool isUpLoad = weSetVal(_settingData, key, value);
+                          if (isUpLoad) {
+                            NotificationCenter.instance
+                                .postNotification(nkey, [key, value]);
+                          }
+                        }
+                      });
+                    },
+                    onChanged: (key, value, isTip) {
+                      bool isUpLoad = weSetVal(_settingData, key, value);
+                      if (isUpLoad) {
+                        NotificationCenter.instance
+                            .postNotification(nkey, [key, value]);
+                        if (isTip) {
+                          BotToast.showText(
+                            text: 'K: $key - V: $value\n已修改',
+                          );
+                        }
                       }
-                    }
-                  },
+                    },
+                  ),
                 );
               },
             )
