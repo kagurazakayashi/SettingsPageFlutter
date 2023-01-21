@@ -62,7 +62,8 @@ class XMLDataTypeConvert {
     }
   }
 
-  /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 XML 格式轉換為 Map
+  /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 [XmlElement]
+  /// 轉換為 `{Title1:Value1,Title2:Value2}` 形式的 [Map] 。
   static Map<String, dynamic> doubleArrayXmlNodeToMap(XmlElement key, XmlElement val, {logTitle = ""}) {
     SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
     Map<String, dynamic> map = {};
@@ -85,6 +86,8 @@ class XMLDataTypeConvert {
     return map;
   }
 
+  /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 [XmlElement]
+  /// 轉換為 `[{Title:key1,Val:val1}{Title:key2,Val:val2}]` 形式的 [List] 。
   static List<Map<String, dynamic>> doubleArrayXmlNodeToListMap(XmlElement key, XmlElement val, {String keyName = "Title", String valName = "Val", logTitle = ""}) {
     SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
     List<Map<String, dynamic>> list = [];
