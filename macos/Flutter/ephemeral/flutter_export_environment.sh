@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\Flutter_Windows"
-export "FLUTTER_APPLICATION_PATH=B:\settingspageflutter"
+export "FLUTTER_ROOT=/Volumes/MACAPP/flutter"
+export "FLUTTER_APPLICATION_PATH=/Volumes/MACAPP/c/SettingsPageFlutter"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.0.1"
