@@ -23,7 +23,8 @@ class CupertinoSelectPage extends StatefulWidget {
   State<CupertinoSelectPage> createState() => _CupertinoSelectPageState();
 }
 
-class _CupertinoSelectPageState extends State<CupertinoSelectPage> with WidgetsBindingObserver {
+class _CupertinoSelectPageState extends State<CupertinoSelectPage>
+    with WidgetsBindingObserver {
   List _settingData = [];
   String nkey = "";
   String _title = "";
@@ -87,7 +88,11 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage> with WidgetsB
 
   @override
   Widget build(BuildContext context) {
-    setSize(MediaQuery.of(context).size);
+    setSize(
+      MediaQuery.of(context).size,
+      pixelRatio: MediaQuery.of(context).devicePixelRatio,
+    );
+    setTextStyle(isDark: isDark);
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text(_title),

@@ -60,7 +60,6 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
     NotificationCenter.instance.addObserver(nkey, (object) {
       setState(() {});
     });
-    setTextStyle(isDark: isDark);
     super.initState();
   }
 
@@ -88,7 +87,11 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    setSize(MediaQuery.of(context).size);
+    setSize(
+      MediaQuery.of(context).size,
+      pixelRatio: MediaQuery.of(context).devicePixelRatio,
+    );
+    setTextStyle(isDark: isDark);
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
