@@ -154,7 +154,7 @@ class WeCupertinoColumn extends StatelessWidget {
             children: data.map<Widget>((e) {
               if (e == null) {
                 return Container(
-                  width: w - 118,
+                  width: weWidth - 118,
                   decoration: const BoxDecoration(
                     border: Border(
                       bottom: BorderSide(

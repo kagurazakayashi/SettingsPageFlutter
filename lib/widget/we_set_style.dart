@@ -7,17 +7,17 @@ import 'we_textstyle.dart';
 
 void setTextStyle({bool isDark = false}) {
   tsMain = TextStyle(
-    fontSize: 15 * sp,
+    fontSize: 15 * weSP,
     color: isDark ? Colors.white : Colors.black,
   );
 
   tsMainVal = TextStyle(
-    fontSize: 15 * sp,
+    fontSize: 15 * weSP,
     color: isDark ? Colors.white70 : Colors.grey[500],
   );
 
   tsGroupTag = TextStyle(
-    fontSize: 12 * sp,
+    fontSize: 12 * weSP,
     color: isDark ? Colors.white60 : Colors.grey[700],
   );
 }
@@ -25,14 +25,13 @@ void setTextStyle({bool isDark = false}) {
 /// 适配屏幕
 void setSize(Size size, {double pixelRatio = -1.0}) {
   weSize = size;
-  w = weSize.width;
-  h = weSize.height;
-  sp = (((h + w) +
+  weWidth = weSize.width;
+  weHeight = weSize.height;
+  weSP = (((weWidth + weHeight) +
               ((pixelRatio != -1 ? pixelRatio : window.devicePixelRatio) *
-                  aspectRatio(w, h))) /
+                  aspectRatio(weWidth, weHeight))) /
           10.8) /
       100;
-  print(sp);
 }
 
 /// 获取屏幕宽高比
