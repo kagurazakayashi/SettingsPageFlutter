@@ -59,6 +59,7 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage>
       }
     }
     NotificationCenter.instance.addObserver(nkey, (object) {
+      SettingsPageLoader().uploadIsShow(_settingData);
       setState(() {});
     });
     super.initState();

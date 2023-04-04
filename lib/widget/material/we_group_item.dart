@@ -17,21 +17,21 @@ class WeGroupItem extends StatelessWidget {
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
-  
+
   /// {@template settingspageflutter.widget.wegroupitem.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.wegroupitem.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -135,36 +135,39 @@ class WeGroupItem extends StatelessWidget {
     String? foot = data.containsKey("FooterText") ? data["FooterText"] : null;
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
-    return Padding(
-      padding: const EdgeInsets.all(25),
-      //根据类型返回不同的组件
-      child: type == "PSGroupSpecifier"
-          ? WeGroup(
-              title: titleStr,
-              foot: foot,
-              isDark: isDark,
-              decoration: decoration,
-              child: childs != null && childs.isNotEmpty
-                  ? WeColumn(
+    bool isShow = data.containsKey("Show") ? data["Show"] : true;
+    return isShow
+        ? Padding(
+            padding: const EdgeInsets.all(25),
+            //根据类型返回不同的组件
+            child: type == "PSGroupSpecifier"
+                ? WeGroup(
+                    title: titleStr,
+                    foot: foot,
+                    isDark: isDark,
+                    decoration: decoration,
+                    child: childs != null && childs.isNotEmpty
+                        ? WeColumn(
+                            isDark: isDark,
+                            decoration: decoration,
+                            childs: childs,
+                            onClick: onClick,
+                            onChanged: onChanged,
+                          )
+                        : null,
+                  )
+                : WeItem(
+                    isDark: isDark,
+                    decoration: decoration,
+                    child: WeListItem(
                       isDark: isDark,
                       decoration: decoration,
-                      childs: childs,
+                      data: data,
                       onClick: onClick,
                       onChanged: onChanged,
-                    )
-                  : null,
-            )
-          : WeItem(
-            isDark: isDark,
-            decoration:decoration,
-              child: WeListItem(
-                isDark: isDark,
-                decoration: decoration,
-                data: data,
-                onClick: onClick,
-                onChanged: onChanged,
-              ),
-            ),
-    );
+                    ),
+                  ),
+          )
+        : Container();
   }
 }

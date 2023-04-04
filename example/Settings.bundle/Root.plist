@@ -19,6 +19,34 @@
 			<string>var</string>
 		</dict>
 		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Test</string>
+		</dict>
+		<dict>
+			<key>Values</key>
+			<array>
+				<string>off</string>
+				<string>dhcp</string>
+				<string>static</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>禁用</string>
+				<string>DHCP</string>
+				<string>静态</string>
+			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>获取方式</string>
+			<key>Key</key>
+			<string>net_ip_mode</string>
+			<key>DefaultValue</key>
+			<string>DHCP</string>
+		</dict>
+		<dict>
 			<key>FooterText</key>
 			<string>这些选项决定了设备如何联网</string>
 			<key>Type</key>
@@ -27,6 +55,15 @@
 			<string>网络选项</string>
 		</dict>
 		<dict>
+			<key>Key</key>
+			<string>showTest</string>
+			<key>Showkey</key>
+			<string>net_ip_mode</string>
+			<key>ShowSetting</key>
+			<array>
+				<string>off</string>
+				<string>static</string>
+			</array>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>

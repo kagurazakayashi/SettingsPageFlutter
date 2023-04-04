@@ -19,7 +19,8 @@ class SettingsPageLoader {
   }
 
   /// 讀取一個 plist 檔名 [plistFileName] ，路徑基於 [baseDir] 屬性，不帶副檔名。
-  Future<SettingsPageData> loadPlistFile({String plistFileName = "Root"}) async {
+  Future<SettingsPageData> loadPlistFile(
+      {String plistFileName = "Root"}) async {
     SettingsPageData data = SettingsPageData();
     String plistFilePath = "$baseDir$plistFileName.plist";
     String dataString = await rootBundle.loadString(plistFilePath);
@@ -46,7 +47,8 @@ class SettingsPageLoader {
     Map<String, dynamic> configInfosT = {};
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
       XmlNode congigDict = preferenceSpecifiersE.children[i];
-      Map<String, dynamic> cofigInfos = XMLDataTypeConvert.keysValsXmlNodeToMap(congigDict);
+      Map<String, dynamic> cofigInfos =
+          XMLDataTypeConvert.keysValsXmlNodeToMap(congigDict);
       // 清理無效 key 或 value
       if (cofigInfos.containsKey("")) {
         cofigInfos.remove("");
@@ -93,12 +95,26 @@ class SettingsPageLoader {
           // log.d("遇到多項選擇 PSMultiValueSpecifier 物件，額外處理");
           String newTitleValueKey = "TitleValues";
           // cofigInfos[newTitleValueKey] = XMLDataTypeConvert.doubleArrayXmlNodeToMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
-          List<Map<String, dynamic>> nList = XMLDataTypeConvert.doubleArrayXmlNodeToListMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
+          List<Map<String, dynamic>> nList =
+              XMLDataTypeConvert.doubleArrayXmlNodeToListMap(
+            cofigInfos["Titles"],
+            cofigInfos["Values"],
+            logTitle: newTitleValueKey,
+          );
           cofigInfos["TitleValues"] = nList;
           cofigInfos.remove("Titles");
           cofigInfos.remove("Values");
         }
       }
+
+      List<String> keys = cofigInfos.keys.toList();
+      for (var i = 0; i < keys.length; i++) {
+        dynamic val = cofigInfos[keys[i]];
+        if (val is XmlElement) {
+          cofigInfos[keys[i]] = XMLDataTypeConvert.arrayXmlNodeToMap(val);
+        }
+      }
+
       String logstr = grouping ? "GROUP: ${data.title}/${configInfosT["Title"] ?? ""}" : "ROOT: ${data.title}";
       log.i("^ $logstr");
     }
@@ -123,5 +139,120 @@ class SettingsPageLoader {
       }
     }
     return errs.isEmpty ? null : errs.join(", ");
+  }
+
+  void uploadIsShow(List data) {
+    Map<String, dynamic> temp = _listfor(data);
+    _findKey(data, temp);
+    _setShow(data, temp);
+  }
+
+  Map<String, dynamic> _listfor(List data) {
+    Map<String, dynamic> showKeysMap = {};
+    for (Map<String, dynamic> setting in data) {
+      List<String> keys = setting.keys.toList();
+      for (var ks in keys) {
+        switch (ks) {
+          case "Childs":
+            Map<String, dynamic> temp = _listfor(setting[ks]);
+            showKeysMap.addAll(temp);
+            break;
+          case "Showkey":
+            if (!setting.containsKey("ShowSetting") ||
+                !setting.containsKey("Key")) {
+              continue;
+            }
+            Map<String, dynamic> showSetting = {
+              "key": setting["Key"],
+              "ShowSetting": setting["ShowSetting"],
+              "Show": false
+            };
+            if (setting.containsKey("Show") &&
+                ((setting["Show"] is bool && setting["Show"]) ||
+                    (setting["Show"] is String &&
+                        (setting["Show"].toString().toUpperCase() == "TRUE" ||
+                            setting["Show"] == "1")))) {
+              showSetting["Show"] = true;
+            }
+            showKeysMap[setting[ks]] = showSetting;
+            break;
+          default:
+        }
+      }
+    }
+    return showKeysMap;
+  }
+
+  void _findKey(List data, Map<String, dynamic> showKeysMap) {
+    for (Map<String, dynamic> setting in data) {
+      List<String> keys = setting.keys.toList();
+      for (var ks in keys) {
+        if (ks == "Childs") {
+          _findKey(setting[ks], showKeysMap);
+        } else {
+          if (ks != "Key") {
+            continue;
+          }
+          showKeysMap.forEach((key, value) {
+            if (setting[ks] != key) {
+              return;
+            }
+            String val = "";
+            if (setting.containsKey("Value")) {
+              if (setting["Value"] is String && setting["Value"].isNotEmpty) {
+                val = setting["Value"];
+              } else if (setting["Value"] is Map) {
+                if (setting["Value"].containsKey("Val")) {
+                  val = setting["Value"]["Val"];
+                }
+              }
+            } else if (setting.containsKey("DefaultValue")) {
+              val = setting["DefaultValue"];
+            }
+            if (val.isEmpty) {
+              return;
+            }
+            bool isShow = false;
+            if (value["ShowSetting"] is List) {
+              List showSettings = value["ShowSetting"];
+              for (var i = 0; i < showSettings.length; i++) {
+                String temp = showSettings[i];
+                if (temp == val) {
+                  isShow = true;
+                }
+              }
+            }
+            value["Show"] = isShow;
+          });
+        }
+      }
+    }
+  }
+
+  bool _setShow(List data, Map<String, dynamic> showKeysMap) {
+    bool isUpload = false;
+    for (Map<String, dynamic> setting in data) {
+      List<String> keys = setting.keys.toList();
+      for (var ks in keys) {
+        if (ks == "Childs") {
+          _setShow(setting[ks], showKeysMap);
+        } else {
+          if (ks != "Key") {
+            continue;
+          }
+          String settingKey = setting[ks];
+          showKeysMap.forEach((_, value) {
+            String key = value["key"];
+            if (settingKey != key) {
+              return;
+            }
+            bool isShow = value["Show"];
+            setting["Show"] = isShow;
+            isUpload = true;
+          });
+        }
+      }
+    }
+    return isUpload;
   }
 }

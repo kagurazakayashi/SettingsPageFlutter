@@ -22,21 +22,22 @@ class WeCupertinoColumn extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.wecupertinocolumn.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.wecupertinocolumn.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
+
   /// {@template settingspageflutter.widget.wecupertinocolumn.childs}
   /// 组内项数据
   ///
@@ -140,6 +141,7 @@ class WeCupertinoColumn extends StatelessWidget {
         }
       }
     }
+    bool isShowDiv = true;
     return data.isEmpty
         ? const Center(
             child: Text(
@@ -152,7 +154,16 @@ class WeCupertinoColumn extends StatelessWidget {
           )
         : Column(
             children: data.map<Widget>((e) {
+              bool isShow =
+                  e != null && e.containsKey("Show") ? e["Show"] : true;
+              if (!isShow) {
+                isShowDiv = false;
+                return const SizedBox();
+              }
               if (e == null) {
+                if (!isShowDiv) {
+                  return const SizedBox();
+                }
                 return Container(
                   width: weWidth - 118,
                   decoration: const BoxDecoration(
@@ -166,6 +177,7 @@ class WeCupertinoColumn extends StatelessWidget {
                   ),
                 );
               }
+              isShowDiv = true;
               return WeCupertinoListItem(
                 isDark: isDark,
                 decoration: decoration,

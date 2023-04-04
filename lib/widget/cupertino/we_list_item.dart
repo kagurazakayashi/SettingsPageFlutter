@@ -18,18 +18,18 @@ class WeCupertinoListItem extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.wecupertinolistitem.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.wecupertinolistitem.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -131,6 +131,7 @@ class WeCupertinoListItem extends StatelessWidget {
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
     String? file = data.containsKey("File") ? data["File"] : null;
+    bool isShow = data.containsKey("Show") ? data["Show"] : true;
 
     Widget c = getWidget(data, onChanged);
     Function()? onTap;
@@ -155,23 +156,25 @@ class WeCupertinoListItem extends StatelessWidget {
       };
     }
 
-    return Container(
-      margin: const EdgeInsets.only(left: 10, right: 10),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.only(
-            left: 10,
-            right: 10,
-            top: 3,
-            bottom: 3,
-          ),
-          margin: const EdgeInsets.all(1),
-          width: weSize.width - 86,
-          child: c,
-        ),
-      ),
-    );
+    return isShow
+        ? Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onTap,
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                  top: 3,
+                  bottom: 3,
+                ),
+                margin: const EdgeInsets.all(1),
+                width: weSize.width - 86,
+                child: c,
+              ),
+            ),
+          )
+        : Container();
   }
 }

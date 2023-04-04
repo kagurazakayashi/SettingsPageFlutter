@@ -21,18 +21,18 @@ class WeColumn extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.wecolumn.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.wecolumn.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -140,6 +140,7 @@ class WeColumn extends StatelessWidget {
         }
       }
     }
+    bool isShowDiv = true;
     return data.isEmpty
         ? const Center(
             child: Text(
@@ -152,9 +153,19 @@ class WeColumn extends StatelessWidget {
           )
         : Column(
             children: data.map((e) {
+              bool isShow =
+                  e != null && e.containsKey("Show") ? e["Show"] : true;
+              if (!isShow) {
+                isShowDiv = false;
+                return const SizedBox();
+              }
               if (e == null) {
+                if (!isShowDiv) {
+                  return const SizedBox();
+                }
                 return const Divider(indent: 15, endIndent: 15);
               }
+              isShowDiv = true;
               return WeListItem(
                 isDark: isDark,
                 decoration: decoration,

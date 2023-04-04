@@ -131,6 +131,7 @@ class WeListItem extends StatelessWidget {
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
     String? file = data.containsKey("File") ? data["File"] : null;
+    bool isShow = data.containsKey("Show") ? data["Show"] : true;
 
     Widget c = getWidget(data, onChanged);
     Function()? onTap;
@@ -155,23 +156,25 @@ class WeListItem extends StatelessWidget {
       };
     }
 
-    return Container(
-      margin: const EdgeInsets.only(left: 10, right: 10),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.only(
-            left: 10,
-            right: 10,
-            top: 3,
-            bottom: 3,
-          ),
-          margin: const EdgeInsets.all(1),
-          width: weSize.width - 86,
-          child: c,
-        ),
-      ),
-    );
+    return isShow
+        ? Container(
+            margin: const EdgeInsets.only(left: 10, right: 10),
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onTap,
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                  top: 3,
+                  bottom: 3,
+                ),
+                margin: const EdgeInsets.all(1),
+                width: weSize.width - 86,
+                child: c,
+              ),
+            ),
+          )
+        : Container();
   }
 }

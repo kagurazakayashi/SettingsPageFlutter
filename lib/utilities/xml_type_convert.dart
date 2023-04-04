@@ -62,10 +62,28 @@ class XMLDataTypeConvert {
     }
   }
 
-  /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 [XmlElement]
-  /// 轉換為 `{Title1:Value1,Title2:Value2}` 形式的 [Map] 。
-  static Map<String, dynamic> doubleArrayXmlNodeToMap(XmlElement key, XmlElement val, {logTitle = ""}) {
-    SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
+  /// 將類似於 `{xxxx:[string,string]}` 的 XML 格式轉換為 Map
+  static List<String> arrayXmlNodeToMap(XmlElement val, {logTitle = ""}) {
+    SettingsPageFlutterDebug log =
+        SettingsPageFlutterDebug(className: "XMLConvert");
+    List<XmlNode> array = val.children;
+    List<String> list = [];
+    for (XmlNode arr in array) {
+      if (arr.nodeType != XmlNodeType.ELEMENT) {
+        continue;
+      }
+      list.add(arr.text);
+    }
+    log.i("$logTitle = $list");
+    return list;
+  }
+
+  /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 XML 格式轉換為 Map
+  static Map<String, dynamic> doubleArrayXmlNodeToMap(
+      XmlElement key, XmlElement val,
+      {logTitle = ""}) {
+    SettingsPageFlutterDebug log =
+        SettingsPageFlutterDebug(className: "XMLConvert");
     Map<String, dynamic> map = {};
     List<XmlNode> keys = key.children; // XmlNodeList<XmlNode>
     List<XmlNode> vals = val.children; // XmlNodeList<XmlNode>
@@ -77,19 +95,26 @@ class XMLDataTypeConvert {
     for (int i = 0; i < keys.length; i++) {
       XmlNode nKey = keys[i];
       XmlNode nVal = vals[i];
-      if (nKey.nodeType != XmlNodeType.ELEMENT || nVal.nodeType != XmlNodeType.ELEMENT) {
+      if (nKey.nodeType != XmlNodeType.ELEMENT ||
+          nVal.nodeType != XmlNodeType.ELEMENT) {
         continue;
       }
-      map[nKey.text] = XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement);
+      map[nKey.text] =
+          XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement);
     }
     log.i("$logTitle = (${map.runtimeType}) $map");
     return map;
   }
 
-  /// 將類似於 `{Titles:[string,string],Values:[string,string]}` 的 [XmlElement]
-  /// 轉換為 `[{Title:key1,Val:val1}{Title:key2,Val:val2}]` 形式的 [List] 。
-  static List<Map<String, dynamic>> doubleArrayXmlNodeToListMap(XmlElement key, XmlElement val, {String keyName = "Title", String valName = "Val", logTitle = ""}) {
-    SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
+  static List<Map<String, dynamic>> doubleArrayXmlNodeToListMap(
+    XmlElement key,
+    XmlElement val, {
+    String keyName = "Title",
+    String valName = "Val",
+    logTitle = "",
+  }) {
+    SettingsPageFlutterDebug log =
+        SettingsPageFlutterDebug(className: "XMLConvert");
     List<Map<String, dynamic>> list = [];
     List<XmlNode> keys = key.children; // XmlNodeList<XmlNode>
     List<XmlNode> vals = val.children; // XmlNodeList<XmlNode>
@@ -101,10 +126,14 @@ class XMLDataTypeConvert {
     for (int i = 0; i < keys.length; i++) {
       XmlNode nKey = keys[i];
       XmlNode nVal = vals[i];
-      if (nKey.nodeType != XmlNodeType.ELEMENT || nVal.nodeType != XmlNodeType.ELEMENT) {
+      if (nKey.nodeType != XmlNodeType.ELEMENT ||
+          nVal.nodeType != XmlNodeType.ELEMENT) {
         continue;
       }
-      list.add({keyName: nKey.text, valName: XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement)});
+      list.add({
+        keyName: nKey.text,
+        valName: XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement)
+      });
     }
     log.i("$logTitle = (${list.runtimeType}) $list");
     return list;
@@ -114,7 +143,8 @@ class XMLDataTypeConvert {
   /// [node] 可以是 [XmlElement] 或 [XmlNode] 。
   /// 可以識別的資料型別有: [String] , [int] , [bool] , [XmlElement] , [XmlNode] 。
   static Map<String, dynamic> keysValsXmlNodeToMap(dynamic node) {
-    SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "XMLConvert");
+    SettingsPageFlutterDebug log =
+        SettingsPageFlutterDebug(className: "XMLConvert");
     Map<String, dynamic> map = {};
     String key = "";
     var children = node.children;
@@ -158,7 +188,8 @@ class XMLDataTypeConvert {
   }
 
   /// 將兩個 [keys] 和 [vals] 轉換成 Map。
-  static Map<String, String> stringDoubleList2Map(List<String> keys, List<String> vals) {
+  static Map<String, String> stringDoubleList2Map(
+      List<String> keys, List<String> vals) {
     Map<String, String> map = {};
     for (int i = 0; i < keys.length; i++) {
       map[keys[i]] = vals[i];

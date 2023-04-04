@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 
 import 'we_column.dart';
@@ -21,18 +20,18 @@ class WeCupertinoGroupItem extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.wecupertinogroupitem.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.wecupertinogroupitem.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -136,36 +135,39 @@ class WeCupertinoGroupItem extends StatelessWidget {
     String? foot = data.containsKey("FooterText") ? data["FooterText"] : null;
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
-    return Padding(
-      padding: const EdgeInsets.all(25),
-      //根据类型返回不同的组件
-      child: type == "PSGroupSpecifier"
-          ? WeCupertinoGroup(
-              title: titleStr,
-              foot: foot,
-              isDark: isDark,
-              decoration: decoration,
-              child: childs != null && childs.isNotEmpty
-                  ? WeCupertinoColumn(
+    bool isShow = data.containsKey("Show") ? data["Show"] : true;
+    return isShow
+        ? Padding(
+            padding: const EdgeInsets.all(25),
+            //根据类型返回不同的组件
+            child: type == "PSGroupSpecifier"
+                ? WeCupertinoGroup(
+                    title: titleStr,
+                    foot: foot,
+                    isDark: isDark,
+                    decoration: decoration,
+                    child: childs != null && childs.isNotEmpty
+                        ? WeCupertinoColumn(
+                            isDark: isDark,
+                            decoration: decoration,
+                            childs: childs,
+                            onClick: onClick,
+                            onChanged: onChanged,
+                          )
+                        : null,
+                  )
+                : WeCupertinoItem(
+                    isDark: isDark,
+                    decoration: decoration,
+                    child: WeCupertinoListItem(
                       isDark: isDark,
                       decoration: decoration,
-                      childs: childs,
+                      data: data,
                       onClick: onClick,
                       onChanged: onChanged,
-                    )
-                  : null,
-            )
-          : WeCupertinoItem(
-              isDark: isDark,
-              decoration: decoration,
-              child: WeCupertinoListItem(
-                isDark: isDark,
-                decoration: decoration,
-                data: data,
-                onClick: onClick,
-                onChanged: onChanged,
-              ),
-            ),
-    );
+                    ),
+                  ),
+          )
+        : Container();
   }
 }

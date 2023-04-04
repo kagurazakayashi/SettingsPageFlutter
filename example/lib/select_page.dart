@@ -58,6 +58,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
       }
     }
     NotificationCenter.instance.addObserver(nkey, (object) {
+      SettingsPageLoader().uploadIsShow(_settingData);
       setState(() {});
     });
     super.initState();
