@@ -15,7 +15,7 @@ class CupertinoSelectPage extends StatefulWidget {
     this.file = "Root",
     this.type,
   });
-  final List? option;
+  final List<Map<String, dynamic>>? option;
   final String file;
   final String? type;
 
@@ -25,7 +25,7 @@ class CupertinoSelectPage extends StatefulWidget {
 
 class _CupertinoSelectPageState extends State<CupertinoSelectPage>
     with WidgetsBindingObserver {
-  List _settingData = [];
+  List<Map<String, dynamic>> _settingData = [];
   String nkey = "";
   String _title = "";
 
@@ -41,7 +41,7 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage>
         String title = widget.option![0].containsKey("Title")
             ? widget.option![0]["Title"]
             : "";
-        List? titleValues = widget.option![0].containsKey("TitleValues")
+        List<Map<String, dynamic>>? titleValues = widget.option![0].containsKey("TitleValues")
             ? widget.option![0]["TitleValues"]
             : null;
         _title = title;
@@ -79,6 +79,7 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage>
     super.didChangePlatformBrightness();
   }
 
+  /// 加载`plist`文件
   void loadFile(String fileName) {
     SettingsPageLoader().loadPlistFile(plistFileName: fileName).then((value) {
       _settingData = value.preferenceSpecifiers;

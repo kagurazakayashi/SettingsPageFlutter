@@ -115,7 +115,9 @@ class SettingsPageLoader {
         }
       }
 
-      String logstr = grouping ? "GROUP: ${data.title}/${configInfosT["Title"] ?? ""}" : "ROOT: ${data.title}";
+      String logstr = grouping
+          ? "GROUP: ${data.title}/${configInfosT["Title"] ?? ""}"
+          : "ROOT: ${data.title}";
       log.i("^ $logstr");
     }
     if (grouping) {
@@ -124,7 +126,9 @@ class SettingsPageLoader {
       configInfosT = {};
       grouping = false;
     }
-    log.i("Load File OK: $plistFilePath , Title: ${data.title} , Table: ${data.stringsTable} , Specifiers length: ${data.preferenceSpecifiers.length}");
+    uploadIsShow(data.preferenceSpecifiers);
+    log.i(
+        "Load File OK: $plistFilePath , Title: ${data.title} , Table: ${data.stringsTable} , Specifiers length: ${data.preferenceSpecifiers.length}");
     // log.i(data.preferenceSpecifiers);
     return data;
   }
@@ -141,12 +145,14 @@ class SettingsPageLoader {
     return errs.isEmpty ? null : errs.join(", ");
   }
 
-  void uploadIsShow(List data) {
+  /// 判断各个控件是否显示
+  void uploadIsShow(List<Map<String, dynamic>> data) {
     Map<String, dynamic> temp = _listfor(data);
     _findKey(data, temp);
     _setShow(data, temp);
   }
 
+  /// 查找所有需要修改显示的key
   Map<String, dynamic> _listfor(List data) {
     Map<String, dynamic> showKeysMap = {};
     for (Map<String, dynamic> setting in data) {
@@ -183,6 +189,7 @@ class SettingsPageLoader {
     return showKeysMap;
   }
 
+  /// 显示字典根据`ShowSetting`的值进行显示判断
   void _findKey(List data, Map<String, dynamic> showKeysMap) {
     for (Map<String, dynamic> setting in data) {
       List<String> keys = setting.keys.toList();
@@ -229,6 +236,7 @@ class SettingsPageLoader {
     }
   }
 
+  /// 设置显示
   bool _setShow(List data, Map<String, dynamic> showKeysMap) {
     bool isUpload = false;
     for (Map<String, dynamic> setting in data) {

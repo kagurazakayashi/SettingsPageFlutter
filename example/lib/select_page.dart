@@ -15,7 +15,7 @@ class SelectPage extends StatefulWidget {
     this.file = "Root",
     this.type,
   });
-  final List? option;
+  final List<Map<String, dynamic>>? option;
   final String file;
   final String? type;
 
@@ -24,7 +24,7 @@ class SelectPage extends StatefulWidget {
 }
 
 class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
-  List _settingData = [];
+  List<Map<String, dynamic>> _settingData = [];
   String nkey = "";
   String _title = "";
 
@@ -40,9 +40,10 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
         String title = widget.option![0].containsKey("Title")
             ? widget.option![0]["Title"]
             : "";
-        List? titleValues = widget.option![0].containsKey("TitleValues")
-            ? widget.option![0]["TitleValues"]
-            : null;
+        List<Map<String, dynamic>>? titleValues =
+            widget.option![0].containsKey("TitleValues")
+                ? widget.option![0]["TitleValues"]
+                : null;
         _title = title;
         _settingData = titleValues!;
       } else {
@@ -58,6 +59,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
       }
     }
     NotificationCenter.instance.addObserver(nkey, (object) {
+      // 判断各个控件是否显示
       SettingsPageLoader().uploadIsShow(_settingData);
       setState(() {});
     });
@@ -78,10 +80,12 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
     super.didChangePlatformBrightness();
   }
 
+  /// 加载`plist`文件
   void loadFile(String fileName) {
     SettingsPageLoader().loadPlistFile(plistFileName: fileName).then((value) {
       _settingData = value.preferenceSpecifiers;
       _title = value.title;
+      print("loadFile：\n$_settingData");
       setState(() {});
     });
   }
