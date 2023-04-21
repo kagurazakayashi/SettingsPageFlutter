@@ -106,6 +106,7 @@ Widget getWidget(
               ? data['DefaultValue']
               : ""; //提示文本
       bool autoCorrect = false; //自动纠正拼写
+      bool readOnly = false; //是否为只读
       TextCapitalization autoCapitalization = TextCapitalization.none; //自动大写
       bool obscureText = false; //是否密文显示
       TextInputType keyboardType = TextInputType.text; //键盘样式
@@ -127,6 +128,20 @@ Widget getWidget(
             autoCorrect = true;
           } else if (temp == "false") {
             autoCorrect = false;
+          }
+          break;
+      }
+      //是否为只读
+      temp = data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
+      switch (temp.runtimeType){
+        case bool:
+          readOnly = temp as bool;
+          break;
+        case String:
+          if (temp == "true") {
+            readOnly = true;
+          } else if (temp == "false") {
+            readOnly = false;
           }
           break;
       }
@@ -276,6 +291,7 @@ Widget getWidget(
           Expanded(
             child: CupertinoTextField(
               controller: controller,
+              readOnly: readOnly,
               suffix: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.end,
