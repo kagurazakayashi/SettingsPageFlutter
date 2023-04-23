@@ -1,6 +1,7 @@
 import "dart:convert";
 
 import "package:flutter/cupertino.dart";
+import "package:settingspageflutter/widget/cupertino/we_textfield.dart";
 
 import "../we_textstyle.dart";
 
@@ -133,7 +134,7 @@ Widget getWidget(
       }
       //是否为只读
       temp = data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
-      switch (temp.runtimeType){
+      switch (temp.runtimeType) {
         case bool:
           readOnly = temp as bool;
           break;
@@ -284,47 +285,27 @@ Widget getWidget(
       }
 
       TextEditingController controller = TextEditingController(text: val);
-      c = Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text("$label: ", style: tsMain),
-          Expanded(
-            child: CupertinoTextField(
-              controller: controller,
-              readOnly: readOnly,
-              suffix: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  if (controller.text.isNotEmpty)
-                    CupertinoButton(
-                      onPressed: () {
-                        controller.text = "";
-                        onChanged(id, "", false);
-                      },
-                      child: const Icon(CupertinoIcons.clear_thick_circled),
-                    ),
-                  CupertinoButton(
-                    onPressed: () => onChanged(id, controller.text, true),
-                    child: const Icon(CupertinoIcons.checkmark_alt),
-                  ),
-                ],
-              ),
-              placeholder: hintText,
-              placeholderStyle: tsGroupTag,
-              decoration: const BoxDecoration(border: null),
-              autocorrect: autoCorrect,
-              textCapitalization: autoCapitalization,
-              obscureText: obscureText,
-              keyboardType: keyboardType,
-              textInputAction: textInputAction,
-              maxLines: maxLines,
-              maxLength: maxLength,
-              autofocus: autofocus,
-              onSubmitted: (val) => onChanged(id, val, true),
-            ),
-          ),
-        ],
+      c = WeCupertinoTextField(
+        controller: controller,
+        id: id,
+        value: val,
+        onChanged: onChanged,
+        style: tsMain,
+        readOnly: readOnly,
+        labelText: label,
+        labelStyle: tsMain,
+        hintText: hintText,
+        hintStyle: tsGroupTag,
+        decoration: const BoxDecoration(border: null),
+        autocorrect: autoCorrect,
+        textCapitalization: autoCapitalization,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        textInputAction: textInputAction,
+        minLines: 1,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        autofocus: autofocus,
       );
       break;
     case "PSSliderSpecifier": //滑动条(Slider)

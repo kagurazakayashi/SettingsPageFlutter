@@ -156,25 +156,24 @@ class WeListItem extends StatelessWidget {
       };
     }
 
-    return isShow
-        ? Container(
-            margin: const EdgeInsets.only(left: 10, right: 10),
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: onTap,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 3,
-                  bottom: 3,
-                ),
-                margin: const EdgeInsets.all(1),
-                width: weSize.width - 86,
-                child: c,
-              ),
-            ),
-          )
-        : Container();
+    if (isShow) {
+      return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 3,
+            bottom: 3,
+          ),
+          margin: const EdgeInsets.all(1),
+          width: weSize.width - 86,
+          child: c,
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 }

@@ -1,6 +1,7 @@
 import "dart:convert";
 
 import "package:flutter/material.dart";
+import "package:settingspageflutter/widget/material/we_TextField.dart";
 
 import "../we_textstyle.dart";
 
@@ -132,7 +133,7 @@ Widget getWidget(
       }
       //是否为只读
       temp = data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
-      switch (temp.runtimeType){
+      switch (temp.runtimeType) {
         case bool:
           readOnly = temp as bool;
           break;
@@ -283,45 +284,24 @@ Widget getWidget(
       }
 
       TextEditingController controller = TextEditingController(text: val);
-      c = TextField(
+      c = WeTextField(
         controller: controller,
+        id: id,
+        value: val,
+        onChanged: onChanged,
         style: tsMain,
         readOnly: readOnly,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: tsMain,
-          hintText: hintText,
-          hintStyle: tsGroupTag,
-          suffixIcon: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (controller.text.isNotEmpty)
-                IconButton(
-                  onPressed: () {
-                    controller.text = "";
-                    onChanged(id, "", false);
-                  },
-                  icon: Icon(
-                    Icons.cancel,
-                    color: val == "" ? Colors.grey : Colors.blue,
-                  ),
-                ),
-              IconButton(
-                onPressed: () => onChanged(id, controller.text, true),
-                icon: const Icon(
-                  Icons.check,
-                  color: Colors.blue,
-                ),
-              ),
-            ],
-          ),
-          border: InputBorder.none,
-        ),
+        labelText: label,
+        labelStyle: tsMain,
+        hintText: hintText,
+        hintStyle: tsGroupTag,
+        border: InputBorder.none,
         autocorrect: autoCorrect,
         textCapitalization: autoCapitalization,
         obscureText: obscureText,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
+        minLines: 1,
         maxLines: maxLines,
         maxLength: maxLength,
         autofocus: autofocus,

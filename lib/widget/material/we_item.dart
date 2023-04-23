@@ -14,18 +14,18 @@ class WeItem extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.weitem.isDark}
   /// 是否为暗黑模式
-  /// 
+  ///
   /// 默认为false
-  /// 
+  ///
   /// Is it dark mode
-  /// 
+  ///
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
 
   /// {@template settingspageflutter.widget.weitem.decoration}
   /// 条目样式
-  /// 
+  ///
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
@@ -46,7 +46,15 @@ class WeItem extends StatelessWidget {
             color: isDark ? Colors.black38 : Colors.white,
             borderRadius: BorderRadius.circular(20),
           ),
-      child: child,
+      child: Container(
+        margin: const EdgeInsets.only(
+          top: 12.0,
+          bottom: 12.0,
+          left: 10.0,
+          right: 10.0,
+        ),
+        child: child,
+      ),
     );
   }
 }

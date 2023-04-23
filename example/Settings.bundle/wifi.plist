@@ -39,6 +39,12 @@
 			<string>名称</string>
 			<key>Key</key>
 			<string>wifi_name</string>
+			<key>Value</key>
+			<string>Test Wi-Fi</string>
+			<key>IsReadonly</key>
+			<true/>
+			<key>MaxLines</key>
+			<integer>5</integer>
 		</dict>
 		<dict>
 			<key>IsSecure</key>
@@ -49,6 +55,10 @@
 			<string>无线网络密码</string>
 			<key>Key</key>
 			<string>wifi_pwd</string>
+			<key>Value</key>
+			<string>无线网络密码!</string>
+			<key>TextFieldIsSecure</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>Type</key>
