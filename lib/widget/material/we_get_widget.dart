@@ -283,7 +283,17 @@ Widget getWidget(
           break;
       }
 
-      TextEditingController controller = TextEditingController(text: val);
+      TextEditingController controller = TextEditingController.fromValue(
+        TextEditingValue(
+          text: val,
+          selection: TextSelection.fromPosition(
+            TextPosition(
+              affinity: TextAffinity.downstream,
+              offset: val.length,
+            ),
+          ),
+        ),
+      );
       c = WeTextField(
         controller: controller,
         id: id,

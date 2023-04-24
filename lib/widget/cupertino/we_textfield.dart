@@ -96,10 +96,12 @@ class _WeCupertinoTextFieldState extends State<WeCupertinoTextField> {
                 ),
               if (!widget.readOnly)
                 GestureDetector(
-                  onTap: () {
-                    widget.controller.text = "";
-                    widget.onChanged(widget.id, "", false);
-                  },
+                  onTap: widget.controller.text.isEmpty
+                      ? null
+                      : () {
+                          widget.controller.text = "";
+                          widget.onChanged(widget.id, "", false);
+                        },
                   child: Container(
                     padding: const EdgeInsets.only(left: 8),
                     child: Icon(
