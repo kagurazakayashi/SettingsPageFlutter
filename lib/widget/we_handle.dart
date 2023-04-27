@@ -1,13 +1,30 @@
 import 'dart:convert';
 
 /// 处理Value
-String handleValueRODefaultValue(Map<String, dynamic> data, String value) {
+String handleValueRODefaultValue(Map<String, dynamic> data, Object value) {
   String val = "";
   dynamic type = data.containsKey("Type") ? data["Type"] : "";
+  String valueStr = "";
+  switch (value.runtimeType) {
+    case String:
+      valueStr = value as String;
+      break;
+    case Map<String, dynamic>:
+    case Map<dynamic, dynamic>:
+      Map valueMap = value as Map;
+      valueStr = valueMap.containsKey("Val") ? valueMap["Val"] : "";
+      break;
+    default:
+      if (value.runtimeType.toString() == "_Map<String, dynamic>" ||
+          value.runtimeType.toString() == "_Map<dynamic, dynamic>") {
+        Map valueMap = value as Map;
+        valueStr = valueMap.containsKey("Val") ? valueMap["Val"] : "";
+      }
+  }
   if (type == "PSMultiValueSpecifier") {
-    val = handleMultiValue(data, value);
+    val = handleMultiValue(data, valueStr);
   } else {
-    val = handleValue(value);
+    val = handleValue(valueStr);
   }
   return val;
 }
