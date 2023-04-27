@@ -3,6 +3,7 @@ import "dart:convert";
 import "package:flutter/material.dart";
 import "package:settingspageflutter/widget/material/we_TextField.dart";
 
+import "../we_handle.dart";
 import "../we_textstyle.dart";
 
 /// 根据数据返回控件
@@ -481,23 +482,28 @@ Widget getWidget(
     default: //其他
       dynamic temp = data.containsKey("Value") ? data["Value"] : "";
       String val = "";
-      switch (temp.runtimeType) {
-        case String:
-          val = temp as String;
-          try {
-            Map tempMap = jsonDecode(val);
-            val = tempMap.containsKey("Title") ? tempMap["Title"] : "";
-          } catch (e) {
-            val = temp;
+      if (temp is String && temp.isEmpty) {
+        temp = data.containsKey("DefaultValue") ? data["DefaultValue"] : "";
+        dynamic type = data.containsKey("Type") ? data["Type"] : "";
+        if (temp is String && temp.isEmpty) {
+          val = "";
+        } else {
+          if (type == "PSMultiValueSpecifier") {
+            List titleValues =
+                data.containsKey("TitleValues") ? data["TitleValues"] : [];
+            for (var tv in titleValues) {
+              String tvValue = tv.containsKey("Val") ? tv["Val"] : "";
+              if (tvValue == temp) {
+                val = tv.containsKey("Title") ? tv["Title"] : "";
+                break;
+              }
+            }
+          } else {
+            val = handleValue(temp);
           }
-          break;
-        case Map<String, dynamic>:
-          val = (temp as Map).containsKey("Title") ? temp["Title"] : "";
-          break;
-        default:
-          if (temp.runtimeType.toString() == "_Map<String, dynamic>") {
-            val = (temp as Map).containsKey("Title") ? temp["Title"] : "";
-          }
+        }
+      } else {
+        val = handleValue(temp);
       }
       c = Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8),

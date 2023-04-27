@@ -215,6 +215,30 @@ class SettingsPageLoader {
               }
             } else if (setting.containsKey("DefaultValue")) {
               val = setting["DefaultValue"];
+              // Object? temp = setting["DefaultValue"];
+              // if (temp != null) {
+              //   switch (temp.runtimeType) {
+              //     case String:
+              //       val = setting["DefaultValue"];
+              //       break;
+              //     case List<String>:
+              //       Map tempMap = {"Title": "", "Value": ""};
+              //       for (int i = 0; i < (temp as List).length; i++) {
+              //         String tempStr = temp[i];
+              //         if (i + 1 < temp.length) {
+              //           if (tempStr == "Value") {
+              //             tempMap["Value"] = temp[i + 1];
+              //           }
+              //           if (tempStr == "Title") {
+              //             tempMap["Title"] = temp[i + 1];
+              //           }
+              //         }
+              //       }
+              //       setting["DefaultValue"] = tempMap;
+              //       break;
+              //     default:
+              //   }
+              // }
             }
             if (val.isEmpty) {
               return;

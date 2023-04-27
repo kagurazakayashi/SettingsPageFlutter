@@ -44,7 +44,7 @@
 			<key>Key</key>
 			<string>net_ip_mode</string>
 			<key>DefaultValue</key>
-			<string>DHCP</string>
+			<string>dhcp</string>
 		</dict>
 		<dict>
 			<key>FooterText</key>
