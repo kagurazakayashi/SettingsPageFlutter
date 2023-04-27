@@ -484,26 +484,13 @@ Widget getWidget(
       String val = "";
       if (temp is String && temp.isEmpty) {
         temp = data.containsKey("DefaultValue") ? data["DefaultValue"] : "";
-        dynamic type = data.containsKey("Type") ? data["Type"] : "";
         if (temp is String && temp.isEmpty) {
           val = "";
         } else {
-          if (type == "PSMultiValueSpecifier") {
-            List titleValues =
-                data.containsKey("TitleValues") ? data["TitleValues"] : [];
-            for (var tv in titleValues) {
-              String tvValue = tv.containsKey("Val") ? tv["Val"] : "";
-              if (tvValue == temp) {
-                val = tv.containsKey("Title") ? tv["Title"] : "";
-                break;
-              }
-            }
-          } else {
-            val = handleValue(temp);
-          }
+          val = handleValueRODefaultValue(data, temp);
         }
       } else {
-        val = handleValue(temp);
+        val = handleValueRODefaultValue(data, temp);
       }
       c = Padding(
         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
