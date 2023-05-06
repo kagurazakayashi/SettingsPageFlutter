@@ -57,11 +57,23 @@ class WeCupertinoTextField extends StatefulWidget {
 
 class _WeCupertinoTextFieldState extends State<WeCupertinoTextField> {
   bool _obscureText = false;
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     _obscureText = widget.obscureText;
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        widget.onChanged(widget.id, widget.controller.text, true);
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -127,9 +139,9 @@ class _WeCupertinoTextFieldState extends State<WeCupertinoTextField> {
           maxLength: widget.maxLength,
           autofocus: widget.autofocus,
           onSubmitted: widget.onSubmitted,
+          focusNode: _focusNode,
         ),
       ],
     );
-    ;
   }
 }
