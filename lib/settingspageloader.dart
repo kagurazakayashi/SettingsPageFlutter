@@ -53,14 +53,17 @@ class SettingsPageLoader {
       if (cofigInfos.containsKey("")) {
         cofigInfos.remove("");
       }
-      for (String key in cofigInfos.keys) {
+      for (var i = cofigInfos.keys.length - 1; i >= 0; i--) {
+        String key = cofigInfos.keys.elementAt(i);
         dynamic val = cofigInfos[key];
         if (key.isEmpty || key.trim().isEmpty || val == null) {
           cofigInfos.remove(key);
+          continue;
         }
         if (val is String) {
           if (val.isEmpty || val.trim().isEmpty) {
             cofigInfos.remove(key);
+            // cofigInfos[key] = "";
           }
         }
       }
