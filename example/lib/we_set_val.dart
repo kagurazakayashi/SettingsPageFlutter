@@ -3,6 +3,12 @@ bool weSetVal(List data, String id, dynamic val) {
     String eid = eMain.containsKey("Key") ? eMain["Key"] : "";
     List? echilds = eMain.containsKey("Childs") ? eMain["Childs"] : null;
     if (eid == id) {
+      if (val == null) {
+        String type = eMain.containsKey("Type") ? eMain["Type"] : "";
+        if (type == "PSMultiValueSpecifier") {
+          return false;
+        }
+      }
       eMain["Value"] = val;
       return true;
     }
