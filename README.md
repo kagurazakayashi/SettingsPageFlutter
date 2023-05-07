@@ -22,7 +22,10 @@
     3. 在头部引入大小和缩放计算功能 `import "package:settingspageflutter/widget/we_size.dart";` ，用于根据窗口/屏幕大小确定尺寸。
 4. 在 `void initState()` 中加载你需要的 plist 文件：
     1. 初始化一个 `SettingsPageLoader` 对象，可以在参数中可选提供一个存放 plist 文件的根目录，默认是 `Settings.bundle/` 。例如 `SettingsPageLoader loader = SettingsPageLoader("config.bundle)` 。
-    2. 执行 `SettingsPageLoader.loadPlistFile` ，并指定一个文件名（不是路径，路径基于上面指定的根目录，不包括扩展名），默认为 `Root` (.plist) 。例如 `loader.loadPlistFile(plistFileName: "Root");` 。
+    2. 执行 `SettingsPageLoader.loadPlist` ，并指定一个文件名（不是路径，路径基于上面指定的根目录，不包括扩展名），默认为 `Root` (.plist) 。例如 `loader.loadPlistFile(plistFileName: "Root");` 。也可以以其他方式载入，支持三种方式，只运行提供其中一个参数：
+        1. 文件路径 `plistFilePath:`
+        2. 文件内容 `importData:`
+        3. 文件名称 `plistFileName:`
     3. 为上个方法添加 `.then((value) {...});` ，决定读取成功之后应该做什么。其中 `SettingsPageData value` 中包含：
         1. `String value.title`: 标题，通常显示在 AppBar 上面。
         2. `String value.stringsTable`: 自定义文件 id 。

@@ -7,17 +7,32 @@ import 'package:settingspageflutter/settingspageuibuilder.dart';
 
 /// 入口類
 class SettingsPageFlutter {
-  String baseDir; // 儲存 plist 檔案的基本目錄
-  String plistFileName; // 根配置檔案名稱，不含副檔名
-  SettingsPageFlutterDebug log = SettingsPageFlutterDebug(className: "Main"); // 輸出除錯資訊
+  final String path;
+  final String data;
+  final String file;
+  final String baseDir; // 儲存 plist 檔案的基本目錄
+  SettingsPageFlutterDebug log =
+      SettingsPageFlutterDebug(className: "Main"); // 輸出除錯資訊
 
   /// 開始載入根配置檔案
-  /// 需要指定一個儲存 [plistFileName].plist 檔案的基本 [baseDir] 目錄。
-  SettingsPageFlutter({this.baseDir = "Settings.bundle/", this.plistFileName = "Root"}) {
-    log.i("init: baseDir=$baseDir, plistFileName=$plistFileName");
+  /// 可以提供以下三個選項之一（不可以提供多個）：
+  /// 1. plist 檔案路徑 [path] ，絕對路徑。
+  /// 2. 直接提供 plist 內容 [data] 。
+  /// 3. plist 檔名 [file] ，路徑基於 [baseDir] 屬性，不帶副檔名。
+  SettingsPageFlutter({
+    this.path = "",
+    this.data = "",
+    this.file = "Root",
+    this.baseDir = "Settings.bundle/",
+  }) {
+    log.i(
+        "init: baseDir=$baseDir, path=$path or datalen=${data.length} or file=$file");
     SettingsPageLoader loader = SettingsPageLoader(baseDir: baseDir);
-    loader.loadPlistFile().then((SettingsPageData plistData) {
-      log.i("LOAD OK: stringsTable: ${plistData.stringsTable} , title: ${plistData.title} , preferenceSpecifiers: ${plistData.preferenceSpecifiers.length}");
+    loader
+        .loadPlist(plistFilePath: path, importData: data, plistFileName: file)
+        .then((SettingsPageData plistData) {
+      log.i(
+          "LOAD OK: stringsTable: ${plistData.stringsTable} , title: ${plistData.title} , preferenceSpecifiers: ${plistData.preferenceSpecifiers.length}");
       SettingsPageUIBuilder uiBuilder = SettingsPageUIBuilder();
       uiBuilder.buildPage(plistData);
     }).catchError((error) {

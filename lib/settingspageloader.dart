@@ -1,5 +1,7 @@
 library settingspageflutter;
 
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
@@ -18,13 +20,29 @@ class SettingsPageLoader {
     }
   }
 
-  /// 讀取一個 plist 檔名 [plistFileName] ，路徑基於 [baseDir] 屬性，不帶副檔名。
-  Future<SettingsPageData> loadPlistFile(
-      {String plistFileName = "Root"}) async {
+  /// 讀取 plist
+  /// 可以提供以下三個選項之一（不可以提供多個）：
+  /// 1. plist 檔案路徑 [plistFilePath] ，絕對路徑。
+  /// 2. 直接提供 plist 內容 [importData] 。
+  /// 3. plist 檔名 [plistFileName] （不是路徑），路徑基於 [baseDir] 屬性，不帶副檔名。
+  Future<SettingsPageData> loadPlist(
+      {String plistFilePath = "",
+      String importData = "",
+      String plistFileName = "Root"}) async {
     SettingsPageData data = SettingsPageData();
-    String plistFilePath = "$baseDir$plistFileName.plist";
-    String dataString = await rootBundle.loadString(plistFilePath);
-    log.i("- Load File: $plistFilePath , length: ${dataString.length} :");
+    String dataString = "";
+    if (plistFilePath.isNotEmpty) {
+      File f = File(plistFilePath);
+      log.i("- Load Path: $plistFilePath");
+      dataString = await f.readAsString();
+    } else if (importData.isNotEmpty) {
+      dataString = importData;
+      log.i("- Load Data: length: ${dataString.length} :");
+    } else {
+      String plistFilePath = "$baseDir$plistFileName.plist";
+      dataString = await rootBundle.loadString(plistFilePath);
+      log.i("- Load File: $plistFilePath , length: ${dataString.length} :");
+    }
     XmlDocument xmlDocument = XmlDocument.parse(dataString);
     XmlElement? plist = xmlDocument.getElement("plist");
     if (plist == null) {
