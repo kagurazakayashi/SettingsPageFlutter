@@ -1,3 +1,4 @@
+import 'package:settingspageflutter/global.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
 import 'package:xml/xml.dart';
 
@@ -74,7 +75,9 @@ class XMLDataTypeConvert {
       }
       list.add(arr.text);
     }
-    log.i("$logTitle = $list");
+    if (Global.i.isShowLog) {
+      log.i("$logTitle = $list");
+    }
     return list;
   }
 
@@ -102,7 +105,9 @@ class XMLDataTypeConvert {
       map[nKey.text] =
           XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement);
     }
-    log.i("$logTitle = (${map.runtimeType}) $map");
+    if (Global.i.isShowLog) {
+      log.i("$logTitle = (${map.runtimeType}) $map");
+    }
     return map;
   }
 
@@ -135,7 +140,9 @@ class XMLDataTypeConvert {
         valName: XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement)
       });
     }
-    log.i("$logTitle = (${list.runtimeType}) $list");
+    if (Global.i.isShowLog) {
+      log.i("$logTitle = (${list.runtimeType}) $list");
+    }
     return list;
   }
 
@@ -176,9 +183,13 @@ class XMLDataTypeConvert {
               break;
           }
           if (type == "array") {
-            log.i("$key = ($type) (length: ${map[key].children.length})");
+            if (Global.i.isShowLog) {
+              log.i("$key = ($type) (length: ${map[key].children.length})");
+            }
           } else {
-            log.i("$key = ($type) ${map[key]}");
+            if (Global.i.isShowLog) {
+              log.i("$key = ($type) ${map[key]}");
+            }
           }
           key = "";
         }

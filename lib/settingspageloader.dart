@@ -3,6 +3,7 @@ library settingspageflutter;
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:settingspageflutter/global.dart';
 import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
 import 'package:settingspageflutter/utilities/xml_type_convert.dart';
@@ -14,10 +15,11 @@ class SettingsPageLoader {
   String baseDir;
 
   /// 需要指定一個儲存 plist 檔案的基本路徑 [baseDir] 目錄。
-  SettingsPageLoader({this.baseDir = "Settings.bundle/"}) {
+  SettingsPageLoader({this.baseDir = "Settings.bundle/", isShowLog = false}) {
     if (!baseDir.endsWith("/")) {
       baseDir += "/";
     }
+    Global.i.isShowLog = isShowLog;
   }
 
   /// 讀取 plist
@@ -25,10 +27,11 @@ class SettingsPageLoader {
   /// 1. plist 檔案路徑 [plistFilePath] ，絕對路徑。
   /// 2. 直接提供 plist 內容 [importData] 。
   /// 3. plist 檔名 [plistFileName] （不是路徑），路徑基於 [baseDir] 屬性，不帶副檔名。
-  Future<SettingsPageData> loadPlist(
-      {String plistFilePath = "",
-      String importData = "",
-      String plistFileName = "Root"}) async {
+  Future<SettingsPageData> loadPlist({
+    String plistFilePath = "",
+    String importData = "",
+    String plistFileName = "Root",
+  }) async {
     SettingsPageData data = SettingsPageData();
     String dataString = "";
     if (plistFilePath.isNotEmpty) {
@@ -37,11 +40,15 @@ class SettingsPageLoader {
       dataString = await f.readAsString();
     } else if (importData.isNotEmpty) {
       dataString = importData;
-      log.i("- Load Data: length: ${dataString.length} :");
+      if (Global.i.isShowLog) {
+        log.i("- Load Data: length: ${dataString.length} :");
+      }
     } else {
       String plistFilePath = "$baseDir$plistFileName.plist";
       dataString = await rootBundle.loadString(plistFilePath);
-      log.i("- Load File: $plistFilePath , length: ${dataString.length} :");
+      if (Global.i.isShowLog) {
+        log.i("- Load File: $plistFilePath , length: ${dataString.length} :");
+      }
     }
     XmlDocument xmlDocument = XmlDocument.parse(dataString);
     XmlElement? plist = xmlDocument.getElement("plist");
@@ -60,7 +67,9 @@ class SettingsPageLoader {
     data.title = dictChild["Title"] ?? "Config";
     data.stringsTable = dictChild["StringsTable"] ?? "";
     XmlElement preferenceSpecifiersE = dictChild["PreferenceSpecifiers"];
-    log.i("-");
+    if (Global.i.isShowLog) {
+      log.i("-");
+    }
     bool grouping = false;
     Map<String, dynamic> configInfosT = {};
     for (int i = 0; i < preferenceSpecifiersE.children.length; i++) {
@@ -139,7 +148,9 @@ class SettingsPageLoader {
       String logstr = grouping
           ? "GROUP: ${data.title}/${configInfosT["Title"] ?? ""}"
           : "ROOT: ${data.title}";
-      log.i("^ $logstr");
+      if (Global.i.isShowLog) {
+        log.i("^ $logstr");
+      }
     }
     if (grouping) {
       // log.d("最終處於分組狀態中，結束分組");
@@ -148,8 +159,10 @@ class SettingsPageLoader {
       grouping = false;
     }
     uploadIsShow(data.preferenceSpecifiers);
-    log.i(
-        "Load File OK: $plistFilePath , Title: ${data.title} , Table: ${data.stringsTable} , Specifiers length: ${data.preferenceSpecifiers.length}");
+    if (Global.i.isShowLog) {
+      log.i(
+          "Load File OK: $plistFilePath , Title: ${data.title} , Table: ${data.stringsTable} , Specifiers length: ${data.preferenceSpecifiers.length}");
+    }
     // log.i(data.preferenceSpecifiers);
     return data;
   }

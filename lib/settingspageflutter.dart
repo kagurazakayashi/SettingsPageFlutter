@@ -1,9 +1,9 @@
 library settingspageflutter;
 
+import 'package:settingspageflutter/global.dart';
 import 'package:settingspageflutter/settingspagedata.dart';
 import 'package:settingspageflutter/settingspagedebug.dart';
 import 'package:settingspageflutter/settingspageloader.dart';
-import 'package:settingspageflutter/settingspageuibuilder.dart';
 
 /// 入口類
 class SettingsPageFlutter {
@@ -25,16 +25,18 @@ class SettingsPageFlutter {
     this.file = "Root",
     this.baseDir = "Settings.bundle/",
   }) {
-    log.i(
-        "init: baseDir=$baseDir, path=$path or datalen=${data.length} or file=$file");
+    if (Global.i.isShowLog) {
+      log.i(
+          "init: baseDir=$baseDir, path=$path or datalen=${data.length} or file=$file");
+    }
     SettingsPageLoader loader = SettingsPageLoader(baseDir: baseDir);
     loader
         .loadPlist(plistFilePath: path, importData: data, plistFileName: file)
         .then((SettingsPageData plistData) {
-      log.i(
-          "LOAD OK: stringsTable: ${plistData.stringsTable} , title: ${plistData.title} , preferenceSpecifiers: ${plistData.preferenceSpecifiers.length}");
-      SettingsPageUIBuilder uiBuilder = SettingsPageUIBuilder();
-      uiBuilder.buildPage(plistData);
+      if (Global.i.isShowLog) {
+        log.i(
+            "LOAD OK: stringsTable: ${plistData.stringsTable} , title: ${plistData.title} , preferenceSpecifiers: ${plistData.preferenceSpecifiers.length}");
+      }
     }).catchError((error) {
       log.e('Failed to load file: $error');
     });
