@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
     if (Platform.isIOS || Platform.isMacOS) {
       isIOS = true;
     }
-    isDark = window.platformBrightness == Brightness.dark;
+    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return isIOS
         ? CupertinoApp(
             title: 'Flutter Demo',

@@ -1,6 +1,5 @@
 import "package:bot_toast/bot_toast.dart";
 import "package:flutter/cupertino.dart";
-import "package:settingspageflutter/settingspagedata.dart";
 import "package:settingspageflutter/settingspageloader.dart";
 import "package:settingspageflutter/widget/cupertino/we_group_item.dart";
 import "package:settingspageflutter/widget/we_set_style.dart";
@@ -66,7 +65,12 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage>
                 ? widget.option![0]["TitleValues"]
                 : null;
         _title = title;
-        _settingData = titleValues!;
+        _settingData = [
+          {
+            "Type": "PSGroupSpecifier",
+            "Childs": titleValues,
+          }
+        ];
       } else {
         _settingData = widget.option!;
       }
@@ -117,59 +121,60 @@ class _CupertinoSelectPageState extends State<CupertinoSelectPage>
               itemCount: _settingData.length,
               itemBuilder: (context, i) {
                 Map<String, dynamic> o = _settingData[i];
-                return GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: widget.type == "PSMultiValueSpecifier"
-                      ? () {
-                          Navigator.pop(context, o);
+                return WeCupertinoGroupItem(
+                  isDark: isDark,
+                  data: o,
+                  onClick: (childs, file, type) {
+                    if (childs != null) {
+                      for (var c in childs) {
+                        if (!c.containsKey("Val")) {
+                          continue;
                         }
-                      : null,
-                  child: WeCupertinoGroupItem(
-                    isDark: isDark,
-                    data: o,
-                    onClick: (childs, file, type) {
-                      BotToast.showText(
-                        text: "type: $type",
-                      );
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) => CupertinoSelectPage(
-                            option: childs,
-                            file:
-                                file != null && file.isNotEmpty ? file : "root",
-                            type: type,
-                          ),
+                        Navigator.pop(context, c);
+                        return;
+                      }
+                    }
+                    BotToast.showText(
+                      text: "type: $type",
+                    );
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => CupertinoSelectPage(
+                          option: childs,
+                          file:
+                              file != null && file.isNotEmpty ? file : "root",
+                          type: type,
                         ),
-                      ).then((value) {
-                        Map data = {};
-                        if (type == "PSMultiValueSpecifier" &&
-                            childs != null &&
-                            childs.isNotEmpty) {
-                          data = childs[0];
-                          String key =
-                              data.containsKey("Key") ? data["Key"] : "";
-                          bool isUpLoad = weSetVal(_settingData, key, value);
-                          if (isUpLoad) {
-                            NotificationCenter.instance
-                                .postNotification(nkey, [key, value]);
-                          }
-                        }
-                      });
-                    },
-                    onChanged: (key, value, isTip) {
-                      bool isUpLoad = weSetVal(_settingData, key, value);
-                      if (isUpLoad) {
-                        NotificationCenter.instance
-                            .postNotification(nkey, [key, value]);
-                        if (isTip) {
-                          BotToast.showText(
-                            text: 'K: $key - V: $value\n已修改',
-                          );
+                      ),
+                    ).then((value) {
+                      Map data = {};
+                      if (type == "PSMultiValueSpecifier" &&
+                          childs != null &&
+                          childs.isNotEmpty) {
+                        data = childs[0];
+                        String key =
+                            data.containsKey("Key") ? data["Key"] : "";
+                        bool isUpLoad = weSetVal(_settingData, key, value);
+                        if (isUpLoad) {
+                          NotificationCenter.instance
+                              .postNotification(nkey, [key, value]);
                         }
                       }
-                    },
-                  ),
+                    });
+                  },
+                  onChanged: (key, value, isTip) {
+                    bool isUpLoad = weSetVal(_settingData, key, value);
+                    if (isUpLoad) {
+                      NotificationCenter.instance
+                          .postNotification(nkey, [key, value]);
+                      if (isTip) {
+                        BotToast.showText(
+                          text: 'K: $key - V: $value\n已修改',
+                        );
+                      }
+                    }
+                  },
                 );
               },
             )

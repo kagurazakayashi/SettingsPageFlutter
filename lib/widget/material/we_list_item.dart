@@ -132,6 +132,7 @@ class WeListItem extends StatelessWidget {
         data.containsKey("Childs") ? data["Childs"] : null;
     String? file = data.containsKey("File") ? data["File"] : null;
     bool isShow = data.containsKey("Show") ? data["Show"] : true;
+    String? val = data.containsKey("Val") ? data["Val"] : null;
 
     Widget c = getWidget(data, onChanged);
     Function()? onTap;
@@ -151,6 +152,11 @@ class WeListItem extends StatelessWidget {
       };
     }
     if (type == "PSMultiValueSpecifier") {
+      onTap = () {
+        onClick!([data], null, type);
+      };
+    }
+    if (val != null) {
       onTap = () {
         onClick!([data], null, type);
       };
