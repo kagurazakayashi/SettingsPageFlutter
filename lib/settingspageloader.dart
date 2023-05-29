@@ -198,15 +198,14 @@ class SettingsPageLoader {
             showKeysMap.addAll(temp);
             break;
           case "Showkey":
+            print(setting);
             if (!setting.containsKey("ShowSetting") ||
                 !setting.containsKey("Key")) {
               continue;
             }
-            Map<String, dynamic> showSetting = {
-              "key": setting["Key"],
-              "ShowSetting": setting["ShowSetting"],
-              "Show": false
-            };
+            List showSettings = showKeysMap[setting[ks]] ?? [];
+            Map<String, dynamic> showSetting = setting;
+            showSetting["Show"] = false;
             if (setting.containsKey("Show") &&
                 ((setting["Show"] is bool && setting["Show"]) ||
                     (setting["Show"] is String &&
@@ -214,7 +213,9 @@ class SettingsPageLoader {
                             setting["Show"] == "1")))) {
               showSetting["Show"] = true;
             }
-            showKeysMap[setting[ks]] = showSetting;
+            showSettings.add(showSetting);
+            showKeysMap[setting[ks]] = showSettings;
+            print(showKeysMap[setting[ks]]);
             break;
           default:
         }
@@ -240,12 +241,17 @@ class SettingsPageLoader {
             }
             String val = "";
             if (setting.containsKey("Value")) {
-              if (setting["Value"] is String && setting["Value"].isNotEmpty) {
-                val = setting["Value"];
-              } else if (setting["Value"] is Map) {
-                if (setting["Value"].containsKey("Val")) {
-                  val = setting["Value"]["Val"];
-                }
+              switch (setting["Value"].runtimeType.toString()) {
+                case "String":
+                  val = setting["Value"];
+                  break;
+                case "Map":
+                case "_Map<String, dynamic>":
+                  if (setting["Value"].containsKey("Val")) {
+                    val = setting["Value"]["Val"];
+                  }
+                  break;
+                default:
               }
             } else if (setting.containsKey("DefaultValue")) {
               val = setting["DefaultValue"];
@@ -278,16 +284,18 @@ class SettingsPageLoader {
               return;
             }
             bool isShow = false;
-            if (value["ShowSetting"] is List) {
-              List showSettings = value["ShowSetting"];
-              for (var i = 0; i < showSettings.length; i++) {
-                String temp = showSettings[i];
-                if (temp == val) {
-                  isShow = true;
+            for (var v in value) {
+              if (v["ShowSetting"] is List) {
+                List showSettings = v["ShowSetting"];
+                for (var i = 0; i < showSettings.length; i++) {
+                  String temp = showSettings[i];
+                  if (temp == val) {
+                    isShow = true;
+                  }
                 }
               }
+              v["Show"] = isShow;
             }
-            value["Show"] = isShow;
           });
         }
       }
@@ -308,13 +316,15 @@ class SettingsPageLoader {
           }
           String settingKey = setting[ks];
           showKeysMap.forEach((_, value) {
-            String key = value["key"];
-            if (settingKey != key) {
-              return;
+            for (var v in value) {
+              String key = v["Key"];
+              if (settingKey != key) {
+                return;
+              }
+              bool isShow = v["Show"];
+              setting["Show"] = isShow;
+              isUpload = true;
             }
-            bool isShow = value["Show"];
-            setting["Show"] = isShow;
-            isUpload = true;
           });
         }
       }
