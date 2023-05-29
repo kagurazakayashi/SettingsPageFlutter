@@ -30,6 +30,7 @@ class SettingsPageLoader {
   Future<SettingsPageData> loadPlist({
     String plistFilePath = "",
     String importData = "",
+    String i18n = "",
     String plistFileName = "Root",
   }) async {
     SettingsPageData data = SettingsPageData();
@@ -44,7 +45,16 @@ class SettingsPageLoader {
         log.i("- Load Data: length: ${dataString.length} :");
       }
     } else {
-      String plistFilePath = "$baseDir$plistFileName.plist";
+      String plistFilePath = baseDir;
+      if (i18n.isNotEmpty) {
+        if (i18n.toUpperCase() == "ZH-CN" ||
+            i18n.toUpperCase() == "ZHCN" ||
+            i18n.toUpperCase() == "ZH") {
+          i18n = "zh_CN";
+        }
+        plistFilePath += "$i18n/";
+      }
+      plistFilePath += "$plistFileName.plist";
       dataString = await rootBundle.loadString(plistFilePath);
       if (Global.i.isShowLog) {
         log.i("- Load File: $plistFilePath , length: ${dataString.length} :");
@@ -198,7 +208,6 @@ class SettingsPageLoader {
             showKeysMap.addAll(temp);
             break;
           case "Showkey":
-            print(setting);
             if (!setting.containsKey("ShowSetting") ||
                 !setting.containsKey("Key")) {
               continue;
@@ -215,7 +224,6 @@ class SettingsPageLoader {
             }
             showSettings.add(showSetting);
             showKeysMap[setting[ks]] = showSettings;
-            print(showKeysMap[setting[ks]]);
             break;
           default:
         }
