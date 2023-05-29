@@ -208,8 +208,7 @@ class SettingsPageLoader {
             showKeysMap.addAll(temp);
             break;
           case "Showkey":
-            if (!setting.containsKey("ShowSetting") ||
-                !setting.containsKey("Key")) {
+            if (!setting.containsKey("ShowSetting")) {
               continue;
             }
             List showSettings = showKeysMap[setting[ks]] ?? [];
@@ -291,8 +290,8 @@ class SettingsPageLoader {
             if (val.isEmpty) {
               return;
             }
-            bool isShow = false;
             for (var v in value) {
+              bool isShow = false;
               if (v["ShowSetting"] is List) {
                 List showSettings = v["ShowSetting"];
                 for (var i = 0; i < showSettings.length; i++) {
@@ -325,6 +324,9 @@ class SettingsPageLoader {
           String settingKey = setting[ks];
           showKeysMap.forEach((_, value) {
             for (var v in value) {
+              if (!v.containsKey("Key")) {
+                continue;
+              }
               String key = v["Key"];
               if (settingKey != key) {
                 return;
