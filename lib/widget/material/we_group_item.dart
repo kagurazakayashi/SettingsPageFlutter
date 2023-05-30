@@ -11,12 +11,24 @@ class WeGroupItem extends StatelessWidget {
   /// The entry component that converts the data in the plist file into a UI
   const WeGroupItem({
     Key? key,
+    this.isDev = false,
     this.isDark = false,
     this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.wegroupitem.isDev}
+  /// 是否为开发模式
+  ///
+  /// 默认为false
+  ///
+  /// Is it development mode
+  ///
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDev;
 
   /// {@template settingspageflutter.widget.wegroupitem.isDark}
   /// 是否为暗黑模式
@@ -144,10 +156,12 @@ class WeGroupItem extends StatelessWidget {
                 ? WeGroup(
                     title: titleStr,
                     foot: foot,
+                    isDev: isDev,
                     isDark: isDark,
                     decoration: decoration,
                     child: childs != null && childs.isNotEmpty
                         ? WeColumn(
+                            isDev: isDev,
                             isDark: isDark,
                             decoration: decoration,
                             childs: childs,
@@ -157,9 +171,11 @@ class WeGroupItem extends StatelessWidget {
                         : null,
                   )
                 : WeItem(
+                    isDev: isDev,
                     isDark: isDark,
                     decoration: decoration,
                     child: WeListItem(
+                      isDev: isDev,
                       isDark: isDark,
                       decoration: decoration,
                       data: data,

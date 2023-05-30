@@ -9,12 +9,24 @@ class WeGroup extends StatelessWidget {
   /// Provides a group (`PSGroupSpecifier`) control in the data
   const WeGroup({
     Key? key,
+    this.isDev = false,
     required this.title,
     this.foot,
     this.isDark = false,
     this.decoration,
     required this.child,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.wegroupitem.isDev}
+  /// 是否为开发模式
+  ///
+  /// 默认为false
+  ///
+  /// Is it development mode
+  ///
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDev;
 
   /// {@template settingspageflutter.widget.wegroup.title}
   /// 组标题
@@ -109,6 +121,7 @@ class WeGroup extends StatelessWidget {
           ),
         if (child != null)
           WeItem(
+            isDev: isDev,
             isDark: isDark,
             decoration: decoration,
             child: child!,

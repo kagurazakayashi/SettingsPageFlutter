@@ -12,12 +12,24 @@ class WeColumn extends StatelessWidget {
   /// If it is multiple items, add a separator between each item
   const WeColumn({
     Key? key,
+    this.isDev = false,
     this.isDark = false,
     this.decoration,
     this.childs,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.wegroupitem.isDev}
+  /// 是否为开发模式
+  ///
+  /// 默认为false
+  ///
+  /// Is it development mode
+  ///
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDev;
 
   /// {@template settingspageflutter.widget.wecolumn.isDark}
   /// 是否为暗黑模式
@@ -167,6 +179,7 @@ class WeColumn extends StatelessWidget {
               }
               isShowDiv = true;
               return WeListItem(
+                isDev: isDev,
                 isDark: isDark,
                 decoration: decoration,
                 data: e,

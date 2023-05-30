@@ -15,6 +15,7 @@ import "../we_textstyle.dart";
 ///   * [value] 为数据中的key`Value`的值,用于需要修改项的value
 ///
 ///   * [isTip] 用于判断是否需要提示，当前只有`PSTextFieldSpecifier`类型的项才会有提示
+/// * [isDev] 是否为开发模式
 ///
 /// Returns a control based on data
 ///
@@ -27,6 +28,8 @@ import "../we_textstyle.dart";
 ///   * [value] is the value of the key `Value` in the data, used for the value of the item to be modified
 ///
 ///   * [isTip] is used to determine whether a prompt is needed. Currently, only items of type `PSTextFieldSpecifier` will have prompts
+///
+/// * [isDev] Whether it is development mode
 /// {@tool snippet}
 /// ```
 /// onChanged: (key, value, isTip) {
@@ -43,13 +46,12 @@ import "../we_textstyle.dart";
 /// }
 /// ```
 /// {@end-tool}
-Widget getWidget(
-  Map<String, dynamic> data,
-  final Function(String key, dynamic value, bool isTip) onChanged,
-) {
+Widget getWidget(Map<String, dynamic> data,
+    final Function(String key, dynamic value, bool isTip) onChanged,
+    {bool isDev = false}) {
   late Widget c;
   String id = data.containsKey("Key") ? data["Key"] : "";
-  String? title = data.containsKey("Title") ? data["Title"] : null;
+  String title = data.containsKey("Title") ? data["Title"] : "";
   String type = data.containsKey("Type") ? data["Type"] : "";
   List<Map<String, dynamic>>? childs =
       data.containsKey("Childs") ? data["Childs"] : null;
@@ -60,6 +62,7 @@ Widget getWidget(
   //根据类型返回控件
   switch (type) {
     case "PSToggleSwitchSpecifier": //开关(Switch)
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
       Object temp = data.containsKey("Value")
           ? data["Value"]
           : data.containsKey("DefaultValue")
@@ -85,11 +88,22 @@ Widget getWidget(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (title != null)
-              Text(
-                title,
-                style: tsMain,
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title.isNotEmpty)
+                  Text(
+                    title,
+                    style: tsMain,
+                  ),
+                if (isDev && key.isNotEmpty)
+                  Text(
+                    key,
+                    style: tsGroupTag,
+                  ),
+              ],
+            ),
             const SizedBox(width: 8),
             Switch(value: val, onChanged: (val) => onChanged(id, val, false))
           ],
@@ -97,6 +111,7 @@ Widget getWidget(
       );
       break;
     case "PSTextFieldSpecifier": //文本框(TextField)
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
       String val = data.containsKey("Value") ? data["Value"] : ""; //内容
       String label = data.containsKey('Title') ? data['Title'] : ""; //标签
       String hintText = data.containsKey('HintText')
@@ -300,7 +315,9 @@ Widget getWidget(
         onChanged: onChanged,
         style: tsMain,
         readOnly: readOnly,
-        labelText: label.isEmpty ? null : label,
+        labelText: label.isEmpty
+            ? null
+            : (label + (isDev && key.isNotEmpty ? " - $key" : "")),
         labelStyle: tsMain,
         hintText: hintText.isEmpty ? null : hintText,
         hintStyle: tsGroupTag,
@@ -318,6 +335,7 @@ Widget getWidget(
       );
       break;
     case "PSSliderSpecifier": //滑动条(Slider)
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
       double val = 0; //当前值
       double min = 0; //最小值
       double max = 100; //最大值
@@ -448,11 +466,22 @@ Widget getWidget(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (title != null)
-              Text(
-                title,
-                style: tsMain,
-              ),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (title.isNotEmpty)
+                  Text(
+                    title,
+                    style: tsMain,
+                  ),
+                if (isDev && key.isNotEmpty)
+                  Text(
+                    key,
+                    style: tsGroupTag,
+                  ),
+              ],
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Row(
@@ -478,6 +507,7 @@ Widget getWidget(
       );
       break;
     default: //其他
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
       dynamic temp = data.containsKey("Value") ? data["Value"] : "";
       String val = "";
       if (temp is String && temp.isEmpty) {
@@ -491,18 +521,29 @@ Widget getWidget(
         val = handleValueRODefaultValue(data, temp);
       }
       c = Padding(
-        padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+        padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
-          height: 39,
+          height: 42,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (title != null)
-                Text(
-                  title,
-                  style: tsMain,
-                ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (title.isNotEmpty)
+                    Text(
+                      title,
+                      style: tsMain,
+                    ),
+                  if (isDev && key.isNotEmpty)
+                    Text(
+                      key,
+                      style: tsGroupTag,
+                    ),
+                ],
+              ),
               const SizedBox(width: 8),
               Row(
                 mainAxisSize: MainAxisSize.min,

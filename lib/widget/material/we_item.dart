@@ -7,10 +7,22 @@ class WeItem extends StatelessWidget {
   /// Provides a group UI style
   const WeItem({
     Key? key,
+    this.isDev = false,
     this.decoration,
     required this.child,
     this.isDark = false,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.wegroupitem.isDev}
+  /// 是否为开发模式
+  ///
+  /// 默认为false
+  ///
+  /// Is it development mode
+  ///
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDev;
 
   /// {@template settingspageflutter.widget.weitem.isDark}
   /// 是否为暗黑模式

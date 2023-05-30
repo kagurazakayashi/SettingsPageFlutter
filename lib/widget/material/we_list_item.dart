@@ -9,12 +9,24 @@ class WeListItem extends StatelessWidget {
   /// Provides an interactive control
   const WeListItem({
     Key? key,
+    this.isDev = false,
     this.isDark = false,
     this.decoration,
     required this.data,
     this.onClick,
     required this.onChanged,
   }) : super(key: key);
+
+  /// {@template settingspageflutter.widget.wegroupitem.isDev}
+  /// 是否为开发模式
+  ///
+  /// 默认为false
+  ///
+  /// Is it development mode
+  ///
+  /// Default is false
+  /// {@endtemplate}
+  final bool isDev;
 
   /// {@template settingspageflutter.widget.welistitem.isDark}
   /// 是否为暗黑模式
@@ -134,7 +146,11 @@ class WeListItem extends StatelessWidget {
     bool isShow = data.containsKey("Show") ? data["Show"] : true;
     String? val = data.containsKey("Val") ? data["Val"] : null;
 
-    Widget c = getWidget(data, onChanged);
+    Widget c = getWidget(
+      data,
+      onChanged,
+      isDev: isDev,
+    );
     Function()? onTap;
 
     if (childs != null || file != null) {
