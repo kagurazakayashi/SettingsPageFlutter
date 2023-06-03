@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:settingspageflutter/widget/material/we_TextField.dart";
+import "package:settingspageflutter/widget/we_size.dart";
 
 import "../we_handle.dart";
 import "../we_textstyle.dart";
@@ -46,18 +47,14 @@ import "../we_textstyle.dart";
 /// }
 /// ```
 /// {@end-tool}
-Widget getWidget(Map<String, dynamic> data,
-    final Function(String key, dynamic value, bool isTip) onChanged,
-    {bool isDev = false}) {
+Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic value, bool isTip) onChanged, {bool isDev = false}) {
   late Widget c;
   String id = data.containsKey("Key") ? data["Key"] : "";
   String title = data.containsKey("Title") ? data["Title"] : "";
   String type = data.containsKey("Type") ? data["Type"] : "";
-  List<Map<String, dynamic>>? childs =
-      data.containsKey("Childs") ? data["Childs"] : null;
+  List<Map<String, dynamic>>? childs = data.containsKey("Childs") ? data["Childs"] : null;
   String? file = data.containsKey("File") ? data["File"] : null;
-  List<Map<String, dynamic>>? titleValues =
-      data.containsKey("TitleValues") ? data["TitleValues"] : null;
+  List<Map<String, dynamic>>? titleValues = data.containsKey("TitleValues") ? data["TitleValues"] : null;
 
   //根据类型返回控件
   switch (type) {
@@ -130,9 +127,7 @@ Widget getWidget(Map<String, dynamic> data,
       bool autofocus = false; //是否自动获取焦点
 
       //自动纠正拼写
-      Object temp = data.containsKey("AutocorrectionStyle")
-          ? data["AutocorrectionStyle"]
-          : false;
+      Object temp = data.containsKey("AutocorrectionStyle") ? data["AutocorrectionStyle"] : false;
       switch (temp.runtimeType) {
         case bool:
           autoCorrect = temp as bool;
@@ -160,9 +155,7 @@ Widget getWidget(Map<String, dynamic> data,
           break;
       }
       //自动大写
-      temp = data.containsKey("AutocapitalizationStyle")
-          ? data["AutocapitalizationStyle"]
-          : 'none';
+      temp = data.containsKey("AutocapitalizationStyle") ? data["AutocapitalizationStyle"] : 'none';
       switch (temp.runtimeType) {
         case String:
           switch (temp) {
@@ -183,9 +176,7 @@ Widget getWidget(Map<String, dynamic> data,
           break;
       }
       //是否密文显示
-      temp = data.containsKey('TextFieldIsSecure')
-          ? data['TextFieldIsSecure']
-          : false;
+      temp = data.containsKey('TextFieldIsSecure') ? data['TextFieldIsSecure'] : false;
       switch (temp.runtimeType) {
         case bool:
           obscureText = temp as bool;
@@ -315,9 +306,7 @@ Widget getWidget(Map<String, dynamic> data,
         onChanged: onChanged,
         style: tsMain,
         readOnly: readOnly,
-        labelText: label.isEmpty
-            ? null
-            : (label + (isDev && key.isNotEmpty ? " - $key" : "")),
+        labelText: label.isEmpty ? null : (label + (isDev && key.isNotEmpty ? " - $key" : "")),
         labelStyle: tsMain,
         hintText: hintText.isEmpty ? null : hintText,
         hintStyle: tsGroupTag,
@@ -345,8 +334,7 @@ Widget getWidget(Map<String, dynamic> data,
       Color activeColor = Colors.blue; //激活颜色
       Color inactiveColor = Colors.grey; //未激活颜色
       //最小值
-      Object temp =
-          data.containsKey("MinimumValue") ? data["MinimumValue"] : 0.0;
+      Object temp = data.containsKey("MinimumValue") ? data["MinimumValue"] : 0.0;
       switch (temp.runtimeType) {
         case double:
           min = temp as double;
@@ -523,7 +511,7 @@ Widget getWidget(Map<String, dynamic> data,
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
-          height: 42,
+          height: 28 * weSP,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -553,8 +541,7 @@ Widget getWidget(Map<String, dynamic> data,
                     val,
                     style: tsMainVal,
                   ),
-                  if (childs != null || file != null || titleValues != null)
-                    const SizedBox(width: 5),
+                  if (childs != null || file != null || titleValues != null) const SizedBox(width: 5),
                   if (childs != null || file != null || titleValues != null)
                     Icon(
                       Icons.arrow_forward_ios,

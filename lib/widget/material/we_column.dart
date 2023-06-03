@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:settingspageflutter/widget/we_size.dart';
 
 import 'we_list_item.dart';
 
@@ -97,8 +98,7 @@ class WeColumn extends StatelessWidget {
   /// }
   /// ```
   /// {@end-tool}
-  final Function(List<Map<String, dynamic>>? childs, String? file, String type)?
-      onClick;
+  final Function(List<Map<String, dynamic>>? childs, String? file, String type)? onClick;
 
   /// {@template settingspageflutter.widget.wecolumn.onChanged}
   /// 值改变事件
@@ -154,19 +154,18 @@ class WeColumn extends StatelessWidget {
     }
     bool isShowDiv = true;
     return data.isEmpty
-        ? const Center(
+        ? Center(
             child: Text(
               "No Data",
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 16 * weSP,
                 color: Colors.grey,
               ),
             ),
           )
         : Column(
             children: data.map((e) {
-              bool isShow =
-                  e != null && e.containsKey("Show") ? e["Show"] : true;
+              bool isShow = e != null && e.containsKey("Show") ? e["Show"] : true;
               if (!isShow) {
                 isShowDiv = false;
                 return const SizedBox();
