@@ -544,6 +544,8 @@ Widget getWidget(Map<String, dynamic> data,
         child: SizedBox(
           height: 28 * weSP,
           child: Semantics(
+            container: true,
+            selected: (childs != null || file != null || titleValues != null),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
