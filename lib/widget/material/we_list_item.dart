@@ -12,6 +12,8 @@ class WeListItem extends StatelessWidget {
     this.isDev = false,
     this.isDark = false,
     this.decoration,
+    this.visibilitySemantics,
+    this.clearSemantics,
     required this.data,
     this.onClick,
     required this.onChanged,
@@ -45,6 +47,20 @@ class WeListItem extends StatelessWidget {
   /// Item style
   /// {@endtemplate}
   final BoxDecoration? decoration;
+
+  /// {@template settingspageflutter.widget.welistitem.visibilitySemantics}
+  /// 显示密码语义
+  ///
+  /// Show password semantics
+  /// {@endtemplate}
+  final String? visibilitySemantics;
+
+  /// {@template settingspageflutter.widget.welistitem.clearSemantics}
+  /// 清除语义
+  ///
+  /// Clear semantics
+  /// {@endtemplate}
+  final String? clearSemantics;
 
   /// {@template settingspageflutter.widget.welistitem.data}
   /// 数据
@@ -149,6 +165,8 @@ class WeListItem extends StatelessWidget {
     Widget c = getWidget(
       data,
       onChanged,
+      visibilitySemantics: visibilitySemantics,
+      clearSemantics: clearSemantics,
       isDev: isDev,
     );
     Function()? onTap;
@@ -171,6 +189,10 @@ class WeListItem extends StatelessWidget {
       onTap = () {
         onClick!([data], null, type);
       };
+      c= Semantics(
+        selected: true,
+        child: c,
+      );
     }
     if (val != null) {
       onTap = () {

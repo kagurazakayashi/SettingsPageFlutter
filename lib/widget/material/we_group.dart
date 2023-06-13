@@ -113,9 +113,12 @@ class WeGroup extends StatelessWidget {
             child: Align(
               alignment:
                   child != null ? Alignment.centerLeft : Alignment.center,
-              child: Text(
-                title!,
-                style: tsGroupTag,
+              child: Semantics(
+                header: true,
+                child: Text(
+                  title!,
+                  style: tsGroupTag,
+                ),
               ),
             ),
           ),
@@ -132,9 +135,12 @@ class WeGroup extends StatelessWidget {
             child: Align(
               alignment:
                   child != null ? Alignment.centerLeft : Alignment.center,
-              child: Text(
-                foot!,
-                style: tsGroupTag,
+              child: Semantics(
+                header: true,
+                child: Text(
+                  foot!,
+                  style: tsGroupTag,
+                ),
               ),
             ),
           ),

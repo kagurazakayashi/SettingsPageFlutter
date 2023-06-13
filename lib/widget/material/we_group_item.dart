@@ -13,6 +13,8 @@ class WeGroupItem extends StatelessWidget {
     Key? key,
     this.isDev = false,
     this.isDark = false,
+    this.visibilitySemantics,
+    this.clearSemantics,
     this.decoration,
     required this.data,
     this.onClick,
@@ -40,6 +42,20 @@ class WeGroupItem extends StatelessWidget {
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
+
+  /// {@template settingspageflutter.widget.wegroupitem.visibilitySemantics}
+  /// 显示密码语义
+  ///
+  /// Show password semantics
+  /// {@endtemplate}
+  final String? visibilitySemantics;
+
+  /// {@template settingspageflutter.widget.wegroupitem.clearSemantics}
+  /// 清除语义
+  ///
+  /// Clear semantics
+  /// {@endtemplate}
+  final String? clearSemantics;
 
   /// {@template settingspageflutter.widget.wegroupitem.decoration}
   /// 条目样式
@@ -163,6 +179,8 @@ class WeGroupItem extends StatelessWidget {
                         ? WeColumn(
                             isDev: isDev,
                             isDark: isDark,
+                            visibilitySemantics: visibilitySemantics,
+                            clearSemantics: clearSemantics,
                             decoration: decoration,
                             childs: childs,
                             onClick: onClick,
@@ -177,6 +195,8 @@ class WeGroupItem extends StatelessWidget {
                     child: WeListItem(
                       isDev: isDev,
                       isDark: isDark,
+                      visibilitySemantics: visibilitySemantics,
+                      clearSemantics: clearSemantics,
                       decoration: decoration,
                       data: data,
                       onClick: onClick,

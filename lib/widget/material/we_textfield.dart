@@ -23,6 +23,8 @@ class WeTextField extends StatefulWidget {
     this.autofocus = false,
     this.onSubmitted,
     this.isDark = false,
+    this.visibilitySemantics,
+    this.clearSemantics,
     required this.id,
     required this.value,
     required this.onChanged,
@@ -47,6 +49,8 @@ class WeTextField extends StatefulWidget {
   final bool autofocus;
   final ValueChanged<String>? onSubmitted;
   final bool isDark;
+  final String? visibilitySemantics;
+  final String? clearSemantics;
   final String id;
   final String value;
   final Function(String key, dynamic value, bool isTip) onChanged;
@@ -92,30 +96,38 @@ class _WeTextFieldState extends State<WeTextField> {
           children: [
             if (widget.suffixIcon != null) widget.suffixIcon!,
             if (widget.obscureText)
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
-                child: Icon(
-                  _obscureText ? Icons.visibility : Icons.visibility_off,
-                  color: widget.isDark ? Colors.white70 : null,
+              Semantics(
+                label: widget.visibilitySemantics,
+                button: true,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                  child: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: widget.isDark ? Colors.white70 : null,
+                  ),
                 ),
               ),
             if (!widget.readOnly)
-              GestureDetector(
-                onTap: widget.controller.text.isEmpty
-                    ? null
-                    : () {
-                        widget.controller.text = "";
-                        widget.onChanged(widget.id, "", false);
-                      },
-                child: Container(
-                  padding: const EdgeInsets.only(left: 8),
-                  child: Icon(
-                    Icons.cancel,
-                    color: widget.value == "" ? Colors.grey : Colors.blue,
+              Semantics(
+                label: widget.clearSemantics,
+                button: true,
+                child: GestureDetector(
+                  onTap: widget.controller.text.isEmpty
+                      ? null
+                      : () {
+                          widget.controller.text = "";
+                          widget.onChanged(widget.id, "", false);
+                        },
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Icon(
+                      Icons.cancel,
+                      color: widget.value == "" ? Colors.grey : Colors.blue,
+                    ),
                   ),
                 ),
               ),

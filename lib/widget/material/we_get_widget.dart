@@ -47,14 +47,18 @@ import "../we_textstyle.dart";
 /// }
 /// ```
 /// {@end-tool}
-Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic value, bool isTip) onChanged, {bool isDev = false}) {
+Widget getWidget(Map<String, dynamic> data,
+    final Function(String key, dynamic value, bool isTip) onChanged,
+    {String? visibilitySemantics, String? clearSemantics, bool isDev = false}) {
   late Widget c;
   String id = data.containsKey("Key") ? data["Key"] : "";
   String title = data.containsKey("Title") ? data["Title"] : "";
   String type = data.containsKey("Type") ? data["Type"] : "";
-  List<Map<String, dynamic>>? childs = data.containsKey("Childs") ? data["Childs"] : null;
+  List<Map<String, dynamic>>? childs =
+      data.containsKey("Childs") ? data["Childs"] : null;
   String? file = data.containsKey("File") ? data["File"] : null;
-  List<Map<String, dynamic>>? titleValues = data.containsKey("TitleValues") ? data["TitleValues"] : null;
+  List<Map<String, dynamic>>? titleValues =
+      data.containsKey("TitleValues") ? data["TitleValues"] : null;
 
   //根据类型返回控件
   switch (type) {
@@ -81,29 +85,38 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
       }
       c = SizedBox(
         height: 55,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (title.isNotEmpty)
-                  Text(
-                    title,
-                    style: tsMain,
-                  ),
-                if (isDev && key.isNotEmpty)
-                  Text(
-                    key,
-                    style: tsGroupTag,
-                  ),
-              ],
-            ),
-            const SizedBox(width: 8),
-            Switch(value: val, onChanged: (val) => onChanged(id, val, false))
-          ],
+        child: Semantics(
+          toggled: val,
+          onTap: () => onChanged(id, !val, false),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (title.isNotEmpty)
+                    Text(
+                      title,
+                      style: tsMain,
+                    ),
+                  if (isDev && key.isNotEmpty)
+                    Text(
+                      key,
+                      style: tsGroupTag,
+                    ),
+                ],
+              ),
+              const SizedBox(width: 8),
+              ExcludeSemantics(
+                child: Switch(
+                  value: val,
+                  onChanged: (val) => onChanged(id, val, false),
+                ),
+              ),
+            ],
+          ),
         ),
       );
       break;
@@ -127,7 +140,9 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
       bool autofocus = false; //是否自动获取焦点
 
       //自动纠正拼写
-      Object temp = data.containsKey("AutocorrectionStyle") ? data["AutocorrectionStyle"] : false;
+      Object temp = data.containsKey("AutocorrectionStyle")
+          ? data["AutocorrectionStyle"]
+          : false;
       switch (temp.runtimeType) {
         case bool:
           autoCorrect = temp as bool;
@@ -155,7 +170,9 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
           break;
       }
       //自动大写
-      temp = data.containsKey("AutocapitalizationStyle") ? data["AutocapitalizationStyle"] : 'none';
+      temp = data.containsKey("AutocapitalizationStyle")
+          ? data["AutocapitalizationStyle"]
+          : 'none';
       switch (temp.runtimeType) {
         case String:
           switch (temp) {
@@ -176,7 +193,9 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
           break;
       }
       //是否密文显示
-      temp = data.containsKey('TextFieldIsSecure') ? data['TextFieldIsSecure'] : false;
+      temp = data.containsKey('TextFieldIsSecure')
+          ? data['TextFieldIsSecure']
+          : false;
       switch (temp.runtimeType) {
         case bool:
           obscureText = temp as bool;
@@ -299,28 +318,35 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
           ),
         ),
       );
-      c = WeTextField(
-        controller: controller,
-        id: id,
-        value: val,
-        onChanged: onChanged,
-        style: tsMain,
-        readOnly: readOnly,
-        labelText: label.isEmpty ? null : (label + (isDev && key.isNotEmpty ? " - $key" : "")),
-        labelStyle: tsMain,
-        hintText: hintText.isEmpty ? null : hintText,
-        hintStyle: tsGroupTag,
-        border: InputBorder.none,
-        autocorrect: autoCorrect,
-        textCapitalization: autoCapitalization,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction,
-        minLines: 1,
-        maxLines: maxLines,
-        maxLength: maxLength,
-        autofocus: autofocus,
-        onSubmitted: (val) => onChanged(id, val, true),
+      c = Semantics(
+        textField: true,
+        child: WeTextField(
+          controller: controller,
+          id: id,
+          value: val,
+          onChanged: onChanged,
+          style: tsMain,
+          readOnly: readOnly,
+          labelText: label.isEmpty
+              ? null
+              : (label + (isDev && key.isNotEmpty ? " - $key" : "")),
+          labelStyle: tsMain,
+          hintText: hintText.isEmpty ? null : hintText,
+          hintStyle: tsGroupTag,
+          border: InputBorder.none,
+          autocorrect: autoCorrect,
+          textCapitalization: autoCapitalization,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          minLines: 1,
+          maxLines: maxLines,
+          maxLength: maxLength,
+          autofocus: autofocus,
+          visibilitySemantics: visibilitySemantics,
+          clearSemantics: clearSemantics,
+          onSubmitted: (val) => onChanged(id, val, true),
+        ),
       );
       break;
     case "PSSliderSpecifier": //滑动条(Slider)
@@ -334,7 +360,8 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
       Color activeColor = Colors.blue; //激活颜色
       Color inactiveColor = Colors.grey; //未激活颜色
       //最小值
-      Object temp = data.containsKey("MinimumValue") ? data["MinimumValue"] : 0.0;
+      Object temp =
+          data.containsKey("MinimumValue") ? data["MinimumValue"] : 0.0;
       switch (temp.runtimeType) {
         case double:
           min = temp as double;
@@ -450,68 +477,8 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
 
       c = SizedBox(
         height: 55,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (title.isNotEmpty)
-                  Text(
-                    title,
-                    style: tsMain,
-                  ),
-                if (isDev && key.isNotEmpty)
-                  Text(
-                    key,
-                    style: tsGroupTag,
-                  ),
-              ],
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Slider(
-                      value: val,
-                      min: min,
-                      max: max,
-                      divisions: divisions,
-                      activeColor: activeColor,
-                      inactiveColor: inactiveColor,
-                      onChanged: (val) => onChanged(id, val, false),
-                    ),
-                  ),
-                  Text(val.toStringAsFixed(accuracy), style: tsMain),
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-      break;
-    default: //其他
-      String key = data.containsKey("Key") ? data["Key"] : ""; //键
-      dynamic temp = data.containsKey("Value") ? data["Value"] : "";
-      String val = "";
-      if (temp is String && temp.isEmpty) {
-        temp = data.containsKey("DefaultValue") ? data["DefaultValue"] : "";
-        if (temp is String && temp.isEmpty) {
-          val = "";
-        } else {
-          val = handleValueRODefaultValue(data, temp);
-        }
-      } else {
-        val = handleValueRODefaultValue(data, temp);
-      }
-      c = Padding(
-        padding: const EdgeInsets.only(top: 6.0, bottom: 6),
-        child: SizedBox(
-          height: 28 * weSP,
+        child: Semantics(
+          slider: true,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -533,25 +500,92 @@ Widget getWidget(Map<String, dynamic> data, final Function(String key, dynamic v
                 ],
               ),
               const SizedBox(width: 8),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    val,
-                    style: tsMainVal,
-                  ),
-                  if (childs != null || file != null || titleValues != null) const SizedBox(width: 5),
-                  if (childs != null || file != null || titleValues != null)
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 16,
-                      weight: 1000,
-                      color: Colors.grey[500]!,
+              Expanded(
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Expanded(
+                      child: Slider(
+                        label: val.toStringAsFixed(accuracy),
+                        value: val,
+                        min: min,
+                        max: max,
+                        divisions: divisions,
+                        activeColor: activeColor,
+                        inactiveColor: inactiveColor,
+                        onChanged: (val) => onChanged(id, val, false),
+                      ),
                     ),
-                ],
+                    Text(val.toStringAsFixed(accuracy), style: tsMain),
+                  ],
+                ),
               )
             ],
+          ),
+        ),
+      );
+      break;
+    default: //其他
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
+      dynamic temp = data.containsKey("Value") ? data["Value"] : "";
+      String val = "";
+      if (temp is String && temp.isEmpty) {
+        temp = data.containsKey("DefaultValue") ? data["DefaultValue"] : "";
+        if (temp is String && temp.isEmpty) {
+          val = "";
+        } else {
+          val = handleValueRODefaultValue(data, temp);
+        }
+      } else {
+        val = handleValueRODefaultValue(data, temp);
+      }
+      c = Padding(
+        padding: const EdgeInsets.only(top: 6.0, bottom: 6),
+        child: SizedBox(
+          height: 28 * weSP,
+          child: Semantics(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (title.isNotEmpty)
+                      Text(
+                        title,
+                        style: tsMain,
+                      ),
+                    if (isDev && key.isNotEmpty)
+                      Text(
+                        key,
+                        style: tsGroupTag,
+                      ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      val,
+                      style: tsMainVal,
+                    ),
+                    if (childs != null || file != null || titleValues != null)
+                      const SizedBox(width: 5),
+                    if (childs != null || file != null || titleValues != null)
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        weight: 1000,
+                        color: Colors.grey[500]!,
+                      ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );

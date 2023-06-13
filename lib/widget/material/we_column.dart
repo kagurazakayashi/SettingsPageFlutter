@@ -15,6 +15,8 @@ class WeColumn extends StatelessWidget {
     Key? key,
     this.isDev = false,
     this.isDark = false,
+    this.visibilitySemantics,
+    this.clearSemantics,
     this.decoration,
     this.childs,
     this.onClick,
@@ -42,6 +44,20 @@ class WeColumn extends StatelessWidget {
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
+
+  /// {@template settingspageflutter.widget.wecolumn.visibilitySemantics}
+  /// 显示密码语义
+  ///
+  /// Show password semantics
+  /// {@endtemplate}
+  final String? visibilitySemantics;
+
+  /// {@template settingspageflutter.widget.wecolumn.clearSemantics}
+  /// 清除语义
+  ///
+  /// Clear semantics
+  /// {@endtemplate}
+  final String? clearSemantics;
 
   /// {@template settingspageflutter.widget.wecolumn.decoration}
   /// 条目样式
@@ -180,6 +196,8 @@ class WeColumn extends StatelessWidget {
               return WeListItem(
                 isDev: isDev,
                 isDark: isDark,
+                visibilitySemantics: visibilitySemantics,
+                clearSemantics: clearSemantics,
                 decoration: decoration,
                 data: e,
                 onClick: onClick,
