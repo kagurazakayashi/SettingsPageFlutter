@@ -9,6 +9,32 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>安全:
+CA 证书
+文件标头: -----BEGIN CERTIFICATE-----</string>
+		</dict>
+		<dict>
+			<key>IsFile</key>
+			<true/>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string></string>
+			<key>Key</key>
+			<string>64301</string>
+			<key>MaxLines</key>
+			<string>5</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>版本</string>
+		</dict>
+		<dict>
 			<key>DefaultValue</key>
 			<string>v0.0.1</string>
 			<key>Type</key>

@@ -19,6 +19,7 @@ class WeGroupItem extends StatelessWidget {
     required this.data,
     this.onClick,
     required this.onChanged,
+    this.openFile,
   }) : super(key: key);
 
   /// {@template settingspageflutter.widget.wegroupitem.isDev}
@@ -155,6 +156,18 @@ class WeGroupItem extends StatelessWidget {
   /// {@end-tool}
   final Function(String key, dynamic value, bool isTip) onChanged;
 
+  /// {@template settingspageflutter.widget.wegroupitem.openFile}
+  /// 打开文件事件
+  ///  
+  /// * [key] 为数据中的key`Key`的值,用于需要修改项的key
+  /// 
+  /// Open file event
+  /// 
+  /// * [key] is the value of the key `Key` in the data, used to modify the key of the item that needs to be modified
+  /// 
+  /// {@endtemplate}
+  final Function(String key)? openFile;
+
   @override
   Widget build(BuildContext context) {
     // 从数据中获取需要的值
@@ -185,6 +198,7 @@ class WeGroupItem extends StatelessWidget {
                             childs: childs,
                             onClick: onClick,
                             onChanged: onChanged,
+                            openFile: openFile,
                           )
                         : null,
                   )
@@ -201,6 +215,7 @@ class WeGroupItem extends StatelessWidget {
                       data: data,
                       onClick: onClick,
                       onChanged: onChanged,
+                      openFile: openFile,
                     ),
                   ),
           )

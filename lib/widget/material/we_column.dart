@@ -21,6 +21,7 @@ class WeColumn extends StatelessWidget {
     this.childs,
     this.onClick,
     required this.onChanged,
+    this.openFile,
   }) : super(key: key);
 
   /// {@template settingspageflutter.widget.wegroupitem.isDev}
@@ -156,6 +157,18 @@ class WeColumn extends StatelessWidget {
   /// {@end-tool}
   final Function(String key, dynamic value, bool isTip) onChanged;
 
+  /// {@template settingspageflutter.widget.wecolumn.openFile}
+  /// 打开文件事件
+  /// 
+  /// * [key] 为数据中的key`Key`的值,用于需要修改项的key
+  /// 
+  /// Open file event
+  /// 
+  /// * [key] is the value of the key `Key` in the data, used to modify the key of the item that needs to be modified
+  /// 
+  /// {@endtemplate}
+  final Function(String key)? openFile;
+
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>?> data = [];
@@ -202,6 +215,7 @@ class WeColumn extends StatelessWidget {
                 data: e,
                 onClick: onClick,
                 onChanged: onChanged,
+                openFile: openFile,
               );
             }).toList(),
           );

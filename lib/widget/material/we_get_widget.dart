@@ -49,7 +49,10 @@ import "../we_textstyle.dart";
 /// {@end-tool}
 Widget getWidget(Map<String, dynamic> data,
     final Function(String key, dynamic value, bool isTip) onChanged,
-    {String? visibilitySemantics, String? clearSemantics, bool isDev = false}) {
+    {final Function(String key)? openFile,
+    String? visibilitySemantics,
+    String? clearSemantics,
+    bool isDev = false}) {
   late Widget c;
   String id = data.containsKey("Key") ? data["Key"] : "";
   String title = data.containsKey("Title") ? data["Title"] : "";
@@ -138,6 +141,7 @@ Widget getWidget(Map<String, dynamic> data,
       int maxLines = 1; //最大行数
       int? maxLength; //最大长度
       bool autofocus = false; //是否自动获取焦点
+      bool isFile = false; //是否为文件
 
       //自动纠正拼写
       Object temp = data.containsKey("AutocorrectionStyle")
@@ -306,6 +310,20 @@ Widget getWidget(Map<String, dynamic> data,
           }
           break;
       }
+      //是否为文件
+      temp = data.containsKey('IsFile') ? data['IsFile'] : false;
+      switch (temp.runtimeType) {
+        case bool:
+          isFile = temp as bool;
+          break;
+        case String:
+          if (temp == "true") {
+            isFile = true;
+          } else if (temp == "false") {
+            isFile = false;
+          }
+          break;
+      }
 
       TextEditingController controller = TextEditingController.fromValue(
         TextEditingValue(
@@ -348,6 +366,17 @@ Widget getWidget(Map<String, dynamic> data,
           onSubmitted: (val) => onChanged(id, val, true),
         ),
       );
+      if (isFile) {
+        c = Row(
+          children: [
+            Expanded(child: c),
+            IconButton(
+              icon: const Icon(Icons.folder_open),
+              onPressed: () => openFile!(id),
+            ),
+          ],
+        );
+      }
       break;
     case "PSSliderSpecifier": //滑动条(Slider)
       String key = data.containsKey("Key") ? data["Key"] : ""; //键

@@ -37,6 +37,7 @@ dependencies:
   settingspageflutter:
     path: ../
   bot_toast: ^4.0.3
+  file_picker: ^5.3.2
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,7 @@
+import "dart:io";
+
 import "package:bot_toast/bot_toast.dart";
+import "package:file_picker/file_picker.dart";
 import "package:flutter/material.dart";
 import "package:settingspageflutter/settingspageloader.dart";
 import "package:settingspageflutter/widget/material/we_group_item.dart";
@@ -126,7 +129,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                   isDark: isDark,
                   data: o,
                   onClick: (childs, file, type) {
-                    if (childs!=null) {
+                    if (childs != null) {
                       for (var c in childs) {
                         if (!c.containsKey("Val")) {
                           continue;
@@ -143,8 +146,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                       MaterialPageRoute(
                         builder: (context) => SelectPage(
                           option: childs,
-                          file:
-                              file != null && file.isNotEmpty ? file : "root",
+                          file: file != null && file.isNotEmpty ? file : "root",
                           type: type,
                         ),
                       ),
@@ -154,8 +156,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                           childs != null &&
                           childs.isNotEmpty) {
                         data = childs[0];
-                        String key =
-                            data.containsKey("Key") ? data["Key"] : "";
+                        String key = data.containsKey("Key") ? data["Key"] : "";
                         bool isUpLoad = weSetVal(_settingData, key, value);
                         if (isUpLoad) {
                           NotificationCenter.instance
@@ -174,6 +175,30 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                           text: 'K: $key - V: $value\n已修改',
                         );
                       }
+                    }
+                  },
+                  openFile: (key) async {
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles();
+
+                    if (result != null && result.files.single.path != null) {
+                      File file = File(result.files.single.path!);
+                      String crtStr = file.readAsStringSync();
+                      print(" ================ ");
+                      print(file);
+                      print(crtStr);
+                      List<int> bytes = crtStr.codeUnits;
+                      print(bytes);
+                      bytes = file.readAsBytesSync();
+                      print(bytes);
+
+                      bool isUpLoad = weSetVal(_settingData, key, crtStr);
+                      if (isUpLoad) {
+                        NotificationCenter.instance
+                            .postNotification(nkey, [key, crtStr]);
+                      }
+                    } else {
+                      // User canceled the picker
                     }
                   },
                 );

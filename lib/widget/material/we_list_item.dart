@@ -17,6 +17,7 @@ class WeListItem extends StatelessWidget {
     required this.data,
     this.onClick,
     required this.onChanged,
+    this.openFile,
   }) : super(key: key);
 
   /// {@template settingspageflutter.widget.wegroupitem.isDev}
@@ -153,6 +154,17 @@ class WeListItem extends StatelessWidget {
   /// {@end-tool}
   final Function(String key, dynamic value, bool isTip) onChanged;
 
+  /// {@template settingspageflutter.widget.welistitem.openFile}
+  /// 打开文件事件
+  ///
+  /// * [key] 为数据中的key`Key`的值,用于需要修改项的key
+  ///
+  /// Open file event
+  ///
+  /// * [key] is the value of the key `Key` in the data, used to modify the key of the item that needs to be modified
+  /// {@endtemplate}
+  final Function(String key)? openFile;
+
   @override
   Widget build(BuildContext context) {
     String type = data.containsKey("Type") ? data["Type"] : "";
@@ -165,6 +177,7 @@ class WeListItem extends StatelessWidget {
     Widget c = getWidget(
       data,
       onChanged,
+      openFile: openFile,
       visibilitySemantics: visibilitySemantics,
       clearSemantics: clearSemantics,
       isDev: isDev,
@@ -189,7 +202,7 @@ class WeListItem extends StatelessWidget {
       onTap = () {
         onClick!([data], null, type);
       };
-      c= Semantics(
+      c = Semantics(
         selected: true,
         child: c,
       );
