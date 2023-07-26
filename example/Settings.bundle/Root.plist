@@ -51,6 +51,8 @@ CA 证书
 			<string>Test</string>
 		</dict>
 		<dict>
+			<key>IsReadonly</key>
+			<true/>
 			<key>Values</key>
 			<array>
 				<string>off</string>

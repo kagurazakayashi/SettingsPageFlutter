@@ -199,9 +199,13 @@ class WeListItem extends StatelessWidget {
       };
     }
     if (type == "PSMultiValueSpecifier") {
-      onTap = () {
-        onClick!([data], null, type);
-      };
+      bool isReadonly =
+          data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
+      if (!isReadonly) {
+        onTap = () {
+          onClick!([data], null, type);
+        };
+      }
       c = Semantics(
         selected: true,
         child: c,
