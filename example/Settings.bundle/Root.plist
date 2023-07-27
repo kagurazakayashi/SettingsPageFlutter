@@ -52,18 +52,20 @@ CA 证书
 		</dict>
 		<dict>
 			<key>IsReadonly</key>
-			<true/>
+			<false/>
 			<key>Values</key>
 			<array>
 				<string>off</string>
 				<string>dhcp</string>
 				<string>static</string>
+				<string>0</string>
 			</array>
 			<key>Titles</key>
 			<array>
 				<string>禁用</string>
 				<string>DHCP</string>
 				<string>静态</string>
+				<string>Test test test test test test test test test test test test test test test test test test test test test test test test test test</string>
 			</array>
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>

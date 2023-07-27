@@ -568,10 +568,26 @@ Widget getWidget(Map<String, dynamic> data,
       } else {
         val = handleValueRODefaultValue(data, temp);
       }
+      const int maxLine = 99;
+      List<String> texts = [title];
+      List<TextStyle> styles = [tsMain];
+      if (isDev && key.isNotEmpty) {
+        texts.add(key);
+        styles.add(tsGroupTag);
+      }
+      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double titleHeight =
+          calculateTextHeight(title, tsMain, titleWidth, maxLines: 1);
+      if (titleWidth > weWidth - 135) {
+        titleWidth = weWidth - 135;
+        titleHeight =
+            calculateTextHeight(title, tsMain, titleWidth, maxLines: maxLine);
+      }
+      double valWidth = weWidth - 135 - titleWidth;
+      if (valWidth < 0) valWidth = 0;
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
-          height: 28 * weSP,
           child: Semantics(
             container: true,
             selected: (childs != null || file != null || titleValues != null),
@@ -584,9 +600,16 @@ Widget getWidget(Map<String, dynamic> data,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (title.isNotEmpty)
-                      Text(
-                        title,
-                        style: tsMain,
+                      SizedBox(
+                        width: titleWidth,
+                        height: titleHeight,
+                        child: Text(
+                          title,
+                          style: tsMain,
+                          maxLines: maxLine,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     if (isDev && key.isNotEmpty)
                       Text(
@@ -599,10 +622,17 @@ Widget getWidget(Map<String, dynamic> data,
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      val,
-                      style: tsMainVal,
+                    SizedBox(
+                      width: valWidth,
+                      child: Text(
+                        val,
+                        style: tsMainVal,
+                        maxLines: maxLine,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     if (childs != null || file != null || titleValues != null)
                       const SizedBox(width: 5),
@@ -614,7 +644,7 @@ Widget getWidget(Map<String, dynamic> data,
                         color: Colors.grey[500]!,
                       ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -647,4 +677,37 @@ int colorStrHanlder(String colorStr) {
     color = -1;
   }
   return color;
+}
+
+double calculateMaxTextWidth(List<String> texts, List<TextStyle> styles) {
+  double max = 0;
+  for (int i = 0; i < texts.length; i++) {
+    if (i >= styles.length) {
+      continue;
+    }
+    double width = calculateTextWidth(texts[i], styles[i]);
+    if (width > max) {
+      max = width;
+    }
+  }
+  return max;
+}
+
+double calculateTextWidth(String text, TextStyle style) {
+  final TextPainter textPainter = TextPainter(
+    text: TextSpan(text: text, style: style),
+    maxLines: 1,
+    textDirection: TextDirection.ltr,
+  )..layout(minWidth: 0, maxWidth: double.infinity);
+  return textPainter.width;
+}
+
+double calculateTextHeight(String text, TextStyle style, double maxWidth,
+    {int maxLines = 1}) {
+  final TextPainter textPainter = TextPainter(
+    text: TextSpan(text: text, style: style),
+    maxLines: maxLines,
+    textDirection: TextDirection.ltr,
+  )..layout(minWidth: 0, maxWidth: maxWidth);
+  return textPainter.height;
 }
