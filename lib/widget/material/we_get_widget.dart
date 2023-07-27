@@ -585,6 +585,10 @@ Widget getWidget(Map<String, dynamic> data,
       }
       double valWidth = weWidth - 135 - titleWidth;
       if (valWidth < 0) valWidth = 0;
+      TextAlign valAlign = TextAlign.right;
+      if (valWidth < calculateTextWidth(val, tsMainVal)) {
+        valAlign = TextAlign.left;
+      }
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
@@ -629,6 +633,7 @@ Widget getWidget(Map<String, dynamic> data,
                       child: Text(
                         val,
                         style: tsMainVal,
+                        textAlign: valAlign,
                         maxLines: maxLine,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
