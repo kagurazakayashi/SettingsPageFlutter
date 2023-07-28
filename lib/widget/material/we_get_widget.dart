@@ -563,6 +563,8 @@ Widget getWidget(Map<String, dynamic> data,
       String key = data.containsKey("Key") ? data["Key"] : ""; //键
       dynamic temp = data.containsKey("Value") ? data["Value"] : "";
       String val = "";
+      bool isReadonly =
+          data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
       if (temp is String && temp.isEmpty) {
         temp = data.containsKey("DefaultValue") ? data["DefaultValue"] : "";
         if (temp is String && temp.isEmpty) {
@@ -651,9 +653,15 @@ Widget getWidget(Map<String, dynamic> data,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      if (childs != null || file != null || titleValues != null)
+                      if (!isReadonly &&
+                          (childs != null ||
+                              file != null ||
+                              titleValues != null))
                         const SizedBox(width: 5),
-                      if (childs != null || file != null || titleValues != null)
+                      if (!isReadonly &&
+                          (childs != null ||
+                              file != null ||
+                              titleValues != null))
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
