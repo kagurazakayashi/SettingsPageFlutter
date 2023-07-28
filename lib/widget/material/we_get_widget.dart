@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:settingspageflutter/widget/material/we_TextField.dart";
 import "package:settingspageflutter/widget/we_size.dart";
 
@@ -141,6 +142,7 @@ Widget getWidget(Map<String, dynamic> data,
       bool readOnly = false; //是否为只读
       TextCapitalization autoCapitalization = TextCapitalization.none; //自动大写
       bool obscureText = false; //是否密文显示
+      List<TextInputFormatter> inputFormatters = []; //是否密文显示
       TextInputType keyboardType = TextInputType.text; //键盘样式
       TextInputAction textInputAction = TextInputAction.done; //键盘回车键样式
       int maxLines = 1; //最大行数
@@ -217,6 +219,57 @@ Widget getWidget(Map<String, dynamic> data,
           }
           break;
       }
+      temp = data.containsKey("RegExp") ? data["RegExp"] : -1;
+      print(">>> $temp => $data");
+      if (temp is int && temp >= 0) {
+        List<Object> tAllow =
+            data.containsKey("RegExpAllow") ? data["RegExpAllow"] : [];
+        if (temp < tAllow.length) {
+          String regExp = "";
+          if (tAllow[temp] is String) {
+            regExp = tAllow[temp] as String;
+          }
+          if (regExp.isNotEmpty) {
+            inputFormatters.add(
+              FilteringTextInputFormatter.allow(
+                RegExp(regExp),
+              ),
+            );
+          }
+        }
+        List<Object> tDeny =
+            data.containsKey("RegExpDeny") ? data["RegExpDeny"] : [];
+        if (temp < tDeny.length) {
+          String regExp = "";
+          if (tDeny[temp] is String) {
+            regExp = tDeny[temp] as String;
+          }
+          if (regExp.isNotEmpty) {
+            inputFormatters.add(
+              FilteringTextInputFormatter.deny(
+                RegExp(regExp),
+              ),
+            );
+          }
+        }
+      }
+      // switch (temp.runtimeType) {
+      //   case List:
+      //   case List<String>:
+      //   case List<dynamic>:
+      //     List regExpList = temp as List;
+      //     for (Object regExp in regExpList) {
+      //       if (regExp.runtimeType != String||regExp.toString().isEmpty) {
+      //         continue;
+      //       }
+      //       inputFormatters.add(
+      //         FilteringTextInputFormatter.allow(
+      //           RegExp(regExp as String),
+      //         ),
+      //       );
+      //     }
+      //     break;
+      // }
       //键盘样式
       temp = data.containsKey('KeyboardType') ? data['KeyboardType'] : 'text';
       switch (temp.runtimeType) {
@@ -359,6 +412,7 @@ Widget getWidget(Map<String, dynamic> data,
           border: InputBorder.none,
           autocorrect: autoCorrect,
           textCapitalization: autoCapitalization,
+          inputFormatters: inputFormatters,
           obscureText: obscureText,
           keyboardType: keyboardType,
           textInputAction: textInputAction,

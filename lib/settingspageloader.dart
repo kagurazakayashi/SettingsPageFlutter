@@ -224,6 +224,20 @@ class SettingsPageLoader {
             showSettings.add(showSetting);
             showKeysMap[setting[ks]] = showSettings;
             break;
+          case "RegExpkey":
+            if (!setting.containsKey("RegExpSetting")) {
+              continue;
+            }
+            List showSettings = showKeysMap[setting[ks]] ?? [];
+            Map<String, dynamic> showSetting = setting;
+            showSetting["RegExp"] = 0;
+            if (setting.containsKey("RegExp") &&
+                (setting["RegExp"] is int || setting["RegExp"] is String)) {
+              showSetting["RegExp"] = setting["RegExp"];
+            }
+            showSettings.add(showSetting);
+            showKeysMap[setting[ks]] = showSettings;
+            break;
           default:
         }
       }
@@ -292,25 +306,41 @@ class SettingsPageLoader {
               return;
             }
             for (var v in value) {
-              bool isShow = false;
-              switch (v["ShowSetting"].runtimeType.toString()) {
-                case "List<String>":
-                  List showSettings = v["ShowSetting"];
-                  for (var i = 0; i < showSettings.length; i++) {
-                    Object temp = showSettings[i];
-                    if (temp == val) {
+              if (v is! Map) {
+                continue;
+              }
+              if (v.containsKey("Show")) {
+                bool isShow = false;
+                switch (v["ShowSetting"].runtimeType.toString()) {
+                  case "List<String>":
+                    List showSettings = v["ShowSetting"];
+                    for (var i = 0; i < showSettings.length; i++) {
+                      Object temp = showSettings[i];
+                      if (temp == val) {
+                        isShow = true;
+                      }
+                    }
+                    break;
+                  case "bool":
+                    if (val == v["ShowSetting"]) {
                       isShow = true;
                     }
-                  }
-                  break;
-                case "bool":
-                  if (val == v["ShowSetting"]) {
-                    isShow = true;
-                  }
-                  break;
-                default:
+                    break;
+                  default:
+                }
+                v["Show"] = isShow;
               }
-              v["Show"] = isShow;
+              if (v.containsKey("RegExp")) {
+                int regExpItem = 0;
+                List regExpSettings = v["RegExpSetting"];
+                for (var i = 0; i < regExpSettings.length; i++) {
+                  bool temp = regExpSettings[i];
+                  if (temp == val) {
+                    regExpItem = i;
+                  }
+                }
+                v["RegExp"] = regExpItem;
+              }
             }
           });
         }
@@ -339,6 +369,9 @@ class SettingsPageLoader {
               String key = v["Key"];
               if (settingKey != key) {
                 return;
+              }
+              if (!v.containsKey("Show")) {
+                continue;
               }
               bool isShow = v["Show"];
               setting["Show"] = isShow;

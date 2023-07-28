@@ -26,6 +26,33 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>KeyboardType</key>
+			<string>datetime</string>
+			<key>Title</key>
+			<string>频率子带</string>
+			<key>Key</key>
+			<string>11022</string>
+			<key>RegExpkey</key>
+			<string>on_net</string>
+			<key>RegExpSetting</key>
+			<array>
+				<true/>
+				<false/>
+			</array>
+			<key>RegExpAllow</key>
+			<array>
+				<string>^([1-9]|1[0-2])$</string>
+				<string>[1-9]</string>
+			</array>
+			<key>RegExpDeny</key>
+			<array>
+				<string></string>
+				<string></string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Showkey</key>
 			<string>on_net</string>

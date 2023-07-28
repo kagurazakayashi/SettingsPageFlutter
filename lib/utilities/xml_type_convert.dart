@@ -64,16 +64,32 @@ class XMLDataTypeConvert {
   }
 
   /// 將類似於 `{xxxx:[string,string]}` 的 XML 格式轉換為 Map
-  static List<String> arrayXmlNodeToMap(XmlElement val, {logTitle = ""}) {
+  static List<Object> arrayXmlNodeToMap(XmlElement val, {logTitle = ""}) {
     SettingsPageFlutterDebug log =
         SettingsPageFlutterDebug(className: "XMLConvert");
     List<XmlNode> array = val.children;
-    List<String> list = [];
+    List<Object> list = [];
     for (XmlNode arr in array) {
       if (arr.nodeType != XmlNodeType.ELEMENT) {
         continue;
       }
-      list.add(arr.text);
+      if (arr is XmlText) {
+        list.add(arr.innerText);
+      } else if (arr is XmlElement) {
+        switch (arr.name.toString()) {
+          case "true":
+            list.add(true);
+            break;
+          case "false":
+            list.add(false);
+            break;
+          case "integer":
+            list.add(int.parse(arr.innerText));
+            break;
+          default:
+            list.add(arr.innerText);
+        }
+      }
     }
     if (Global.i.isShowLog) {
       log.i("$logTitle = $list");
@@ -102,7 +118,7 @@ class XMLDataTypeConvert {
           nVal.nodeType != XmlNodeType.ELEMENT) {
         continue;
       }
-      map[nKey.text] =
+      map[nKey.innerText] =
           XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement);
     }
     if (Global.i.isShowLog) {
@@ -158,19 +174,19 @@ class XMLDataTypeConvert {
     for (int i = 0; i < children.length; i++) {
       XmlNode child = children[i];
       if (child is XmlText) {
-        map[key] = child.text;
+        map[key] = child.innerText;
       } else if (child is XmlElement) {
         String type = child.name.toString();
         if (type == "key") {
-          key = child.text;
+          key = child.innerText;
         } else if (key.isNotEmpty) {
           // map[key] = XMLDataTypeConvert.xmlElementTypeConvert(child);
           switch (type) {
             case "string":
-              map[key] = child.text;
+              map[key] = child.innerText;
               break;
             case "integer":
-              map[key] = int.parse(child.text);
+              map[key] = int.parse(child.innerText);
               break;
             case "true":
               map[key] = true;

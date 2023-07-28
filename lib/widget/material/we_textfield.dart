@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class WeTextField extends StatefulWidget {
   const WeTextField({
@@ -12,6 +13,7 @@ class WeTextField extends StatefulWidget {
     this.hintStyle,
     this.suffixIcon,
     this.border,
+    this.inputFormatters,
     this.autocorrect = true,
     this.textCapitalization = TextCapitalization.none,
     this.obscureText = false,
@@ -38,6 +40,7 @@ class WeTextField extends StatefulWidget {
   final TextStyle? hintStyle;
   final Widget? suffixIcon;
   final InputBorder? border;
+  final List<TextInputFormatter>? inputFormatters;
   final bool autocorrect;
   final TextCapitalization textCapitalization;
   final bool obscureText;
@@ -135,6 +138,7 @@ class _WeTextFieldState extends State<WeTextField> {
         ),
         border: InputBorder.none,
       ),
+      inputFormatters: widget.inputFormatters,
       autocorrect: widget.autocorrect,
       textCapitalization: widget.textCapitalization,
       obscureText: _obscureText,
