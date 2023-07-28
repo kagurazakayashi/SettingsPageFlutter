@@ -313,6 +313,8 @@ class SettingsPageLoader {
                 bool isShow = false;
                 switch (v["ShowSetting"].runtimeType.toString()) {
                   case "List<String>":
+                  case "List<Object>":
+                  case "List<dynamic>":
                     List showSettings = v["ShowSetting"];
                     for (var i = 0; i < showSettings.length; i++) {
                       Object temp = showSettings[i];
@@ -334,7 +336,7 @@ class SettingsPageLoader {
                 int regExpItem = 0;
                 List regExpSettings = v["RegExpSetting"];
                 for (var i = 0; i < regExpSettings.length; i++) {
-                  bool temp = regExpSettings[i];
+                  Object temp = regExpSettings[i];
                   if (temp == val) {
                     regExpItem = i;
                   }
