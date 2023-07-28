@@ -100,7 +100,7 @@ CA 证书
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>获取方式</string>
+			<string>Test test test test test test test test test test test test test test test test test</string>
 			<key>Key</key>
 			<string>net_ip_mode</string>
 			<key>DefaultValue</key>

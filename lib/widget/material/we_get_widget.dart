@@ -16,11 +16,11 @@ import "../we_textstyle.dart";
 ///   * [value] 为数据中的key`Value`的值,用于需要修改项的value
 ///
 ///   * [isTip] 用于判断是否需要提示，当前只有`PSTextFieldSpecifier`类型的项才会有提示
-/// 
+///
 /// * [openFile] 打开文件的回调
-/// 
+///
 ///   * [key] 为数据中的key`Key`的值,用于需要修改项的key
-/// 
+///
 /// * [isDev] 是否为开发模式
 ///
 /// Returns a control based on data
@@ -581,14 +581,20 @@ Widget getWidget(Map<String, dynamic> data,
         styles.add(tsGroupTag);
       }
       double titleWidth = calculateMaxTextWidth(texts, styles);
-      double titleHeight =
-          calculateTextHeight(title, tsMain, titleWidth, maxLines: 1);
-      if (titleWidth > weWidth - 135) {
-        titleWidth = weWidth - 135;
+      double cellWidth = weWidth - 135;
+      int titleMaxLines = 1;
+      if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
+        titleWidth = cellWidth / 2 + 12;
+        titleMaxLines = 99;
+      }
+      double titleHeight = calculateTextHeight(title, tsMain, titleWidth,
+          maxLines: titleMaxLines);
+      if (titleWidth > cellWidth) {
+        titleWidth = cellWidth;
         titleHeight =
             calculateTextHeight(title, tsMain, titleWidth, maxLines: maxLine);
       }
-      double valWidth = weWidth - 135 - titleWidth;
+      double valWidth = cellWidth - titleWidth;
       if (valWidth < 0) valWidth = 0;
       TextAlign valAlign = TextAlign.right;
       if (valWidth < calculateTextWidth(val, tsMainVal)) {
@@ -627,34 +633,35 @@ Widget getWidget(Map<String, dynamic> data,
                       ),
                   ],
                 ),
-                const SizedBox(width: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: valWidth,
-                      child: Text(
-                        val,
-                        style: tsMainVal,
-                        textAlign: valAlign,
-                        maxLines: maxLine,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
+                if (val.isNotEmpty) const SizedBox(width: 8),
+                if (val.isNotEmpty)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: valWidth,
+                        child: Text(
+                          val,
+                          style: tsMainVal,
+                          textAlign: valAlign,
+                          maxLines: maxLine,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                    if (childs != null || file != null || titleValues != null)
-                      const SizedBox(width: 5),
-                    if (childs != null || file != null || titleValues != null)
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 16,
-                        weight: 1000,
-                        color: Colors.grey[500]!,
-                      ),
-                  ],
-                ),
+                      if (childs != null || file != null || titleValues != null)
+                        const SizedBox(width: 5),
+                      if (childs != null || file != null || titleValues != null)
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 16,
+                          weight: 1000,
+                          color: Colors.grey[500]!,
+                        ),
+                    ],
+                  ),
               ],
             ),
           ),
