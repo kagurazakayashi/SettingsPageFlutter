@@ -12,6 +12,36 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>启用有线网络</string>
+			<key>Key</key>
+			<string>on_net</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Showkey</key>
+			<string>on_net</string>
+			<key>ShowSetting</key>
+			<false/>
+			<key>Title</key>
+			<string>启用有线网络2</string>
+			<key>Key</key>
+			<string>on_net2</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
 			<string>安全:
 CA 证书
 文件标头: -----BEGIN CERTIFICATE-----</string>

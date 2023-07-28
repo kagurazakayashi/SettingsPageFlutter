@@ -246,7 +246,7 @@ class SettingsPageLoader {
             if (setting[ks] != key) {
               return;
             }
-            String val = "";
+            Object val = "";
             if (setting.containsKey("Value")) {
               switch (setting["Value"].runtimeType.toString()) {
                 case "String":
@@ -259,6 +259,7 @@ class SettingsPageLoader {
                   }
                   break;
                 default:
+                  val = setting["Value"];
               }
             } else if (setting.containsKey("DefaultValue")) {
               val = setting["DefaultValue"];
@@ -287,19 +288,27 @@ class SettingsPageLoader {
               //   }
               // }
             }
-            if (val.isEmpty) {
+            if (val.toString().isEmpty) {
               return;
             }
             for (var v in value) {
               bool isShow = false;
-              if (v["ShowSetting"] is List) {
-                List showSettings = v["ShowSetting"];
-                for (var i = 0; i < showSettings.length; i++) {
-                  String temp = showSettings[i];
-                  if (temp == val) {
+              switch (v["ShowSetting"].runtimeType.toString()) {
+                case "List<String>":
+                  List showSettings = v["ShowSetting"];
+                  for (var i = 0; i < showSettings.length; i++) {
+                    Object temp = showSettings[i];
+                    if (temp == val) {
+                      isShow = true;
+                    }
+                  }
+                  break;
+                case "bool":
+                  if (val == v["ShowSetting"]) {
                     isShow = true;
                   }
-                }
+                  break;
+                default:
               }
               v["Show"] = isShow;
             }

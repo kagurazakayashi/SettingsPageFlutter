@@ -16,6 +16,11 @@ import "../we_textstyle.dart";
 ///   * [value] 为数据中的key`Value`的值,用于需要修改项的value
 ///
 ///   * [isTip] 用于判断是否需要提示，当前只有`PSTextFieldSpecifier`类型的项才会有提示
+/// 
+/// * [openFile] 打开文件的回调
+/// 
+///   * [key] 为数据中的key`Key`的值,用于需要修改项的key
+/// 
 /// * [isDev] 是否为开发模式
 ///
 /// Returns a control based on data
