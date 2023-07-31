@@ -230,10 +230,10 @@ class SettingsPageLoader {
             }
             List showSettings = showKeysMap[setting[ks]] ?? [];
             Map<String, dynamic> showSetting = setting;
-            showSetting["RegExp"] = 0;
-            if (setting.containsKey("RegExp") &&
-                (setting["RegExp"] is int || setting["RegExp"] is String)) {
-              showSetting["RegExp"] = setting["RegExp"];
+            showSetting["RegExpItem"] = 0;
+            if (setting.containsKey("RegExpItem") &&
+                (setting["RegExpItem"] is int || setting["RegExpItem"] is String)) {
+              showSetting["RegExpItem"] = setting["RegExpItem"];
             }
             showSettings.add(showSetting);
             showKeysMap[setting[ks]] = showSettings;
@@ -332,7 +332,7 @@ class SettingsPageLoader {
                 }
                 v["Show"] = isShow;
               }
-              if (v.containsKey("RegExp")) {
+              if (v.containsKey("RegExpItem")) {
                 int regExpItem = 0;
                 List regExpSettings = v["RegExpSetting"];
                 for (var i = 0; i < regExpSettings.length; i++) {
@@ -341,7 +341,7 @@ class SettingsPageLoader {
                     regExpItem = i;
                   }
                 }
-                v["RegExp"] = regExpItem;
+                v["RegExpItem"] = regExpItem;
               }
             }
           });

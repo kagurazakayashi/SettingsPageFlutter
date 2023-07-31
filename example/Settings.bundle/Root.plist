@@ -53,6 +53,30 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>KeyboardType</key>
+			<string>datetime</string>
+			<key>Title</key>
+			<string>正则测试: 整数</string>
+			<key>Key</key>
+			<string>num_test1</string>
+			<key>RegExp</key>
+			<string>^-?[0-9]*$</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>KeyboardType</key>
+			<string>datetime</string>
+			<key>Title</key>
+			<string>正则测试: 小数</string>
+			<key>Key</key>
+			<string>num_test2</string>
+			<key>RegExp</key>
+			<string>^-?[0-9]*\.?[0-9]*$</string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Showkey</key>
 			<string>on_net</string>

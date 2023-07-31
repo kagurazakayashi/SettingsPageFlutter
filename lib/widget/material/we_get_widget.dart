@@ -219,8 +219,16 @@ Widget getWidget(Map<String, dynamic> data,
           }
           break;
       }
-      temp = data.containsKey("RegExp") ? data["RegExp"] : -1;
-      print(">>> $temp => $data");
+      //正则表达式
+      temp = data.containsKey("RegExp") ? data["RegExp"] : "";
+      if (temp is String && temp.isNotEmpty) {
+        inputFormatters.add(
+          FilteringTextInputFormatter.allow(
+            RegExp(temp),
+          ),
+        );
+      }
+      temp = data.containsKey("RegExpItem") ? data["RegExpItem"] : -1;
       if (temp is int && temp >= 0) {
         List<Object> tAllow =
             data.containsKey("RegExpAllow") ? data["RegExpAllow"] : [];
