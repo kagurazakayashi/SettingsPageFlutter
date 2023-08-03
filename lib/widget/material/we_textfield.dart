@@ -101,7 +101,6 @@ class _WeTextFieldState extends State<WeTextField> {
     } else {
       oldStr = v;
     }
-    print(">>> v: $v isRegExp: $isRegExp");
     widget.controller.text = v;
     widget.onChanged(widget.id, v, true);
   }
