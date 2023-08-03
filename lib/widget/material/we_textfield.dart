@@ -24,6 +24,7 @@ class WeTextField extends StatefulWidget {
     this.maxLength,
     this.autofocus = false,
     this.onSubmitted,
+    this.onSubRegExp,
     this.isDark = false,
     this.visibilitySemantics,
     this.clearSemantics,
@@ -51,6 +52,7 @@ class WeTextField extends StatefulWidget {
   final int? maxLength;
   final bool autofocus;
   final ValueChanged<String>? onSubmitted;
+  final RegExp? onSubRegExp;
   final bool isDark;
   final String? visibilitySemantics;
   final String? clearSemantics;
@@ -71,7 +73,7 @@ class _WeTextFieldState extends State<WeTextField> {
     _obscureText = widget.obscureText;
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        widget.onChanged(widget.id, widget.controller.text, true);
+        checkRegExp();
       }
     });
     super.initState();
@@ -81,6 +83,22 @@ class _WeTextFieldState extends State<WeTextField> {
   void dispose() {
     _focusNode.dispose();
     super.dispose();
+  }
+
+  void checkRegExp({String? val}) {
+    bool isRegExp = true;
+    String v = widget.controller.text;
+    if (val != null) {
+      v = val;
+    }
+    if (widget.onSubRegExp != null) {
+      isRegExp = widget.onSubRegExp!.hasMatch(v);
+    }
+    if (!isRegExp) {
+      v = "";
+    }
+    widget.controller.text = v;
+    widget.onChanged(widget.id, v, true);
   }
 
   @override
@@ -148,7 +166,12 @@ class _WeTextFieldState extends State<WeTextField> {
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       autofocus: widget.autofocus,
-      onSubmitted: widget.onSubmitted,
+      onSubmitted: (val) {
+        checkRegExp(val: val);
+        if (widget.onSubmitted != null) {
+          widget.onSubmitted!(val);
+        }
+      },
       focusNode: _focusNode,
     );
   }

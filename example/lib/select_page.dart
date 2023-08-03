@@ -118,6 +118,14 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
       appBar: AppBar(
         title: Text(_title),
         backgroundColor: isDark ? Colors.black26 : Colors.blue,
+        actions: [
+          IconButton(
+            onPressed: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            icon: const Icon(Icons.send),
+          )
+        ],
       ),
       backgroundColor: isDark ? Colors.grey[900] : Colors.grey[300],
       body: _settingData.isNotEmpty

@@ -440,18 +440,7 @@ Widget getWidget(Map<String, dynamic> data,
           autofocus: autofocus,
           visibilitySemantics: visibilitySemantics,
           clearSemantics: clearSemantics,
-          onSubmitted: (val) {
-            bool isRegExp = true;
-            if (regExp != null) {
-              isRegExp = regExp.hasMatch(val);
-            }
-            String v = val;
-            if (!isRegExp) {
-              v = "";
-            }
-            controller.text = v;
-            onChanged(id, v, true);
-          },
+          onSubRegExp: regExp,
         ),
       );
       if (isFile) {
