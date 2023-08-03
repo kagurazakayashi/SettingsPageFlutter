@@ -142,7 +142,8 @@ Widget getWidget(Map<String, dynamic> data,
       bool readOnly = false; //是否为只读
       TextCapitalization autoCapitalization = TextCapitalization.none; //自动大写
       bool obscureText = false; //是否密文显示
-      List<TextInputFormatter> inputFormatters = []; //是否密文显示
+      List<TextInputFormatter> inputFormatters = []; //输入格式化程序
+      RegExp? regExp; //正则表达式
       TextInputType keyboardType = TextInputType.text; //键盘样式
       TextInputAction textInputAction = TextInputAction.done; //键盘回车键样式
       int maxLines = 1; //最大行数
@@ -278,6 +279,15 @@ Widget getWidget(Map<String, dynamic> data,
       //     }
       //     break;
       // }
+
+      // 正则检查
+      temp = data.containsKey("OnSubmittedRegExp")
+          ? data["OnSubmittedRegExp"]
+          : false;
+      if (temp is String && temp.isNotEmpty) {
+        regExp = RegExp(temp);
+      }
+
       //键盘样式
       temp = data.containsKey('KeyboardType') ? data['KeyboardType'] : 'text';
       switch (temp.runtimeType) {
@@ -430,7 +440,18 @@ Widget getWidget(Map<String, dynamic> data,
           autofocus: autofocus,
           visibilitySemantics: visibilitySemantics,
           clearSemantics: clearSemantics,
-          onSubmitted: (val) => onChanged(id, val, true),
+          onSubmitted: (val) {
+            bool isRegExp = true;
+            if (regExp != null) {
+              isRegExp = regExp.hasMatch(val);
+            }
+            String v = val;
+            if (!isRegExp) {
+              v = "";
+            }
+            controller.text = v;
+            onChanged(id, v, true);
+          },
         ),
       );
       if (isFile) {

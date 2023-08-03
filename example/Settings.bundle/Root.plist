@@ -57,6 +57,18 @@
 			<key>KeyboardType</key>
 			<string>datetime</string>
 			<key>Title</key>
+			<string>IPv4</string>
+			<key>Key</key>
+			<string>num_test2</string>
+			<key>OnSubmittedRegExp</key>
+			<string>^(([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])$</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>KeyboardType</key>
+			<string>datetime</string>
+			<key>Title</key>
 			<string>正则测试: 整数</string>
 			<key>Key</key>
 			<string>num_test1</string>
