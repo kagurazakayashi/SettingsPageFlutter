@@ -65,6 +65,7 @@ class WeTextField extends StatefulWidget {
 }
 
 class _WeTextFieldState extends State<WeTextField> {
+  String oldStr = "";
   bool _obscureText = false;
   final FocusNode _focusNode = FocusNode();
 
@@ -76,6 +77,7 @@ class _WeTextFieldState extends State<WeTextField> {
         checkRegExp();
       }
     });
+    oldStr = widget.controller.text;
     super.initState();
   }
 
@@ -95,8 +97,11 @@ class _WeTextFieldState extends State<WeTextField> {
       isRegExp = widget.onSubRegExp!.hasMatch(v);
     }
     if (!isRegExp) {
-      v = "";
+      v = oldStr;
+    } else {
+      oldStr = v;
     }
+    print(">>> v: $v isRegExp: $isRegExp");
     widget.controller.text = v;
     widget.onChanged(widget.id, v, true);
   }
@@ -141,6 +146,7 @@ class _WeTextFieldState extends State<WeTextField> {
                       ? null
                       : () {
                           widget.controller.text = "";
+                          oldStr = "";
                           widget.onChanged(widget.id, "", false);
                         },
                   child: Container(
