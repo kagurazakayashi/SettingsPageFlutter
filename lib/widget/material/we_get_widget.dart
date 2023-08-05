@@ -21,6 +21,8 @@ import "../we_textstyle.dart";
 /// * [openFile] 打开文件的回调
 ///
 ///   * [key] 为数据中的key`Key`的值,用于需要修改项的key
+/// 
+///   * [extList] 为文件扩展名列表
 ///
 /// * [isDev] 是否为开发模式
 ///
@@ -35,6 +37,12 @@ import "../we_textstyle.dart";
 ///   * [value] is the value of the key `Value` in the data, used for the value of the item to be modified
 ///
 ///   * [isTip] is used to determine whether a prompt is needed. Currently, only items of type `PSTextFieldSpecifier` will have prompts
+/// 
+/// * [openFile] callback to open the file
+/// 
+///   * [key] is the value of the key `Key` in the data, used for the key of the item to be modified
+/// 
+///   * [extList] is the list of file extensions
 ///
 /// * [isDev] Whether it is development mode
 /// {@tool snippet}
@@ -55,7 +63,7 @@ import "../we_textstyle.dart";
 /// {@end-tool}
 Widget getWidget(Map<String, dynamic> data,
     final Function(String key, dynamic value, bool isTip) onChanged,
-    {final Function(String key)? openFile,
+    {final Function(String key, List<String> extList)? openFile,
     String? visibilitySemantics,
     String? clearSemantics,
     bool isDev = false}) {
@@ -150,6 +158,7 @@ Widget getWidget(Map<String, dynamic> data,
       int? maxLength; //最大长度
       bool autofocus = false; //是否自动获取焦点
       bool isFile = false; //是否为文件
+      List<String> fileExt = []; //文件扩展名
 
       //自动纠正拼写
       Object temp = data.containsKey("AutocorrectionStyle")
@@ -400,6 +409,20 @@ Widget getWidget(Map<String, dynamic> data,
           }
           break;
       }
+      //文件扩展名
+      temp = data.containsKey('FileExt') ? data['FileExt'] : [];
+      switch (temp.runtimeType) {
+        case List:
+        case List<String>:
+        case List<dynamic>:
+        case List<Object>:
+          for (dynamic ext in (temp as List)) {
+            if (ext.runtimeType == String && ext.toString().isNotEmpty) {
+              fileExt.add(ext.toString());
+            }
+          }
+          break;
+      }
 
       TextEditingController controller = TextEditingController.fromValue(
         TextEditingValue(
@@ -449,7 +472,7 @@ Widget getWidget(Map<String, dynamic> data,
             Expanded(child: c),
             IconButton(
               icon: const Icon(Icons.folder_open),
-              onPressed: () => openFile!(id),
+              onPressed: () => openFile!(id, fileExt),
             ),
           ],
         );

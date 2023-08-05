@@ -162,12 +162,15 @@ class WeColumn extends StatelessWidget {
   /// 
   /// * [key] 为数据中的key`Key`的值,用于需要修改项的key
   /// 
+  /// * [extList] 为数据中的key`ExtList`的值,用于需要修改项的key
+  /// 
   /// Open file event
   /// 
   /// * [key] is the value of the key `Key` in the data, used to modify the key of the item that needs to be modified
   /// 
+  /// * [extList] is the value of the key `ExtList` in the data, used to modify the key of the item that needs to be modified
   /// {@endtemplate}
-  final Function(String key)? openFile;
+  final Function(String key, List<String> extList)? openFile;
 
   @override
   Widget build(BuildContext context) {

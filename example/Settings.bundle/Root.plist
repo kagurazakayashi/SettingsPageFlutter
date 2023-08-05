@@ -59,7 +59,7 @@
 			<key>Title</key>
 			<string>IPv4</string>
 			<key>Key</key>
-			<string>num_test2</string>
+			<string>address</string>
 			<key>OnSubmittedRegExp</key>
 			<string>^(([01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}([01]?\d{1,2}|2[0-4]\d|25[0-5])$</string>
 		</dict>
@@ -112,6 +112,12 @@ CA 证书
 		<dict>
 			<key>IsFile</key>
 			<true/>
+			<key>FileExt</key>
+			<array>
+				<string>cer</string>
+				<string>crt</string>
+				<string>pem</string>
+			</array>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>

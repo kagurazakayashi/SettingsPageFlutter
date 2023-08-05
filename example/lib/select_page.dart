@@ -185,9 +185,13 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                       }
                     }
                   },
-                  openFile: (key) async {
+                  openFile: (String key, List<String> extList) async {
                     FilePickerResult? result =
-                        await FilePicker.platform.pickFiles();
+                        await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: extList,
+                    );
+                    print(">>> extList: $extList");
 
                     if (result != null && result.files.single.path != null) {
                       File file = File(result.files.single.path!);
