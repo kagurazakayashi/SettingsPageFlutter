@@ -64,8 +64,9 @@ class WeTextField extends StatefulWidget {
   State<WeTextField> createState() => _WeTextFieldState();
 }
 
-class _WeTextFieldState extends State<WeTextField> {
+class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   String oldStr = "";
+  String changedStr = "";
   bool _obscureText = false;
   final FocusNode _focusNode = FocusNode();
 
@@ -78,12 +79,20 @@ class _WeTextFieldState extends State<WeTextField> {
       }
     });
     oldStr = widget.controller.text;
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+  @override
+  void didChangeMetrics() {
+    checkRegExp();
+    super.didChangeMetrics();
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -101,8 +110,11 @@ class _WeTextFieldState extends State<WeTextField> {
     } else {
       oldStr = v;
     }
-    widget.controller.text = v;
-    widget.onChanged(widget.id, v, true);
+    if (changedStr != widget.controller.text) {
+      widget.controller.text = v;
+      changedStr = widget.controller.text;
+      widget.onChanged(widget.id, v, true);
+    }
   }
 
   @override
@@ -116,6 +128,8 @@ class _WeTextFieldState extends State<WeTextField> {
         labelStyle: widget.labelStyle,
         hintText: widget.hintText,
         hintStyle: widget.hintStyle,
+        filled: !widget.readOnly,
+        fillColor: widget.isDark ? Colors.white10 : Colors.grey[100],
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

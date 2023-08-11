@@ -51,6 +51,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
               plistFileName: widget.file)
           .then((value) {
         _settingData = value.preferenceSpecifiers;
+        print(_settingData);
         _title = value.title;
         setState(() {});
       });
@@ -62,17 +63,17 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
         String title = widget.option![0].containsKey("Title")
             ? widget.option![0]["Title"]
             : "";
-        List<Map<String, dynamic>>? titleValues =
-            widget.option![0].containsKey("TitleValues")
-                ? widget.option![0]["TitleValues"]
-                : null;
         _title = title;
-        _settingData = [
-          {
-            "Type": "PSGroupSpecifier",
-            "Childs": titleValues,
-          }
-        ];
+        if (widget.option![0].containsKey("TitleValues")) {
+          List<Map<String, dynamic>>? titleValues =
+              widget.option![0]["TitleValues"];
+          _settingData = [
+            {
+              "Type": "PSGroupSpecifier",
+              "Childs": titleValues,
+            }
+          ];
+        }
       } else {
         _settingData = widget.option!;
       }
@@ -109,6 +110,8 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
+    setTextStyle(isDark: isDark);
     setSize(
       MediaQuery.of(context).size,
       pixelRatio: MediaQuery.of(context).devicePixelRatio,

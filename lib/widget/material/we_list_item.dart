@@ -185,6 +185,7 @@ class WeListItem extends StatelessWidget {
       visibilitySemantics: visibilitySemantics,
       clearSemantics: clearSemantics,
       isDev: isDev,
+      isDark: isDark,
     );
     Function()? onTap;
 

@@ -21,7 +21,7 @@ import "../we_textstyle.dart";
 /// * [openFile] 打开文件的回调
 ///
 ///   * [key] 为数据中的key`Key`的值,用于需要修改项的key
-/// 
+///
 ///   * [extList] 为文件扩展名列表
 ///
 /// * [isDev] 是否为开发模式
@@ -37,11 +37,11 @@ import "../we_textstyle.dart";
 ///   * [value] is the value of the key `Value` in the data, used for the value of the item to be modified
 ///
 ///   * [isTip] is used to determine whether a prompt is needed. Currently, only items of type `PSTextFieldSpecifier` will have prompts
-/// 
+///
 /// * [openFile] callback to open the file
-/// 
+///
 ///   * [key] is the value of the key `Key` in the data, used for the key of the item to be modified
-/// 
+///
 ///   * [extList] is the list of file extensions
 ///
 /// * [isDev] Whether it is development mode
@@ -66,7 +66,8 @@ Widget getWidget(Map<String, dynamic> data,
     {final Function(String key, List<String> extList)? openFile,
     String? visibilitySemantics,
     String? clearSemantics,
-    bool isDev = false}) {
+    bool isDev = false,
+    bool isDark = false}) {
   late Widget c;
   String id = data.containsKey("Key") ? data["Key"] : "";
   String title = data.containsKey("Title") ? data["Title"] : "";
@@ -464,6 +465,7 @@ Widget getWidget(Map<String, dynamic> data,
           visibilitySemantics: visibilitySemantics,
           clearSemantics: clearSemantics,
           onSubRegExp: regExp,
+          isDark: isDark,
         ),
       );
       if (isFile) {

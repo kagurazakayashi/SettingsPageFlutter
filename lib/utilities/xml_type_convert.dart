@@ -233,4 +233,20 @@ class XMLDataTypeConvert {
     }
     return list;
   }
+
+  static selectListXmlNode(XmlElement element) {
+    List<Map<String, dynamic>> list = [];
+    for (XmlNode node in element.children) {
+      if (node.nodeType != XmlNodeType.ELEMENT) continue;
+      Map map = keysValsXmlNodeToMap(node);
+      List selectVals = xmlArray2List(map["SelectValue"] as XmlElement);
+      List select = doubleArrayXmlNodeToListMap(map["Titles"],map["Values"]);
+      Map<String, dynamic> selectMap = {
+        "SelectValue":selectVals,
+        "TitleValues":select,
+      };
+      list.add(selectMap);
+    }
+    return list;
+  }
 }

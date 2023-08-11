@@ -135,15 +135,22 @@ class SettingsPageLoader {
           // log.d("遇到多項選擇 PSMultiValueSpecifier 物件，額外處理");
           String newTitleValueKey = "TitleValues";
           // cofigInfos[newTitleValueKey] = XMLDataTypeConvert.doubleArrayXmlNodeToMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
-          List<Map<String, dynamic>> nList =
-              XMLDataTypeConvert.doubleArrayXmlNodeToListMap(
-            cofigInfos["Titles"],
-            cofigInfos["Values"],
-            logTitle: newTitleValueKey,
-          );
-          cofigInfos["TitleValues"] = nList;
-          cofigInfos.remove("Titles");
-          cofigInfos.remove("Values");
+          if (cofigInfos.containsKey("Titles")) {
+            List<Map<String, dynamic>> nList =
+                XMLDataTypeConvert.doubleArrayXmlNodeToListMap(
+              cofigInfos["Titles"],
+              cofigInfos["Values"],
+              logTitle: newTitleValueKey,
+            );
+            cofigInfos["TitleValues"] = nList;
+            cofigInfos.remove("Titles");
+            cofigInfos.remove("Values");
+          }
+          if (cofigInfos.containsKey("SelectKey")) {
+            List<Map<String, dynamic>> nList =
+                XMLDataTypeConvert.selectListXmlNode(cofigInfos["Selects"]);
+            cofigInfos["Selects"] = nList;
+          }
         }
       }
 
@@ -199,151 +206,190 @@ class SettingsPageLoader {
   /// 查找所有需要修改显示的key
   Map<String, dynamic> _listfor(List data) {
     Map<String, dynamic> showKeysMap = {};
+    Map<String, dynamic> regExpsMap = {};
+    Map<String, dynamic> selectsMap = {};
+    Map<String, dynamic> termMap = {};
     for (Map<String, dynamic> setting in data) {
       List<String> keys = setting.keys.toList();
       for (var ks in keys) {
-        switch (ks) {
-          case "Childs":
-            Map<String, dynamic> temp = _listfor(setting[ks]);
-            showKeysMap.addAll(temp);
-            break;
-          case "Showkey":
-            if (!setting.containsKey("ShowSetting")) {
-              continue;
-            }
-            List showSettings = showKeysMap[setting[ks]] ?? [];
-            Map<String, dynamic> showSetting = setting;
-            showSetting["Show"] = false;
-            if (setting.containsKey("Show") &&
-                ((setting["Show"] is bool && setting["Show"]) ||
-                    (setting["Show"] is String &&
-                        (setting["Show"].toString().toUpperCase() == "TRUE" ||
-                            setting["Show"] == "1")))) {
-              showSetting["Show"] = true;
-            }
-            showSettings.add(showSetting);
-            showKeysMap[setting[ks]] = showSettings;
-            break;
-          case "RegExpkey":
-            if (!setting.containsKey("RegExpSetting")) {
-              continue;
-            }
-            List showSettings = showKeysMap[setting[ks]] ?? [];
-            Map<String, dynamic> showSetting = setting;
-            showSetting["RegExpItem"] = 0;
-            if (setting.containsKey("RegExpItem") &&
-                (setting["RegExpItem"] is int || setting["RegExpItem"] is String)) {
-              showSetting["RegExpItem"] = setting["RegExpItem"];
-            }
-            showSettings.add(showSetting);
-            showKeysMap[setting[ks]] = showSettings;
-            break;
-          default:
+        if (ks == 'Childs') {
+          Map<String, dynamic> temp = _listfor(setting[ks]);
+          showKeysMap.addAll(temp["show"]);
+          regExpsMap.addAll(temp["regExp"]);
+          selectsMap.addAll(temp["select"]);
+          continue;
+        }
+        if (ks == "Showkey") {
+          if (!setting.containsKey("ShowSetting")) {
+            continue;
+          }
+          List showSettings = showKeysMap[setting[ks]] ?? [];
+          Map<String, dynamic> showSetting = setting;
+          showSetting["Show"] = false;
+          if (setting.containsKey("Show") &&
+              ((setting["Show"] is bool && setting["Show"]) ||
+                  (setting["Show"] is String &&
+                      (setting["Show"].toString().toUpperCase() == "TRUE" ||
+                          setting["Show"] == "1")))) {
+            showSetting["Show"] = true;
+          }
+          showSettings.add(showSetting);
+          showKeysMap[setting[ks]] = showSettings;
+        }
+        if (ks == "RegExpkey") {
+          if (!setting.containsKey("RegExpSetting")) {
+            continue;
+          }
+          List showSettings = showKeysMap[setting[ks]] ?? [];
+          Map<String, dynamic> showSetting = setting;
+          showSetting["RegExpItem"] = 0;
+          if (setting.containsKey("RegExpItem") &&
+              (setting["RegExpItem"] is int ||
+                  setting["RegExpItem"] is String)) {
+            showSetting["RegExpItem"] = setting["RegExpItem"];
+          }
+          showSettings.add(showSetting);
+          regExpsMap[setting[ks]] = showSettings;
+        }
+        if (ks == "SelectKey") {
+          List showSettings = showKeysMap[setting[ks]] ?? [];
+          Map<String, dynamic> showSetting = setting;
+          showSetting["SelectItem"] = "0";
+          if (setting.containsKey("SelectItem") &&
+              (setting["SelectItem"] is int ||
+                  setting["SelectItem"] is String)) {
+            showSetting["SelectItem"] = setting["SelectItem"];
+          }
+          showSettings.add(showSetting);
+          selectsMap[setting[ks]] = showSettings;
         }
       }
     }
-    return showKeysMap;
+    termMap["show"] = showKeysMap;
+    termMap["regExp"] = regExpsMap;
+    termMap["select"] = selectsMap;
+    return termMap;
   }
 
   /// 显示字典根据`ShowSetting`的值进行显示判断
-  void _findKey(List data, Map<String, dynamic> showKeysMap) {
+  void _findKey(List data, Map<String, dynamic> termMap) {
     for (Map<String, dynamic> setting in data) {
       List<String> keys = setting.keys.toList();
       for (var ks in keys) {
         if (ks == "Childs") {
-          _findKey(setting[ks], showKeysMap);
+          _findKey(setting[ks], termMap);
         } else {
           if (ks != "Key") {
             continue;
           }
-          showKeysMap.forEach((key, value) {
-            if (setting[ks] != key) {
-              return;
-            }
-            Object val = "";
-            if (setting.containsKey("Value")) {
-              switch (setting["Value"].runtimeType.toString()) {
-                case "String":
-                  val = setting["Value"];
-                  break;
-                case "Map":
-                case "_Map<String, dynamic>":
-                  if (setting["Value"].containsKey("Val")) {
-                    val = setting["Value"]["Val"];
-                  }
-                  break;
-                default:
-                  val = setting["Value"];
+          termMap.forEach((tMapkey, showKeysMap) {
+            showKeysMap.forEach((key, value) {
+              if (setting[ks] != key) {
+                return;
               }
-            } else if (setting.containsKey("DefaultValue")) {
-              val = setting["DefaultValue"];
-              // Object? temp = setting["DefaultValue"];
-              // if (temp != null) {
-              //   switch (temp.runtimeType) {
-              //     case String:
-              //       val = setting["DefaultValue"];
-              //       break;
-              //     case List<String>:
-              //       Map tempMap = {"Title": "", "Value": ""};
-              //       for (int i = 0; i < (temp as List).length; i++) {
-              //         String tempStr = temp[i];
-              //         if (i + 1 < temp.length) {
-              //           if (tempStr == "Value") {
-              //             tempMap["Value"] = temp[i + 1];
-              //           }
-              //           if (tempStr == "Title") {
-              //             tempMap["Title"] = temp[i + 1];
-              //           }
-              //         }
-              //       }
-              //       setting["DefaultValue"] = tempMap;
-              //       break;
-              //     default:
-              //   }
-              // }
-            }
-            if (val.toString().isEmpty) {
-              return;
-            }
-            for (var v in value) {
-              if (v is! Map) {
-                continue;
-              }
-              if (v.containsKey("Show")) {
-                bool isShow = false;
-                switch (v["ShowSetting"].runtimeType.toString()) {
-                  case "List<String>":
-                  case "List<Object>":
-                  case "List<dynamic>":
-                    List showSettings = v["ShowSetting"];
-                    for (var i = 0; i < showSettings.length; i++) {
-                      Object temp = showSettings[i];
-                      if (temp == val) {
-                        isShow = true;
-                      }
-                    }
+              Object val = "";
+              if (setting.containsKey("Value")) {
+                switch (setting["Value"].runtimeType.toString()) {
+                  case "String":
+                    val = setting["Value"];
                     break;
-                  case "bool":
-                    if (val == v["ShowSetting"]) {
-                      isShow = true;
+                  case "Map":
+                  case "_Map<String, dynamic>":
+                    if (setting["Value"].containsKey("Val")) {
+                      val = setting["Value"]["Val"];
                     }
                     break;
                   default:
+                    val = setting["Value"];
                 }
-                v["Show"] = isShow;
+              } else if (setting.containsKey("DefaultValue")) {
+                val = setting["DefaultValue"];
+                // Object? temp = setting["DefaultValue"];
+                // if (temp != null) {
+                //   switch (temp.runtimeType) {
+                //     case String:
+                //       val = setting["DefaultValue"];
+                //       break;
+                //     case List<String>:
+                //       Map tempMap = {"Title": "", "Value": ""};
+                //       for (int i = 0; i < (temp as List).length; i++) {
+                //         String tempStr = temp[i];
+                //         if (i + 1 < temp.length) {
+                //           if (tempStr == "Value") {
+                //             tempMap["Value"] = temp[i + 1];
+                //           }
+                //           if (tempStr == "Title") {
+                //             tempMap["Title"] = temp[i + 1];
+                //           }
+                //         }
+                //       }
+                //       setting["DefaultValue"] = tempMap;
+                //       break;
+                //     default:
+                //   }
+                // }
               }
-              if (v.containsKey("RegExpItem")) {
-                int regExpItem = 0;
-                List regExpSettings = v["RegExpSetting"];
-                for (var i = 0; i < regExpSettings.length; i++) {
-                  Object temp = regExpSettings[i];
-                  if (temp == val) {
-                    regExpItem = i;
+              if (val.toString().isEmpty) {
+                return;
+              }
+              for (var v in value) {
+                if (v is! Map) {
+                  continue;
+                }
+                if (v.containsKey("Show")) {
+                  bool isShow = false;
+                  switch (v["ShowSetting"].runtimeType.toString()) {
+                    case "List<String>":
+                    case "List<Object>":
+                    case "List<dynamic>":
+                      List showSettings = v["ShowSetting"];
+                      for (var i = 0; i < showSettings.length; i++) {
+                        Object temp = showSettings[i];
+                        if (temp == val) {
+                          isShow = true;
+                        }
+                      }
+                      break;
+                    case "bool":
+                      if (val == v["ShowSetting"]) {
+                        isShow = true;
+                      }
+                      break;
+                    default:
+                  }
+                  v["Show"] = isShow;
+                }
+                if (v.containsKey("RegExpItem")) {
+                  int regExpItem = 0;
+                  List regExpSettings = v["RegExpSetting"];
+                  for (var i = 0; i < regExpSettings.length; i++) {
+                    Object temp = regExpSettings[i];
+                    if (temp == val) {
+                      regExpItem = i;
+                    }
+                  }
+                  v["RegExpItem"] = regExpItem;
+                }
+                if (v.containsKey("SelectItem")) {
+                  List selectList = v["Selects"];
+                  bool isSelect = false;
+                  for (var select in selectList) {
+                    if (isSelect) {
+                      break;
+                    }
+                    List selectValue = select["SelectValue"];
+                    for (var sval in selectValue) {
+                      if (sval == val) {
+                        v["SelectItem"] = val;
+                        v["TitleValues"] = select["TitleValues"];
+                        isSelect=true;
+                        break;
+                      }
+                    }
                   }
                 }
-                v["RegExpItem"] = regExpItem;
               }
-            }
+            });
           });
         }
       }
@@ -351,34 +397,39 @@ class SettingsPageLoader {
   }
 
   /// 设置显示
-  bool _setShow(List data, Map<String, dynamic> showKeysMap) {
+  bool _setShow(List data, Map<String, dynamic> termMap) {
     bool isUpload = false;
     for (Map<String, dynamic> setting in data) {
       List<String> keys = setting.keys.toList();
       for (var ks in keys) {
         if (ks == "Childs") {
-          _setShow(setting[ks], showKeysMap);
+          _setShow(setting[ks], termMap);
         } else {
           if (ks != "Key") {
             continue;
           }
           String settingKey = setting[ks];
-          showKeysMap.forEach((_, value) {
-            for (var v in value) {
-              if (!v.containsKey("Key")) {
-                continue;
-              }
-              String key = v["Key"];
-              if (settingKey != key) {
+          termMap.forEach((tMapkey, showKeysMap) {
+            showKeysMap.forEach((_, value) {
+              if (value is! List) {
                 return;
               }
-              if (!v.containsKey("Show")) {
-                continue;
+              for (var v in value) {
+                if (!v.containsKey("Key")) {
+                  continue;
+                }
+                String key = v["Key"];
+                if (settingKey != key) {
+                  return;
+                }
+                if (!v.containsKey("Show")) {
+                  continue;
+                }
+                bool isShow = v["Show"];
+                setting["Show"] = isShow;
+                isUpload = true;
               }
-              bool isShow = v["Show"];
-              setting["Show"] = isShow;
-              isUpload = true;
-            }
+            });
           });
         }
       }
