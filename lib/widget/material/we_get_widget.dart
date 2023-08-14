@@ -26,6 +26,10 @@ import "../we_textstyle.dart";
 ///
 /// * [isDev] 是否为开发模式
 ///
+/// * [isDark] 是否为深色模式
+///
+/// * [fillColor] TextField填充颜色
+///
 /// Returns a control based on data
 ///
 /// * [data] data
@@ -45,6 +49,10 @@ import "../we_textstyle.dart";
 ///   * [extList] is the list of file extensions
 ///
 /// * [isDev] Whether it is development mode
+///
+/// * [isDark] Whether it is dark mode
+///
+/// * [fillColor] TextField fill color
 /// {@tool snippet}
 /// ```
 /// onChanged: (key, value, isTip) {
@@ -61,13 +69,16 @@ import "../we_textstyle.dart";
 /// }
 /// ```
 /// {@end-tool}
-Widget getWidget(Map<String, dynamic> data,
-    final Function(String key, dynamic value, bool isTip) onChanged,
-    {final Function(String key, List<String> extList)? openFile,
-    String? visibilitySemantics,
-    String? clearSemantics,
-    bool isDev = false,
-    bool isDark = false}) {
+Widget getWidget(
+  Map<String, dynamic> data,
+  final Function(String key, dynamic value, bool isTip) onChanged, {
+  final Function(String key, List<String> extList)? openFile,
+  String? visibilitySemantics,
+  String? clearSemantics,
+  Color? fillColor,
+  bool isDev = false,
+  bool isDark = false,
+}) {
   late Widget c;
   String id = data.containsKey("Key") ? data["Key"] : "";
   String title = data.containsKey("Title") ? data["Title"] : "";
@@ -451,6 +462,7 @@ Widget getWidget(Map<String, dynamic> data,
           labelStyle: tsMain,
           hintText: hintText.isEmpty ? null : hintText,
           hintStyle: tsGroupTag,
+          fillColor: fillColor,
           border: InputBorder.none,
           autocorrect: autoCorrect,
           textCapitalization: autoCapitalization,

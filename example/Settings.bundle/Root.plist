@@ -73,6 +73,12 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>KeyboardType</key>
 			<string>datetime</string>
@@ -108,6 +114,18 @@
 			<string>on_net2</string>
 			<key>DefaultValue</key>
 			<true/>
+		</dict>
+		<dict>
+			<key>IsReadonly</key>
+			<true/>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>只读</string>
+			<key>Value</key>
+			<string>只读</string>
+			<key>Key</key>
+			<string>readonly</string>
 		</dict>
 		<dict>
 			<key>Type</key>

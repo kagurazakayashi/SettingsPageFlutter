@@ -11,6 +11,7 @@ class WeTextField extends StatefulWidget {
     this.labelStyle,
     this.hintText,
     this.hintStyle,
+    this.fillColor,
     this.suffixIcon,
     this.border,
     this.inputFormatters,
@@ -39,6 +40,7 @@ class WeTextField extends StatefulWidget {
   final TextStyle? labelStyle;
   final String? hintText;
   final TextStyle? hintStyle;
+  final Color? fillColor;
   final Widget? suffixIcon;
   final InputBorder? border;
   final List<TextInputFormatter>? inputFormatters;
@@ -128,8 +130,8 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         labelStyle: widget.labelStyle,
         hintText: widget.hintText,
         hintStyle: widget.hintStyle,
-        filled: !widget.readOnly,
-        fillColor: widget.isDark ? Colors.white10 : Colors.grey[100],
+        filled: widget.fillColor == null ? false : !widget.readOnly,
+        fillColor: widget.fillColor,
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -174,6 +176,14 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
           ],
         ),
         border: InputBorder.none,
+        // border: !widget.readOnly
+        //     ? OutlineInputBorder(
+        //         borderRadius: BorderRadius.circular(8),
+        //         borderSide: BorderSide(
+        //           color: widget.isDark ? Colors.white10 : Colors.grey[300]!,
+        //         ),
+        //       )
+        //     : InputBorder.none,
       ),
       inputFormatters: widget.inputFormatters,
       autocorrect: widget.autocorrect,

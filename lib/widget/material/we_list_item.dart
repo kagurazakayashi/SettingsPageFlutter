@@ -11,6 +11,7 @@ class WeListItem extends StatelessWidget {
     Key? key,
     this.isDev = false,
     this.isDark = false,
+    this.fillColor,
     this.decoration,
     this.visibilitySemantics,
     this.clearSemantics,
@@ -41,6 +42,13 @@ class WeListItem extends StatelessWidget {
   /// Default is false
   /// {@endtemplate}
   final bool isDark;
+
+  /// {@template settingspageflutter.widget.welistitem.fill}
+  /// TextFiled填充颜色
+  ///
+  /// TextFiled fill color
+  /// {@endtemplate}
+  final Color? fillColor;
 
   /// {@template settingspageflutter.widget.welistitem.decoration}
   /// 条目样式
@@ -158,13 +166,13 @@ class WeListItem extends StatelessWidget {
   /// 打开文件事件
   ///
   /// * [key] 为数据中的key`Key`的值,用于需要修改项的key
-  /// 
+  ///
   /// * [extList] 为数据中的key`ExtList`的值,用于需要修改项的key
   ///
   /// Open file event
   ///
   /// * [key] is the value of the key `Key` in the data, used to modify the key of the item that needs to be modified
-  /// 
+  ///
   /// * [extList] is the value of the key `ExtList` in the data, used to modify the key of the item that needs to be modified
   /// {@endtemplate}
   final Function(String key, List<String> extList)? openFile;
@@ -184,6 +192,7 @@ class WeListItem extends StatelessWidget {
       openFile: openFile,
       visibilitySemantics: visibilitySemantics,
       clearSemantics: clearSemantics,
+      fillColor:fillColor,
       isDev: isDev,
       isDark: isDark,
     );

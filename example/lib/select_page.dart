@@ -120,7 +120,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
-        backgroundColor: isDark ? Colors.black26 : Colors.blue,
+        backgroundColor: isDark ? Colors.black26 : const Color(0xFF214473),
         actions: [
           IconButton(
             onPressed: () {
@@ -138,6 +138,9 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                 Map<String, dynamic> o = _settingData[i];
                 return WeGroupItem(
                   isDark: isDark,
+                  fillColor: isDark
+                      ? Colors.white10
+                      : const Color(0xFFBDD6EE),
                   data: o,
                   onClick: (childs, file, type) {
                     if (childs != null) {
