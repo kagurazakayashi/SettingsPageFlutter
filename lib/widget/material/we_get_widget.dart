@@ -112,6 +112,17 @@ Widget getWidget(
           }
           break;
       }
+      const int maxLine = 99;
+      List<String> texts = [title];
+      List<TextStyle> styles = [tsMain];
+      if (isDev && key.isNotEmpty) {
+        texts.add(key);
+        styles.add(tsGroupTag);
+      }
+      double titleWidth = weWidth - 180.0;
+      int titleMaxLines = 99;
+      double titleHeight = calculateTextHeight(title, tsMain, titleWidth,
+          maxLines: titleMaxLines);
       c = SizedBox(
         height: 55,
         child: Semantics(
@@ -126,9 +137,16 @@ Widget getWidget(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (title.isNotEmpty)
-                    Text(
-                      title,
-                      style: tsMain,
+                    SizedBox(
+                      width: titleWidth,
+                      height: titleHeight,
+                      child: Text(
+                        title,
+                        style: tsMain,
+                        maxLines: maxLine,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   if (isDev && key.isNotEmpty)
                     Text(
