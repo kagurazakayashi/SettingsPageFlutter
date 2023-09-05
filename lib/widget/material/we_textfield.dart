@@ -121,6 +121,50 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> suffixIcons = [];
+    if (widget.suffixIcon != null) {
+      suffixIcons.add(widget.suffixIcon!);
+    }
+    if (widget.obscureText) {
+      suffixIcons.add(Semantics(
+        label: widget.visibilitySemantics,
+        button: true,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              _obscureText = !_obscureText;
+            });
+          },
+          child: Icon(
+            _obscureText ? Icons.visibility : Icons.visibility_off,
+            color: widget.isDark ? Colors.white70 : null,
+          ),
+        ),
+      ));
+    }
+
+    if (!widget.readOnly) {
+      suffixIcons.add(Semantics(
+        label: widget.clearSemantics,
+        button: true,
+        child: GestureDetector(
+          onTap: widget.controller.text.isEmpty
+              ? null
+              : () {
+                  widget.controller.text = "";
+                  oldStr = "";
+                  widget.onChanged(widget.id, "", false);
+                },
+          child: Container(
+            padding: const EdgeInsets.only(left: 8),
+            child: Icon(
+              Icons.cancel,
+              color: widget.value == "" ? Colors.grey : Colors.blue,
+            ),
+          ),
+        ),
+      ));
+    }
     return TextField(
       controller: widget.controller,
       style: widget.style,
@@ -132,49 +176,12 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         hintStyle: widget.hintStyle,
         filled: widget.fillColor == null ? false : !widget.readOnly,
         fillColor: widget.fillColor,
-        suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (widget.suffixIcon != null) widget.suffixIcon!,
-            if (widget.obscureText)
-              Semantics(
-                label: widget.visibilitySemantics,
-                button: true,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                  child: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: widget.isDark ? Colors.white70 : null,
-                  ),
-                ),
+        suffixIcon: suffixIcons.isEmpty
+            ? null
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: suffixIcons,
               ),
-            if (!widget.readOnly)
-              Semantics(
-                label: widget.clearSemantics,
-                button: true,
-                child: GestureDetector(
-                  onTap: widget.controller.text.isEmpty
-                      ? null
-                      : () {
-                          widget.controller.text = "";
-                          oldStr = "";
-                          widget.onChanged(widget.id, "", false);
-                        },
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Icon(
-                      Icons.cancel,
-                      color: widget.value == "" ? Colors.grey : Colors.blue,
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
         border: InputBorder.none,
         // border: !widget.readOnly
         //     ? OutlineInputBorder(
