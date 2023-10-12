@@ -336,7 +336,7 @@ class SettingsPageLoader {
                 if (v is! Map) {
                   continue;
                 }
-                if (v.containsKey("Show")) {
+                if (v.containsKey("Show") && setting["Key"] == v["Showkey"]) {
                   bool isShow = false;
                   switch (v["ShowSetting"].runtimeType.toString()) {
                     case "List<String>":
@@ -382,7 +382,7 @@ class SettingsPageLoader {
                       if (sval == val) {
                         v["SelectItem"] = val;
                         v["TitleValues"] = select["TitleValues"];
-                        isSelect=true;
+                        isSelect = true;
                         break;
                       }
                     }
