@@ -198,31 +198,32 @@ class SettingsPageLoader {
 
   /// 判断各个控件是否显示
   void uploadIsShow(List<Map<String, dynamic>> data) {
-    Map<String, dynamic> temp = _listfor(data);
+    Map<String, dynamic> temp = {};
+    temp = _listfor(data, temp);
     _findKey(data, temp);
     _setShow(data, temp);
   }
 
   /// 查找所有需要修改显示的key
-  Map<String, dynamic> _listfor(List data) {
-    Map<String, dynamic> showKeysMap = {};
-    Map<String, dynamic> regExpsMap = {};
-    Map<String, dynamic> selectsMap = {};
-    Map<String, dynamic> termMap = {};
+  Map<String, dynamic> _listfor(List data, Map<String, dynamic> temp) {
+    Map<String, dynamic> termMap = temp;
+    Map<String, dynamic> showKeysMap =
+        termMap.containsKey("show") ? termMap["show"] : {};
+    Map<String, dynamic> regExpsMap =
+        termMap.containsKey("regExp") ? termMap["regExp"] : {};
+    Map<String, dynamic> selectsMap =
+        termMap.containsKey("select") ? termMap["select"] : {};
     for (Map<String, dynamic> setting in data) {
       List<String> keys = setting.keys.toList();
       for (var ks in keys) {
         if (ks == 'Childs') {
-          Map<String, dynamic> temp = _listfor(setting[ks]);
+          Map<String, dynamic> temp = _listfor(setting[ks], termMap);
           showKeysMap.addAll(temp["show"]);
           regExpsMap.addAll(temp["regExp"]);
           selectsMap.addAll(temp["select"]);
           continue;
         }
-        if (ks == "Showkey") {
-          if (!setting.containsKey("ShowSetting")) {
-            continue;
-          }
+        if (ks == "Showkey" && setting.containsKey("ShowSetting")) {
           List showSettings = showKeysMap[setting[ks]] ?? [];
           Map<String, dynamic> showSetting = setting;
           showSetting["Show"] = false;
@@ -236,11 +237,8 @@ class SettingsPageLoader {
           showSettings.add(showSetting);
           showKeysMap[setting[ks]] = showSettings;
         }
-        if (ks == "RegExpkey") {
-          if (!setting.containsKey("RegExpSetting")) {
-            continue;
-          }
-          List showSettings = showKeysMap[setting[ks]] ?? [];
+        if (ks == "RegExpkey" && setting.containsKey("RegExpSetting")) {
+          List showSettings = regExpsMap[setting[ks]] ?? [];
           Map<String, dynamic> showSetting = setting;
           showSetting["RegExpItem"] = 0;
           if (setting.containsKey("RegExpItem") &&
@@ -252,7 +250,7 @@ class SettingsPageLoader {
           regExpsMap[setting[ks]] = showSettings;
         }
         if (ks == "SelectKey") {
-          List showSettings = showKeysMap[setting[ks]] ?? [];
+          List showSettings = selectsMap[setting[ks]] ?? [];
           Map<String, dynamic> showSetting = setting;
           showSetting["SelectItem"] = "0";
           if (setting.containsKey("SelectItem") &&
@@ -333,6 +331,9 @@ class SettingsPageLoader {
                 return;
               }
               for (var v in value) {
+                print(">>>>>>>>>>>>>>>>>>>>>>>>>");
+                print(
+                    ">>> $tMapkey $key key:${setting["Key"]} <==> ${v["Key"]} ${v["SelectKey"]}");
                 if (v is! Map) {
                   continue;
                 }
@@ -370,15 +371,20 @@ class SettingsPageLoader {
                   }
                   v["RegExpItem"] = regExpItem;
                 }
-                if (v.containsKey("SelectItem")) {
+                if (v.containsKey("SelectItem") &&
+                    setting["Key"] == v["SelectKey"]) {
+                  print(">>>==============<<<");
                   List selectList = v["Selects"];
                   bool isSelect = false;
+                  print(">>> selectList: $selectList");
+                  print(">>> setting:    $setting");
                   for (var select in selectList) {
                     if (isSelect) {
                       break;
                     }
                     List selectValue = select["SelectValue"];
                     for (var sval in selectValue) {
+                      print(">>> => >>> $sval <=> $val");
                       if (sval == val) {
                         v["SelectItem"] = val;
                         v["TitleValues"] = select["TitleValues"];
