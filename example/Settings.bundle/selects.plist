@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Title</key>
+	<string>条件选项测试</string>
+	<key>StringsTable</key>
+	<string>条件选项测试</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>条件</string>
+			<key>Key</key>
+			<string>条件</string>
+			<key>DefaultValue</key>
+			<string>0</string>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>000</string>
+				<string>111</string>
+				<string>222</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>启用有线网络</string>
+			<key>Key</key>
+			<string>on_net</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Showkey</key>
+			<string>on_net</string>
+			<key>ShowSetting</key>
+			<false/>
+			<key>Title</key>
+			<string>上上上</string>
+			<key>Key</key>
+			<string>11034</string>
+			<key>DefaultValue</key>
+			<string>0</string>
+			<key>SelectKey</key>
+			<string>条件</string>
+			<key>Selects</key>
+			<array>
+				<dict>
+					<key>SelectValue</key>
+					<array>
+						<string>2</string>
+					</array>
+					<key>Values</key>
+					<array>
+						<string>0</string>
+						<string>1</string>
+						<string>2</string>
+						<string>3</string>
+						<string>4</string>
+						<string>5</string>
+					</array>
+					<key>Titles</key>
+					<array>
+						<string>上 0</string>
+						<string>上 1</string>
+						<string>上 2</string>
+						<string>上 3</string>
+						<string>上 4</string>
+						<string>上 5</string>
+					</array>
+				</dict>
+				<dict>
+					<key>SelectValue</key>
+					<array>
+						<string>0</string>
+					</array>
+					<key>Values</key>
+					<array>
+						<string>2</string>
+						<string>3</string>
+						<string>4</string>
+						<string>5</string>
+					</array>
+					<key>Titles</key>
+					<array>
+						<string>上 2</string>
+						<string>上 3</string>
+						<string>上 4</string>
+						<string>上 5</string>
+					</array>
+				</dict>
+				<dict>
+					<key>SelectValue</key>
+					<array>
+						<string>1</string>
+					</array>
+					<key>Values</key>
+					<array>
+						<string>0</string>
+						<string>1</string>
+						<string>2</string>
+						<string>3</string>
+						<string>4</string>
+						<string>5</string>
+						<string>6</string>
+					</array>
+					<key>Titles</key>
+					<array>
+						<string>上 0</string>
+						<string>上 1</string>
+						<string>上 2</string>
+						<string>上 3</string>
+						<string>上 4</string>
+						<string>上 5</string>
+						<string>上 6</string>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>下下下</string>
+			<key>Key</key>
+			<string>11035</string>
+			<key>DefaultValue</key>
+			<string>0</string>
+			<key>SelectKey</key>
+			<string>条件</string>
+			<key>Selects</key>
+			<array>
+				<dict>
+					<key>SelectValue</key>
+					<array>
+						<string>2</string>
+					</array>
+					<key>Values</key>
+					<array>
+						<string>0</string>
+						<string>1</string>
+						<string>2</string>
+						<string>3</string>
+						<string>4</string>
+						<string>5</string>
+					</array>
+					<key>Titles</key>
+					<array>
+						<string>下 0</string>
+						<string>下 1</string>
+						<string>下 2</string>
+						<string>下 3</string>
+						<string>下 4</string>
+						<string>下 5</string>
+					</array>
+				</dict>
+				<dict>
+					<key>SelectValue</key>
+					<array>
+						<string>0</string>
+					</array>
+					<key>Values</key>
+					<array>
+						<string>2</string>
+						<string>3</string>
+						<string>4</string>
+						<string>5</string>
+					</array>
+					<key>Titles</key>
+					<array>
+						<string>下 2</string>
+						<string>下 3</string>
+						<string>下 4</string>
+						<string>下 5</string>
+					</array>
+				</dict>
+				<dict>
+					<key>SelectValue</key>
+					<array>
+						<string>1</string>
+					</array>
+					<key>Values</key>
+					<array>
+						<string>0</string>
+						<string>1</string>
+						<string>2</string>
+						<string>3</string>
+						<string>4</string>
+						<string>5</string>
+						<string>6</string>
+						<string>7</string>
+						<string>8</string>
+						<string>9</string>
+					</array>
+					<key>Titles</key>
+					<array>
+						<string>下 0</string>
+						<string>下 1</string>
+						<string>下 2</string>
+						<string>下 3</string>
+						<string>下 4</string>
+						<string>下 5</string>
+						<string>下 6</string>
+						<string>下 7</string>
+						<string>下 8</string>
+						<string>下 9</string>
+					</array>
+				</dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
