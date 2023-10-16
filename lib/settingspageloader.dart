@@ -331,9 +331,6 @@ class SettingsPageLoader {
                 return;
               }
               for (var v in value) {
-                print(">>>>>>>>>>>>>>>>>>>>>>>>>");
-                print(
-                    ">>> $tMapkey $key key:${setting["Key"]} <==> ${v["Key"]} ${v["SelectKey"]}");
                 if (v is! Map) {
                   continue;
                 }
@@ -373,18 +370,14 @@ class SettingsPageLoader {
                 }
                 if (v.containsKey("SelectItem") &&
                     setting["Key"] == v["SelectKey"]) {
-                  print(">>>==============<<<");
                   List selectList = v["Selects"];
                   bool isSelect = false;
-                  print(">>> selectList: $selectList");
-                  print(">>> setting:    $setting");
                   for (var select in selectList) {
                     if (isSelect) {
                       break;
                     }
                     List selectValue = select["SelectValue"];
                     for (var sval in selectValue) {
-                      print(">>> => >>> $sval <=> $val");
                       if (sval == val) {
                         v["SelectItem"] = val;
                         v["TitleValues"] = select["TitleValues"];
