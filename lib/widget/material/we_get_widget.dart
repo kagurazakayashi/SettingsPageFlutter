@@ -184,6 +184,7 @@ Widget getWidget(
       RegExp? regExp; //正则表达式
       TextInputType keyboardType = TextInputType.text; //键盘样式
       TextInputAction textInputAction = TextInputAction.done; //键盘回车键样式
+      String? helperText;
       int maxLines = 1; //最大行数
       int? maxLength; //最大长度
       bool autofocus = false; //是否自动获取焦点
@@ -383,6 +384,11 @@ Widget getWidget(
               break;
           }
       }
+      //帮助文本
+      temp = data.containsKey('HelpText') ? data['HelpText'] : "";
+      if (temp is String && temp.isNotEmpty) {
+        helperText = temp;
+      }
       //最大行数
       temp = data.containsKey('MaxLines') ? data['MaxLines'] : 1;
       switch (temp.runtimeType) {
@@ -480,6 +486,8 @@ Widget getWidget(
           labelStyle: tsMain,
           hintText: hintText.isEmpty ? null : hintText,
           hintStyle: tsGroupTag,
+          helpText: helperText,
+          helpStyle: null,
           fillColor: fillColor,
           border: InputBorder.none,
           autocorrect: autoCorrect,

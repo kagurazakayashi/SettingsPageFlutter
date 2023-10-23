@@ -11,6 +11,8 @@ class WeTextField extends StatefulWidget {
     this.labelStyle,
     this.hintText,
     this.hintStyle,
+    this.helpText,
+    this.helpStyle,
     this.fillColor,
     this.suffixIcon,
     this.border,
@@ -40,6 +42,8 @@ class WeTextField extends StatefulWidget {
   final TextStyle? labelStyle;
   final String? hintText;
   final TextStyle? hintStyle;
+  final String? helpText;
+  final TextStyle? helpStyle;
   final Color? fillColor;
   final Widget? suffixIcon;
   final InputBorder? border;
@@ -174,6 +178,8 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         labelStyle: widget.labelStyle,
         hintText: widget.hintText,
         hintStyle: widget.hintStyle,
+        helperText: widget.helpText,
+        helperStyle: widget.helpStyle,
         filled: widget.fillColor == null ? false : !widget.readOnly,
         fillColor: widget.fillColor,
         suffixIcon: suffixIcons.isEmpty
