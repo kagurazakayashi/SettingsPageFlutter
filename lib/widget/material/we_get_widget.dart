@@ -712,10 +712,10 @@ Widget getWidget(
       }
       const int maxLine = 99;
       List<String> texts = [title];
-      List<TextStyle> styles = [tsMain];
+      List<TextStyle> styles = [tsMaincalculate];
       if (isDev && key.isNotEmpty) {
         texts.add(key);
-        styles.add(tsGroupTag);
+        styles.add(tsGroupTagcalculate);
       }
       double titleWidth = calculateMaxTextWidth(texts, styles);
       double cellWidth = weWidth - 135;
@@ -724,17 +724,18 @@ Widget getWidget(
         titleWidth = cellWidth / 2 + 12;
         titleMaxLines = 99;
       }
-      double titleHeight = calculateTextHeight(title, tsMain, titleWidth,
+      double titleHeight = calculateTextHeight(
+          title, tsMaincalculate, titleWidth,
           maxLines: titleMaxLines);
       if (titleWidth > cellWidth) {
         titleWidth = cellWidth;
-        titleHeight =
-            calculateTextHeight(title, tsMain, titleWidth, maxLines: maxLine);
+        titleHeight = calculateTextHeight(title, tsMaincalculate, titleWidth,
+            maxLines: maxLine);
       }
       double valWidth = cellWidth - titleWidth;
       if (valWidth < 0) valWidth = 0;
       TextAlign valAlign = TextAlign.right;
-      if (valWidth < calculateTextWidth(val, tsMainVal)) {
+      if (valWidth < calculateTextWidth(val, tsMaincalculate)) {
         valAlign = TextAlign.left;
       }
       c = Padding(
@@ -755,12 +756,14 @@ Widget getWidget(
                       SizedBox(
                         width: titleWidth,
                         height: titleHeight,
-                        child: Text(
-                          title,
-                          style: tsMain,
-                          maxLines: maxLine,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
+                        child: Center(
+                          child: Text(
+                            title,
+                            style: tsMain,
+                            maxLines: maxLine,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     if (isDev && key.isNotEmpty)

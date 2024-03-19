@@ -4,6 +4,8 @@ import "we_size.dart";
 
 /// 主要文本样式
 TextStyle tsMain = TextStyle(fontSize: 15 * weSP);
+TextStyle tsMaincalculate = TextStyle(fontSize: 18 * weSP);
+TextStyle tsGroupTagcalculate = TextStyle(fontSize: 15 * weSP);
 
 /// 主要值文本样式
 TextStyle tsMainVal = TextStyle(
