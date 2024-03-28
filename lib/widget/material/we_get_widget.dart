@@ -756,7 +756,8 @@ Widget getWidget(
                       SizedBox(
                         width: titleWidth,
                         height: titleHeight,
-                        child: Center(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             title,
                             style: tsMain,
