@@ -37,8 +37,14 @@
 			<string>启用有线网络</string>
 			<key>Key</key>
 			<string>on_net</string>
+			<key>True</key>
+			<string>false</string>
+			<key>False</key>
+			<string>true</string>
 			<key>DefaultValue</key>
 			<true/>
+			<key>Value</key>
+			<string>true</string>
 		</dict>
 		<dict>
 			<key>Type</key>

@@ -3,11 +3,24 @@ bool weSetVal(List data, String id, dynamic val) {
     String eid = eMain.containsKey("Key") ? eMain["Key"] : "";
     List? echilds = eMain.containsKey("Childs") ? eMain["Childs"] : null;
     if (eid == id) {
+      String type = eMain.containsKey("Type") ? eMain["Type"] : "";
       if (val == null) {
-        String type = eMain.containsKey("Type") ? eMain["Type"] : "";
         if (type == "PSMultiValueSpecifier") {
           return false;
         }
+      }
+      if (type == "PSToggleSwitchSpecifier") {
+        Object valtrue = eMain.containsKey("True") ? eMain["True"] : true;
+        Object valfalse = eMain.containsKey("False") ? eMain["False"] : false;
+        if (val.toString() == valtrue.toString()) {
+          eMain["Value"] = true;
+        } else if (val.toString() == valfalse.toString()) {
+          eMain["Value"] = false;
+        } else {
+          eMain["Value"] = val;
+          return true;
+        }
+        return true;
       }
       eMain["Value"] = val;
       return true;
@@ -15,7 +28,6 @@ bool weSetVal(List data, String id, dynamic val) {
     if (echilds == null) {
       continue;
     }
-    // print('>> eid: $eid, id: $id, val: $val >> eChilds: $echilds');
     bool isSet = weSetVal(echilds, id, val);
     if (isSet) {
       return true;

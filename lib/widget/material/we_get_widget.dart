@@ -100,14 +100,23 @@ Widget getWidget(
               : false;
       bool val = false;
 
+      Object valtrue = data.containsKey("True") ? data["True"] : true;
+      Object valfalse = data.containsKey("False") ? data["False"] : false;
+
       switch (temp.runtimeType) {
         case bool:
-          val = temp as bool;
+          if (temp.toString() == valtrue.toString()) {
+            val = true;
+          } else if (temp.toString() == valfalse.toString()) {
+            val = false;
+          } else {
+            val = temp as bool;
+          }
           break;
         case String:
-          if (temp == "true") {
+          if (temp == valtrue.toString()) {
             val = true;
-          } else if (temp == "false") {
+          } else if (temp == valfalse.toString()) {
             val = false;
           }
           break;
