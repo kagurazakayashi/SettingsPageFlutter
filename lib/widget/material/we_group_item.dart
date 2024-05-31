@@ -188,7 +188,24 @@ class WeGroupItem extends StatelessWidget {
     List<Map<String, dynamic>>? childs =
         data.containsKey("Childs") ? data["Childs"] : null;
     bool isShow = data.containsKey("Show") ? data["Show"] : true;
-    return isShow
+
+    bool isAllShow = false;
+    if (childs != null) {
+      for (var i = 0; i < childs.length; i++) {
+        Map<String, dynamic> e = childs[i];
+        bool eIsShow = e.containsKey("Show") ? e["Show"] : true;
+        if (eIsShow) {
+          isAllShow = true;
+          break;
+        }
+      }
+    } else {
+      if (isShow) {
+        isAllShow = true;
+      }
+    }
+
+    return isShow && isAllShow
         ? Padding(
             padding: const EdgeInsets.all(25),
             //根据类型返回不同的组件

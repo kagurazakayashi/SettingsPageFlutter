@@ -49,7 +49,7 @@ class WeColumn extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.wecolumn.fillColor}
   /// TextFiled填充颜色
-  ///  
+  ///
   /// TextFiled fill color
   /// {@endtemplate}
   final Color? fillColor;
@@ -123,7 +123,8 @@ class WeColumn extends StatelessWidget {
   /// }
   /// ```
   /// {@end-tool}
-  final Function(List<Map<String, dynamic>>? childs, String? file, String type)? onClick;
+  final Function(List<Map<String, dynamic>>? childs, String? file, String type)?
+      onClick;
 
   /// {@template settingspageflutter.widget.wecolumn.onChanged}
   /// 值改变事件
@@ -167,15 +168,15 @@ class WeColumn extends StatelessWidget {
 
   /// {@template settingspageflutter.widget.wecolumn.openFile}
   /// 打开文件事件
-  /// 
+  ///
   /// * [key] 为数据中的key`Key`的值,用于需要修改项的key
-  /// 
+  ///
   /// * [extList] 为数据中的key`ExtList`的值,用于需要修改项的key
-  /// 
+  ///
   /// Open file event
-  /// 
+  ///
   /// * [key] is the value of the key `Key` in the data, used to modify the key of the item that needs to be modified
-  /// 
+  ///
   /// * [extList] is the value of the key `ExtList` in the data, used to modify the key of the item that needs to be modified
   /// {@endtemplate}
   final Function(String key, List<String> extList)? openFile;
@@ -188,6 +189,14 @@ class WeColumn extends StatelessWidget {
         var e = childs![i];
         data.add(e);
         if (i < childs!.length - 1) {
+          var next = childs![i + 1];
+          if (next.containsKey("Show")) {
+            var isShow = next["Show"];
+            if (!isShow) {
+              data.add({});
+              continue;
+            }
+          }
           data.add(null);
         }
       }
@@ -205,7 +214,8 @@ class WeColumn extends StatelessWidget {
           )
         : Column(
             children: data.map((e) {
-              bool isShow = e != null && e.containsKey("Show") ? e["Show"] : true;
+              bool isShow =
+                  e != null && e.containsKey("Show") ? e["Show"] : true;
               if (!isShow) {
                 isShowDiv = false;
                 return const SizedBox();
@@ -215,6 +225,8 @@ class WeColumn extends StatelessWidget {
                   return const SizedBox();
                 }
                 return const Divider(indent: 15, endIndent: 15);
+              } else if (e.isEmpty) {
+                return const SizedBox();
               }
               isShowDiv = true;
               return WeListItem(

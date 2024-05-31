@@ -15,6 +15,8 @@
 			<string>Test</string>
 			<key>File</key>
 			<string>test</string>
+			<key>Show</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>
