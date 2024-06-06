@@ -185,11 +185,18 @@ class WeColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>?> data = [];
     if (childs != null) {
+      bool topShow = false;
       for (var i = 0; i < childs!.length; i++) {
         var e = childs![i];
         data.add(e);
-        if (i == 0 && i < childs!.length - 1 && e.containsKey("Show")) {
-          var isShow = e["Show"];
+        bool isShow = true;
+        if (e.containsKey("Show")) {
+          isShow = e["Show"];
+        }
+        if (isShow) {
+          topShow = true;
+        }
+        if (i == 0 && i < childs!.length - 1) {
           if (!isShow) {
             data.add({});
             continue;
@@ -198,11 +205,15 @@ class WeColumn extends StatelessWidget {
         if (i < childs!.length - 1) {
           var next = childs![i + 1];
           if (next.containsKey("Show")) {
-            var isShow = next["Show"];
+            isShow = next["Show"];
             if (!isShow) {
               data.add({});
               continue;
             }
+          }
+          if (!topShow) {
+            data.add({});
+            continue;
           }
           data.add(null);
         }
