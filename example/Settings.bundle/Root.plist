@@ -10,6 +10,12 @@
 	<array>
 		<dict>
 			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>
 			<string>Test</string>
@@ -22,7 +28,33 @@
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 			<key>Title</key>
-			<string>条件选项测试</string>
+			<string>条件选项测试1</string>
+			<key>File</key>
+			<string>selects</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>条件选项测试2</string>
+			<key>File</key>
+			<string>selects</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Test</string>
+			<key>File</key>
+			<string>test</string>
+			<key>Show</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>条件选项测试3</string>
 			<key>File</key>
 			<string>selects</string>
 		</dict>

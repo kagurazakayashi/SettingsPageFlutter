@@ -188,6 +188,13 @@ class WeColumn extends StatelessWidget {
       for (var i = 0; i < childs!.length; i++) {
         var e = childs![i];
         data.add(e);
+        if (i == 0 && i < childs!.length - 1 && e.containsKey("Show")) {
+          var isShow = e["Show"];
+          if (!isShow) {
+            data.add({});
+            continue;
+          }
+        }
         if (i < childs!.length - 1) {
           var next = childs![i + 1];
           if (next.containsKey("Show")) {
@@ -201,7 +208,6 @@ class WeColumn extends StatelessWidget {
         }
       }
     }
-    bool isShowDiv = true;
     return data.isEmpty
         ? Center(
             child: Text(
@@ -217,18 +223,13 @@ class WeColumn extends StatelessWidget {
               bool isShow =
                   e != null && e.containsKey("Show") ? e["Show"] : true;
               if (!isShow) {
-                isShowDiv = false;
                 return const SizedBox();
               }
               if (e == null) {
-                if (!isShowDiv) {
-                  return const SizedBox();
-                }
                 return const Divider(indent: 15, endIndent: 15);
               } else if (e.isEmpty) {
                 return const SizedBox();
               }
-              isShowDiv = true;
               return WeListItem(
                 isDev: isDev,
                 isDark: isDark,
