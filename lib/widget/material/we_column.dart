@@ -198,7 +198,6 @@ class WeColumn extends StatelessWidget {
         }
         if (i == 0 && i < childs!.length - 1) {
           if (!isShow) {
-            data.add({});
             continue;
           }
         }
@@ -207,12 +206,10 @@ class WeColumn extends StatelessWidget {
           if (next.containsKey("Show")) {
             isShow = next["Show"];
             if (!isShow) {
-              data.add({});
               continue;
             }
           }
           if (!topShow) {
-            data.add({});
             continue;
           }
           data.add(null);
@@ -238,8 +235,6 @@ class WeColumn extends StatelessWidget {
               }
               if (e == null) {
                 return const Divider(indent: 15, endIndent: 15);
-              } else if (e.isEmpty) {
-                return const SizedBox();
               }
               return WeListItem(
                 isDev: isDev,
