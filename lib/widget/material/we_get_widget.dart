@@ -520,7 +520,10 @@ Widget getWidget(
           children: [
             Expanded(child: c),
             IconButton(
-              icon: const Icon(Icons.folder_open),
+              icon: Icon(
+                Icons.folder_open,
+                color: !isDark ? Colors.black54 : null,
+              ),
               onPressed: () => openFile!(id, fileExt),
             ),
           ],
