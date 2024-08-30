@@ -760,8 +760,9 @@ Widget getWidget(
                     if (selectedTime == null) {
                       return;
                     }
-
-                    onChanged(id, "${selectedTime.hour}:${selectedTime.minute}",
+                    onChanged(
+                        id,
+                        "${"${selectedTime.hour}".padLeft(2, "0")}:${"${selectedTime.minute}".padLeft(2, "0")}",
                         false);
                   },
             child: Row(
