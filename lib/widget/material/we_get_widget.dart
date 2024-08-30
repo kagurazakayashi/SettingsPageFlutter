@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:settingspageflutter/widget/material/we_TextField.dart";
+import "package:settingspageflutter/widget/material/we_timepicker.dart";
 import "package:settingspageflutter/widget/we_size.dart";
 
 import "../we_handle.dart";
@@ -70,6 +71,7 @@ import "../we_textstyle.dart";
 /// ```
 /// {@end-tool}
 Widget getWidget(
+  BuildContext context,
   Map<String, dynamic> data,
   final Function(String key, dynamic value, bool isTip) onChanged, {
   final Function(String key, List<String> extList)? openFile,
@@ -705,6 +707,100 @@ Widget getWidget(
           ),
         ),
       );
+      break;
+    case "PSTimePickerSpecifier": //时间选择框
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
+      bool isReadonly =
+          data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
+      String val = data.containsKey("Value") ? data["Value"] : ""; //内容
+
+      const int maxLine = 99;
+      List<String> texts = [title];
+      List<TextStyle> styles = [tsMaincalculate];
+      if (isDev && key.isNotEmpty) {
+        texts.add(key);
+        styles.add(tsGroupTagcalculate);
+      }
+      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double cellWidth = weWidth - 135;
+      int titleMaxLines = 1;
+      if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
+        titleWidth = cellWidth / 2 + 12;
+        titleMaxLines = 99;
+      }
+      double titleHeight = calculateTextHeight(
+          title, tsMaincalculate, titleWidth,
+          maxLines: titleMaxLines);
+      c = Container(
+        color: Colors.yellowAccent,
+        height: 55,
+        child: Semantics(
+          child: InkWell(
+            onTap: isReadonly
+                ? null
+                : () async {
+                    DateTime valTime = DateTime.now();
+                    try {
+                      valTime = DateTime.parse(val);
+                    } catch (e) {
+                      print(">> ERROR: $e");
+                    }
+                    TimeOfDay valTD = TimeOfDay.fromDateTime(valTime);
+
+                    TimeOfDay? selectedTime = await weTimePicker(
+                      context,
+                      valTD,
+                    );
+                    if (selectedTime == null) {
+                      return;
+                    }
+
+                    onChanged(id, "${selectedTime.hour}:${selectedTime.minute}",
+                        false);
+                    print(">> ${selectedTime.hour}:${selectedTime.minute}");
+                    // onChanged(id, selectedTime., false);
+                  },
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (title.isNotEmpty)
+                      Container(
+                        color: Colors.redAccent,
+                        width: titleWidth,
+                        height: titleHeight,
+                        child: Text(
+                          title,
+                          style: tsMain,
+                          maxLines: maxLine,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    if (isDev && key.isNotEmpty)
+                      Text(
+                        key,
+                        style: tsGroupTag,
+                      ),
+                  ],
+                ),
+                const SizedBox(width: 8),
+                ExcludeSemantics(
+                  child: Text(
+                    val,
+                    style: tsMain,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
       break;
     default: //其他
       String key = data.containsKey("Key") ? data["Key"] : ""; //键

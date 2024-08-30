@@ -187,6 +187,7 @@ class WeListItem extends StatelessWidget {
     String? val = data.containsKey("Val") ? data["Val"] : null;
 
     Widget c = getWidget(
+      context,
       data,
       onChanged,
       openFile: openFile,
