@@ -731,8 +731,7 @@ Widget getWidget(
       double titleHeight = calculateTextHeight(
           title, tsMaincalculate, titleWidth,
           maxLines: titleMaxLines);
-      c = Container(
-        color: Colors.yellowAccent,
+      c = SizedBox(
         height: 55,
         child: Semantics(
           child: InkWell(
@@ -757,8 +756,6 @@ Widget getWidget(
 
                     onChanged(id, "${selectedTime.hour}:${selectedTime.minute}",
                         false);
-                    print(">> ${selectedTime.hour}:${selectedTime.minute}");
-                    // onChanged(id, selectedTime., false);
                   },
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -769,8 +766,7 @@ Widget getWidget(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (title.isNotEmpty)
-                      Container(
-                        color: Colors.redAccent,
+                      SizedBox(
                         width: titleWidth,
                         height: titleHeight,
                         child: Text(
