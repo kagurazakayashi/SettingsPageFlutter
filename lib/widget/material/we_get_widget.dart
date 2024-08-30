@@ -740,10 +740,17 @@ Widget getWidget(
                 : () async {
                     DateTime valTime = DateTime.now();
                     try {
-                      valTime = DateTime.parse(val);
+                      // 将时间字符串转换为 DateTime 对象
+                      final now = DateTime.now();
+                      final timeParts = val.split(":");
+                      final hours = int.parse(timeParts[0]);
+                      final minutes = int.parse(timeParts[1]);
+                      valTime = DateTime(
+                          now.year, now.month, now.day, hours, minutes);
                     } catch (e) {
                       print(">> ERROR: $e");
                     }
+                    print(">> valTime: $valTime");
                     TimeOfDay valTD = TimeOfDay.fromDateTime(valTime);
 
                     TimeOfDay? selectedTime = await weTimePicker(
