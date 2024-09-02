@@ -12,13 +12,22 @@ String handleValueRODefaultValue(Map<String, dynamic> data, Object value) {
     case Map<String, dynamic>:
     case Map<dynamic, dynamic>:
       Map valueMap = value as Map;
-      valueStr = valueMap.containsKey("Val") ? valueMap["Val"] : "";
+      valueStr = valueMap.containsKey("Val")
+          ? valueMap["Val"]
+          : valueMap.containsKey("Value")
+              ? valueMap["Val"]
+              : "";
       break;
     default:
       if (value.runtimeType.toString() == "_Map<String, dynamic>" ||
-          value.runtimeType.toString() == "_Map<dynamic, dynamic>") {
+          value.runtimeType.toString() == "_Map<dynamic, dynamic>"||
+          value.runtimeType.toString() == "IdentityMap<String, dynamic>") {
         Map valueMap = value as Map;
-        valueStr = valueMap.containsKey("Val") ? valueMap["Val"] : "";
+        valueStr = valueMap.containsKey("Val")
+            ? valueMap["Val"]
+            : valueMap.containsKey("Value")
+                ? valueMap["Val"]
+                : "";
       }
   }
   if (type == "PSMultiValueSpecifier") {

@@ -123,19 +123,25 @@ Widget getWidget(
           }
           break;
       }
+
       const int maxLine = 99;
       List<String> texts = [title];
-      List<TextStyle> styles = [tsMain];
+      List<TextStyle> styles = [tsMaincalculate];
       if (isDev && key.isNotEmpty) {
         texts.add(key);
-        styles.add(tsGroupTag);
+        styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = weWidth - 180.0;
-      int titleMaxLines = 99;
-      double titleHeight = calculateTextHeight(title, tsMain, titleWidth,
+      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double cellWidth = weWidth - 135;
+      int titleMaxLines = 1;
+      if (titleWidth > cellWidth / 2) {
+        titleWidth = weWidth - 180;
+        titleMaxLines = 99;
+      }
+      double titleHeight = calculateTextHeight(
+          title, tsMaincalculate, titleWidth,
           maxLines: titleMaxLines);
       c = SizedBox(
-        height: 55,
         child: Semantics(
           toggled: val,
           onTap: () => onChanged(id, !val, false),
@@ -725,14 +731,14 @@ Widget getWidget(
       double cellWidth = weWidth - 135;
       int titleMaxLines = 1;
       if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
-        titleWidth = cellWidth / 2 + 12;
+        titleWidth = weWidth - 190;
         titleMaxLines = 99;
       }
       double titleHeight = calculateTextHeight(
           title, tsMaincalculate, titleWidth,
           maxLines: titleMaxLines);
       c = SizedBox(
-        height: 55,
+        height: titleHeight,
         child: Semantics(
           child: InkWell(
             onTap: isReadonly
@@ -750,7 +756,6 @@ Widget getWidget(
                     } catch (e) {
                       print(">> ERROR: $e");
                     }
-                    print(">> valTime: $valTime");
                     TimeOfDay valTD = TimeOfDay.fromDateTime(valTime);
 
                     TimeOfDay? selectedTime = await weTimePicker(
@@ -793,6 +798,7 @@ Widget getWidget(
                   ],
                 ),
                 const SizedBox(width: 8),
+                const Icon(Icons.schedule),
                 ExcludeSemantics(
                   child: Text(
                     val,
@@ -830,21 +836,31 @@ Widget getWidget(
         styles.add(tsGroupTagcalculate);
       }
       double titleWidth = calculateMaxTextWidth(texts, styles);
-      double cellWidth = weWidth - 135;
+      double valWidth = calculateMaxTextWidth([val], styles);
+      if (valWidth != 0) {
+        valWidth += 10;
+      }
+      double cellWidth = weWidth - 107;
       int titleMaxLines = 1;
-      if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
-        titleWidth = cellWidth / 2 + 12;
-        titleMaxLines = 99;
+      if (valWidth > cellWidth / 2) {
+        valWidth = cellWidth / 2;
+        if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
+          titleWidth = cellWidth / 2 + 12;
+          titleMaxLines = 99;
+        }
+        valWidth = cellWidth - titleWidth;
+      } else {
+        if (titleWidth > cellWidth) {
+          titleMaxLines = 99;
+          titleWidth = cellWidth - valWidth;
+          if (valWidth != 0) {
+            titleWidth -= 30;
+          }
+        }
       }
       double titleHeight = calculateTextHeight(
           title, tsMaincalculate, titleWidth,
           maxLines: titleMaxLines);
-      if (titleWidth > cellWidth) {
-        titleWidth = cellWidth;
-        titleHeight = calculateTextHeight(title, tsMaincalculate, titleWidth,
-            maxLines: maxLine);
-      }
-      double valWidth = cellWidth - titleWidth;
       if (valWidth < 0) valWidth = 0;
       TextAlign valAlign = TextAlign.right;
       if (valWidth < calculateTextWidth(val, tsMaincalculate)) {
@@ -888,38 +904,40 @@ Widget getWidget(
                 ),
                 if (val.isNotEmpty) const SizedBox(width: 8),
                 if (val.isNotEmpty)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: valWidth,
-                        child: Text(
-                          val,
-                          style: tsMainVal,
-                          textAlign: valAlign,
-                          maxLines: maxLine,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
+                  SizedBox(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: valWidth,
+                          child: Text(
+                            val,
+                            style: tsMainVal,
+                            textAlign: valAlign,
+                            maxLines: maxLine,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      if (!isReadonly &&
-                          (childs != null ||
-                              file != null ||
-                              titleValues != null))
-                        const SizedBox(width: 5),
-                      if (!isReadonly &&
-                          (childs != null ||
-                              file != null ||
-                              titleValues != null))
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          weight: 1000,
-                          color: Colors.grey[500]!,
-                        ),
-                    ],
+                        if (!isReadonly &&
+                            (childs != null ||
+                                file != null ||
+                                titleValues != null))
+                          const SizedBox(width: 5),
+                        if (!isReadonly &&
+                            (childs != null ||
+                                file != null ||
+                                titleValues != null))
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 16,
+                            weight: 1000,
+                            color: Colors.grey[500]!,
+                          ),
+                      ],
+                    ),
                   ),
               ],
             ),
