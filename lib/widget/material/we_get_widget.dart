@@ -866,6 +866,9 @@ Widget getWidget(
       if (valWidth < calculateTextWidth(val, tsMaincalculate)) {
         valAlign = TextAlign.left;
       }
+      if (valWidth > cellWidth / 2 - 20) {
+        valWidth = valWidth - 30;
+      }
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
