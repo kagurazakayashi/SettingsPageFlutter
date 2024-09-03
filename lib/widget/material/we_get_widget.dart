@@ -664,8 +664,27 @@ Widget getWidget(
           break;
       }
 
+      int titleMaxLines = 1;
+      List<String> texts = [title];
+      List<TextStyle> styles = [tsMaincalculate];
+      if (isDev && key.isNotEmpty) {
+        texts.add(key);
+        styles.add(tsGroupTagcalculate);
+      }
+      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double cellWidth = weWidth - 107;
+      if (titleWidth > cellWidth / 3) {
+        titleWidth = cellWidth / 3 + 12;
+        titleMaxLines = 99;
+      }
+      double titleHeight = calculateTextHeight(
+        title,
+        tsMaincalculate,
+        titleWidth,
+        maxLines: titleMaxLines,
+      );
       c = SizedBox(
-        height: 55,
+        height: titleHeight,
         child: Semantics(
           slider: true,
           child: Row(
@@ -677,9 +696,17 @@ Widget getWidget(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (title.isNotEmpty)
-                    Text(
-                      title,
-                      style: tsMain,
+                    SizedBox(
+                      width: titleWidth,
+                      height: titleHeight,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          title,
+                          style: tsMain,
+                          maxLines: titleMaxLines,
+                        ),
+                      ),
                     ),
                   if (isDev && key.isNotEmpty)
                     Text(
@@ -872,6 +899,7 @@ Widget getWidget(
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
+          height: titleHeight,
           child: Semantics(
             container: true,
             selected: (childs != null || file != null || titleValues != null),
