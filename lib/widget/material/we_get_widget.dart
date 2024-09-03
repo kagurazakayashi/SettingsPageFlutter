@@ -684,8 +684,9 @@ Widget getWidget(
         maxLines: titleMaxLines,
       );
       double valWidth = cellWidth - titleWidth;
-      double valTxtWidth = calculateMaxTextWidth([val.toString()], styles);
-      double sliderWidth = valWidth - valTxtWidth / 2+10;
+      double valTxtWidth =
+          calculateMaxTextWidth([val.toStringAsFixed(accuracy)], styles);
+      double sliderWidth = valWidth - valTxtWidth / 2 + 10;
       if (sliderWidth < 150) {
         sliderWidth += 20;
       } else if (sliderWidth < 500) {
@@ -731,7 +732,7 @@ Widget getWidget(
                     SizedBox(
                       width: sliderWidth,
                       child: Transform.translate(
-                        offset:const Offset(-25, 0),
+                        offset: const Offset(-25, 0),
                         child: SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             trackHeight: 2.0,
