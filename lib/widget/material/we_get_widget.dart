@@ -683,7 +683,16 @@ Widget getWidget(
         titleWidth,
         maxLines: titleMaxLines,
       );
+      double valWidth = cellWidth - titleWidth;
+      double valTxtWidth = calculateMaxTextWidth([val.toString()], styles);
+      double sliderWidth = valWidth - valTxtWidth / 2+10;
+      if (sliderWidth < 150) {
+        sliderWidth += 20;
+      } else if (sliderWidth < 500) {
+        sliderWidth += 10;
+      }
       c = SizedBox(
+        width: cellWidth,
         height: titleHeight,
         child: Semantics(
           slider: true,
@@ -715,27 +724,47 @@ Widget getWidget(
                     ),
                 ],
               ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
+              SizedBox(
+                width: valWidth,
+                child: Stack(
                   children: [
-                    Expanded(
-                      child: Slider(
-                        label: val.toStringAsFixed(accuracy),
-                        value: val,
-                        min: min,
-                        max: max,
-                        divisions: divisions,
-                        activeColor: activeColor,
-                        inactiveColor: inactiveColor,
-                        onChanged: (val) => onChanged(id, val, false),
+                    SizedBox(
+                      width: sliderWidth,
+                      child: Transform.translate(
+                        offset:const Offset(-25, 0),
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 2.0,
+                          ),
+                          child: Slider(
+                            label: val.toStringAsFixed(accuracy),
+                            value: val,
+                            min: min,
+                            max: max,
+                            divisions: divisions,
+                            activeColor: activeColor,
+                            inactiveColor: inactiveColor,
+                            onChanged: (val) => onChanged(id, val, false),
+                          ),
+                        ),
                       ),
                     ),
-                    Text(val.toStringAsFixed(accuracy), style: tsMain),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: SizedBox(
+                        width: valTxtWidth,
+                        height: titleHeight,
+                        child: Center(
+                          child: Text(
+                            val.toStringAsFixed(accuracy),
+                            style: tsMain,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -781,7 +810,7 @@ Widget getWidget(
                       valTime = DateTime(
                           now.year, now.month, now.day, hours, minutes);
                     } catch (e) {
-                      print(">> ERROR: $e");
+                      // print(">> ERROR: $e");
                     }
                     TimeOfDay valTD = TimeOfDay.fromDateTime(valTime);
 
