@@ -916,7 +916,8 @@ Widget getWidget(
         }
       }
       if (!isReadonly && (titleValues != null)) {
-        titleWidth -= 10;
+        titleWidth = cellWidth / 2;
+        valWidth = cellWidth / 2;
       }
       double titleHeight = calculateTextHeight(
           title, tsMaincalculate, titleWidth,
