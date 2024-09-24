@@ -18,11 +18,11 @@
 			<key>KeyboardType</key>
 			<string>datetime</string>
 			<key>RegExp</key>
-			<string>^\d*\.?\d*</string>
+			<string>^-?\d*\.?\d*$</string>
 			<key>RegExpRang</key>
 			<array>
-				<integer>0</integer>
-				<integer>100</integer>
+				<integer>-10</integer>
+				<integer>10</integer>
 			</array>
 		</dict>
 		<dict>

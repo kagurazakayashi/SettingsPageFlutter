@@ -290,7 +290,7 @@ Widget getWidget(
         if (regExpRang is List<Object> && regExpRang.length >= 2) {
           inputFormatters.add(
             TextInputFormatter.withFunction((oldValue, newValue) {
-              if (newValue.text.isEmpty) {
+              if (newValue.text.isEmpty || newValue.text == '-') {
                 return newValue;
               }
               final double? value = double.tryParse(newValue.text);
