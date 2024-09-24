@@ -915,6 +915,9 @@ Widget getWidget(
           }
         }
       }
+      if (!isReadonly && (titleValues != null)) {
+        titleWidth -= 10;
+      }
       double titleHeight = calculateTextHeight(
           title, tsMaincalculate, titleWidth,
           maxLines: titleMaxLines);
