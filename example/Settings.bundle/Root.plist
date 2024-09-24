@@ -10,6 +10,23 @@
 	<array>
 		<dict>
 			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>RegExp Rang test</string>
+			<key>Key</key>
+			<string>rang test</string>
+			<key>KeyboardType</key>
+			<string>datetime</string>
+			<key>RegExp</key>
+			<string>^\d*\.?\d*</string>
+			<key>RegExpRang</key>
+			<array>
+				<integer>0</integer>
+				<integer>100</integer>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string></string>

@@ -285,6 +285,63 @@ Widget getWidget(
             RegExp(temp),
           ),
         );
+        Object regExpRang =
+            data.containsKey("RegExpRang") ? data["RegExpRang"] : "";
+        if (regExpRang is List<Object> && regExpRang.length >= 2) {
+          inputFormatters.add(
+            TextInputFormatter.withFunction((oldValue, newValue) {
+              if (newValue.text.isEmpty) {
+                return newValue;
+              }
+              final double? value = double.tryParse(newValue.text);
+              double? regExpStart;
+              double? regExpEnd;
+              switch (regExpRang[0].runtimeType) {
+                case double:
+                  regExpStart = regExpRang[0] as double;
+                  break;
+                case int:
+                  regExpStart = (regExpRang[0] as int).toDouble();
+                  break;
+                case String:
+                  try {
+                    regExpStart = double.parse(regExpRang[0] as String);
+                  } catch (_) {
+                    regExpStart = null;
+                  }
+                  break;
+                default:
+              }
+              switch (regExpRang[1].runtimeType) {
+                case double:
+                  regExpEnd = regExpRang[1] as double;
+
+                  break;
+                case int:
+                  regExpEnd = (regExpRang[1] as int).toDouble();
+                  break;
+                case String:
+                  try {
+                    regExpEnd = double.parse(regExpRang[1] as String);
+                  } catch (_) {
+                    regExpEnd = null;
+                  }
+                  break;
+                default:
+              }
+              if (value == null) {
+                return oldValue;
+              }
+              if (regExpStart != null && value < regExpStart) {
+                return oldValue;
+              }
+              if (regExpEnd != null && value > regExpEnd) {
+                return oldValue;
+              }
+              return newValue;
+            }),
+          );
+        }
       }
       temp = data.containsKey("RegExpItem") ? data["RegExpItem"] : -1;
       if (temp is int && temp >= 0) {
