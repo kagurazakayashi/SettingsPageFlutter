@@ -794,7 +794,7 @@ Widget getWidget(
                     SizedBox(
                       width: sliderWidth,
                       child: Transform.translate(
-                        offset: const Offset(-10, 0),
+                        offset: const Offset(-16, 0),
                         child: SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             trackHeight: 2.0,
