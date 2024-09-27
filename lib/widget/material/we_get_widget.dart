@@ -323,7 +323,11 @@ Widget getWidget(
               break;
             default:
           }
-          helperText = "$regExpStart ~ $regExpEnd";
+          print(">>> 000 $regExpStart $regExpEnd");
+          // String reStartStr = doubleToStr(regExpStart);
+          // String reEndStr = doubleToStr(regExpEnd);
+          // print(">>> >>> $reStartStr $reEndStr");
+          helperText = "${doubleToStr(regExpStart)} ~ ${doubleToStr(regExpEnd)}";
           inputFormatters.add(
             TextInputFormatter.withFunction((oldValue, newValue) {
               if (newValue.text.isEmpty || newValue.text == '-') {
@@ -1127,4 +1131,10 @@ double calculateTextHeight(String text, TextStyle style, double maxWidth,
     textDirection: TextDirection.ltr,
   )..layout(minWidth: 0, maxWidth: maxWidth);
   return textPainter.height;
+}
+
+String doubleToStr(double? value) {
+  if (value == null) return "";
+  final intValue = value.toInt();
+  return intValue == value ? intValue.toString() : value.toStringAsFixed(1);
 }
