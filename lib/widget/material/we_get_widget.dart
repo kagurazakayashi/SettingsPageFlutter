@@ -105,6 +105,8 @@ Widget getWidget(
       Object valtrue = data.containsKey("True") ? data["True"] : true;
       Object valfalse = data.containsKey("False") ? data["False"] : false;
 
+      bool readOnly = false; //是否为只读
+
       switch (temp.runtimeType) {
         case bool:
           if (temp.toString() == valtrue.toString()) {
@@ -120,6 +122,21 @@ Widget getWidget(
             val = true;
           } else if (temp == valfalse.toString()) {
             val = false;
+          }
+          break;
+      }
+
+      //是否为只读
+      temp = data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
+      switch (temp.runtimeType) {
+        case bool:
+          readOnly = temp as bool;
+          break;
+        case String:
+          if (temp == "true") {
+            readOnly = true;
+          } else if (temp == "false") {
+            readOnly = false;
           }
           break;
       }
@@ -176,7 +193,13 @@ Widget getWidget(
               ExcludeSemantics(
                 child: Switch(
                   value: val,
-                  onChanged: (val) => onChanged(id, val, false),
+                  onChanged: readOnly
+                      ? null
+                      : (val) => onChanged(
+                            id,
+                            val,
+                            false,
+                          ),
                 ),
               ),
             ],
@@ -202,7 +225,7 @@ Widget getWidget(
       TextInputType keyboardType = TextInputType.text; //键盘样式
       TextInputAction textInputAction = TextInputAction.done; //键盘回车键样式
       String? helperText;
-      int maxLines = 1; //最大行数
+      int? maxLines; //最大行数
       int? maxLength; //最大长度
       bool autofocus = false; //是否自动获取焦点
       bool isFile = false; //是否为文件
@@ -323,11 +346,12 @@ Widget getWidget(
               break;
             default:
           }
-          print(">>> 000 $regExpStart $regExpEnd");
+          // print(">>> 000 $regExpStart $regExpEnd");
           // String reStartStr = doubleToStr(regExpStart);
           // String reEndStr = doubleToStr(regExpEnd);
           // print(">>> >>> $reStartStr $reEndStr");
-          helperText = "${doubleToStr(regExpStart)} ~ ${doubleToStr(regExpEnd)}";
+          helperText =
+              "${doubleToStr(regExpStart)} ~ ${doubleToStr(regExpEnd)}";
           inputFormatters.add(
             TextInputFormatter.withFunction((oldValue, newValue) {
               if (newValue.text.isEmpty || newValue.text == '-') {
@@ -478,7 +502,7 @@ Widget getWidget(
           try {
             maxLines = int.parse(temp as String);
           } catch (e) {
-            maxLines = 1;
+            maxLines = null;
           }
           break;
       }
@@ -529,7 +553,6 @@ Widget getWidget(
       switch (temp.runtimeType) {
         case List:
         case List<String>:
-        case List<dynamic>:
         case List<Object>:
           for (dynamic ext in (temp as List)) {
             if (ext.runtimeType == String && ext.toString().isNotEmpty) {

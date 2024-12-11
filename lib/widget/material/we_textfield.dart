@@ -74,16 +74,13 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   String oldStr = "";
   String changedStr = "";
   bool _obscureText = false;
+  bool isChange = false;
   final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     _obscureText = widget.obscureText;
-    _focusNode.addListener(() {
-      if (!_focusNode.hasFocus) {
-        checkRegExp();
-      }
-    });
+    _focusNode.addListener(onFocus);
     oldStr = widget.controller.text;
     WidgetsBinding.instance.addObserver(this);
     super.initState();
@@ -97,9 +94,23 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _focusNode.removeListener(onFocus);
     _focusNode.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  void onFocus() {
+    if (!_focusNode.hasFocus) {
+      checkRegExp();
+      if (isChange) {
+        widget.controller.selection = TextSelection.fromPosition(
+          TextPosition(
+            offset: widget.controller.text.length,
+          ),
+        );
+      }
+    }
   }
 
   void checkRegExp({String? val}) {
@@ -108,7 +119,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     if (val != null) {
       v = val;
     }
-    if (widget.onSubRegExp != null) {
+    if (!isChange && widget.onSubRegExp != null) {
       isRegExp = widget.onSubRegExp!.hasMatch(v);
     }
     if (!isRegExp) {
@@ -120,6 +131,11 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       widget.controller.text = v;
       changedStr = widget.controller.text;
       widget.onChanged(widget.id, v, true);
+      widget.controller.selection = TextSelection.fromPosition(
+        TextPosition(
+          offset: widget.controller.text.length,
+        ),
+      );
     }
   }
 
@@ -208,7 +224,12 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       autofocus: widget.autofocus,
+      onChanged: (val) {
+        isChange = true;
+        checkRegExp(val: val);
+      },
       onSubmitted: (val) {
+        isChange = false;
         checkRegExp(val: val);
         if (widget.onSubmitted != null) {
           widget.onSubmitted!(val);
