@@ -76,6 +76,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   bool _obscureText = false;
   bool isChange = false;
   final FocusNode _focusNode = FocusNode();
+  int nowSelection = 0;
 
   @override
   void initState() {
@@ -106,7 +107,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       if (isChange) {
         widget.controller.selection = TextSelection.fromPosition(
           TextPosition(
-            offset: widget.controller.text.length,
+            offset: nowSelection,
           ),
         );
       }
@@ -133,7 +134,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       widget.onChanged(widget.id, v, true);
       widget.controller.selection = TextSelection.fromPosition(
         TextPosition(
-          offset: widget.controller.text.length,
+          offset: nowSelection,
         ),
       );
     }
@@ -226,6 +227,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       autofocus: widget.autofocus,
       onChanged: (val) {
         isChange = true;
+        nowSelection = widget.controller.selection.baseOffset;
         checkRegExp(val: val);
       },
       onSubmitted: (val) {
