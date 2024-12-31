@@ -11,6 +11,8 @@ class XMLDataTypeConvert {
         return String;
       case "integer":
         return int;
+      case "double":
+        return double;
       case "true":
         return bool;
       case "false":
@@ -33,6 +35,8 @@ class XMLDataTypeConvert {
         return text;
       case "integer":
         return int.parse(text);
+      case "double":
+        return double.parse(text);
       case "true":
         return true;
       case "false":
@@ -85,6 +89,9 @@ class XMLDataTypeConvert {
             break;
           case "integer":
             list.add(int.parse(arr.innerText));
+            break;
+          case "double":
+            list.add(double.parse(arr.innerText));
             break;
           default:
             list.add(arr.innerText);
@@ -187,6 +194,9 @@ class XMLDataTypeConvert {
               break;
             case "integer":
               map[key] = int.parse(child.innerText);
+              break;
+            case "double":
+              map[key] = double.parse(child.innerText);
               break;
             case "true":
               map[key] = true;
