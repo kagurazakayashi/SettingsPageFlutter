@@ -216,6 +216,7 @@ Widget getWidget(
           : data.containsKey('DefaultValue')
               ? data['DefaultValue']
               : ""; //提示文本
+      List<String> suggestions = data.containsKey('Suggestions')?data['Suggestions']:<String>[];
       bool autoCorrect = false; //自动纠正拼写
       bool readOnly = false; //是否为只读
       TextCapitalization autoCapitalization = TextCapitalization.none; //自动大写
@@ -581,6 +582,7 @@ Widget getWidget(
           value: val,
           onChanged: onChanged,
           style: tsMain,
+          suggestions: suggestions,
           readOnly: readOnly,
           labelText: label.isEmpty
               ? null

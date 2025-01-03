@@ -1,3 +1,4 @@
+import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,6 +6,7 @@ class WeTextField extends StatefulWidget {
   const WeTextField({
     Key? key,
     required this.controller,
+    this.suggestions = const [],
     this.style,
     this.readOnly = false,
     this.labelText,
@@ -36,6 +38,7 @@ class WeTextField extends StatefulWidget {
     required this.onChanged,
   }) : super(key: key);
   final TextEditingController controller;
+  final List<String> suggestions;
   final TextStyle? style;
   final bool readOnly;
   final String? labelText;
@@ -77,6 +80,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   bool isChange = false;
   final FocusNode _focusNode = FocusNode();
   int nowSelection = 0;
+  SuggestionsBoxController suggestionBoxController = SuggestionsBoxController();
 
   @override
   void initState() {
@@ -97,6 +101,8 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   void dispose() {
     _focusNode.removeListener(onFocus);
     _focusNode.dispose();
+    widget.controller.dispose();
+    suggestionBoxController.close();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -111,15 +117,16 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
           ),
         );
       }
+      suggestionBoxController.close();
     }
   }
 
-  void checkRegExp({String? val}) {
-    bool isRegExp = true;
-    String v = widget.controller.text;
-    if (val != null) {
-      v = val;
+  void checkRegExp({bool isSubmitted = true, String? val}) {
+    if (val == null) {
+      return;
     }
+    bool isRegExp = true;
+    String v = val;
     if (!isChange && widget.onSubRegExp != null) {
       isRegExp = widget.onSubRegExp!.hasMatch(v);
     }
@@ -128,16 +135,26 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     } else {
       oldStr = v;
     }
-    if (changedStr != widget.controller.text) {
+    if ((v != widget.controller.text) ||
+        (changedStr != widget.controller.text)) {
       widget.controller.text = v;
       changedStr = widget.controller.text;
       widget.onChanged(widget.id, v, true);
+
       widget.controller.selection = TextSelection.fromPosition(
         TextPosition(
           offset: nowSelection,
         ),
       );
     }
+  }
+
+  List<String> getSuggestions(String query) {
+    List<String> matches = <String>[];
+    matches.addAll(widget.suggestions);
+
+    matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
+    return matches;
   }
 
   @override
@@ -186,6 +203,74 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         ),
       ));
     }
+    if (widget.suggestions.isNotEmpty) {
+      return DropDownSearchField(
+        textFieldConfiguration: TextFieldConfiguration(
+          controller: widget.controller,
+          style: widget.style,
+          decoration: InputDecoration(
+            labelText: widget.labelText,
+            labelStyle: widget.labelStyle,
+            hintText: widget.hintText,
+            hintStyle: widget.hintStyle,
+            helperText: widget.helpText,
+            helperStyle: widget.helpStyle,
+            filled: widget.fillColor == null ? false : !widget.readOnly,
+            fillColor: widget.fillColor,
+            suffixIcon: suffixIcons.isEmpty
+                ? null
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: suffixIcons,
+                  ),
+            border: InputBorder.none,
+          ),
+          inputFormatters: widget.inputFormatters,
+          autocorrect: widget.autocorrect,
+          textCapitalization: widget.textCapitalization,
+          obscureText: _obscureText,
+          keyboardType: widget.keyboardType ?? TextInputType.text,
+          textInputAction: widget.textInputAction,
+          minLines: widget.minLines,
+          maxLines: widget.maxLines,
+          maxLength: widget.maxLength,
+          autofocus: widget.autofocus,
+          onChanged: widget.readOnly
+              ? null
+              : (val) {
+                  isChange = true;
+                  nowSelection = widget.controller.selection.baseOffset;
+                  checkRegExp(isSubmitted: false, val: val);
+                },
+          onSubmitted: widget.readOnly
+              ? null
+              : (val) {
+                  isChange = false;
+                  checkRegExp(val: val);
+                  if (widget.onSubmitted != null) {
+                    widget.onSubmitted!(val);
+                  }
+                },
+          focusNode: _focusNode,
+        ),
+        itemBuilder: (context, String suggestion) {
+          return ListTile(
+            title: Text(suggestion),
+          );
+        },
+        suggestionsCallback: (pattern) {
+          return getSuggestions(pattern);
+        },
+        onSuggestionSelected: (String suggestion) {
+          isChange = true;
+          nowSelection = widget.controller.selection.baseOffset;
+          checkRegExp(isSubmitted: false, val: suggestion);
+        },
+        suggestionsBoxController: suggestionBoxController,
+        displayAllSuggestionWhenTap: true,
+        isMultiSelectDropdown: false,
+      );
+    }
     return TextField(
       controller: widget.controller,
       style: widget.style,
@@ -228,7 +313,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       onChanged: (val) {
         isChange = true;
         nowSelection = widget.controller.selection.baseOffset;
-        checkRegExp(val: val);
+        checkRegExp(isSubmitted: false, val: val);
       },
       onSubmitted: (val) {
         isChange = false;
