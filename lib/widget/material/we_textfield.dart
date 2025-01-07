@@ -88,6 +88,11 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     _focusNode.addListener(onFocus);
     oldStr = widget.controller.text;
     WidgetsBinding.instance.addObserver(this);
+    widget.controller.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: nowSelection,
+      ),
+    );
     super.initState();
   }
 
@@ -119,6 +124,8 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       }
       suggestionBoxController.close();
     }
+
+    nowSelection = widget.controller.selection.baseOffset;
   }
 
   void checkRegExp({bool isSubmitted = true, String? val}) {
@@ -203,6 +210,11 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         ),
       ));
     }
+    widget.controller.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: nowSelection,
+      ),
+    );
     if (widget.suggestions.isNotEmpty) {
       return DropDownSearchField(
         textFieldConfiguration: TextFieldConfiguration(
