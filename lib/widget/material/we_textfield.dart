@@ -88,11 +88,6 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     _focusNode.addListener(onFocus);
     oldStr = widget.controller.text;
     WidgetsBinding.instance.addObserver(this);
-    widget.controller.selection = TextSelection.fromPosition(
-      TextPosition(
-        offset: nowSelection,
-      ),
-    );
     super.initState();
   }
 
@@ -116,11 +111,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     if (!_focusNode.hasFocus) {
       checkRegExp();
       if (isChange) {
-        widget.controller.selection = TextSelection.fromPosition(
-          TextPosition(
-            offset: nowSelection,
-          ),
-        );
+        setSelection();
       }
       suggestionBoxController.close();
     }
@@ -148,11 +139,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       changedStr = widget.controller.text;
       widget.onChanged(widget.id, v, true);
 
-      widget.controller.selection = TextSelection.fromPosition(
-        TextPosition(
-          offset: nowSelection,
-        ),
-      );
+      setSelection();
     }
   }
 
@@ -162,6 +149,17 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
 
     matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     return matches;
+  }
+
+  void setSelection() {
+    if (nowSelection > widget.controller.selection.baseOffset) {
+      return;
+    }
+    widget.controller.selection = TextSelection.fromPosition(
+      TextPosition(
+        offset: nowSelection,
+      ),
+    );
   }
 
   @override
@@ -199,6 +197,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
                   widget.controller.text = "";
                   oldStr = "";
                   widget.onChanged(widget.id, "", false);
+                  // nowSelection = 0;
                 },
           child: Container(
             padding: const EdgeInsets.only(left: 8),
@@ -210,11 +209,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         ),
       ));
     }
-    widget.controller.selection = TextSelection.fromPosition(
-      TextPosition(
-        offset: nowSelection,
-      ),
-    );
+    setSelection();
     if (widget.suggestions.isNotEmpty) {
       return DropDownSearchField(
         textFieldConfiguration: TextFieldConfiguration(
