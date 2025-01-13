@@ -216,7 +216,8 @@ Widget getWidget(
           : data.containsKey('DefaultValue')
               ? data['DefaultValue']
               : ""; //提示文本
-      List<String> suggestions = data.containsKey('Suggestions')?data['Suggestions']:<String>[];
+      List<String> suggestions = <String>[];
+      String? noResulteLabel =data.containsKey('NoResulteLabel')?data['NoResulteLabel']:null;
       bool autoCorrect = false; //自动纠正拼写
       bool readOnly = false; //是否为只读
       TextCapitalization autoCapitalization = TextCapitalization.none; //自动大写
@@ -284,6 +285,16 @@ Widget getWidget(
               autoCapitalization = TextCapitalization.none;
           }
           break;
+      }
+      temp=data.containsKey('Suggestions')?data['Suggestions']:[];
+      switch(temp.runtimeType){
+        case List:
+        case List<Object>:
+        case List<int>:
+        case List<String>:
+        for (var e in temp as List) {
+          suggestions.add(e.toString());
+        }
       }
       //是否密文显示
       temp = data.containsKey('TextFieldIsSecure')
@@ -583,6 +594,7 @@ Widget getWidget(
           onChanged: onChanged,
           style: tsMain,
           suggestions: suggestions,
+          noResulteLabel: noResulteLabel,
           readOnly: readOnly,
           labelText: label.isEmpty
               ? null

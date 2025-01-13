@@ -7,6 +7,7 @@ class WeTextField extends StatefulWidget {
     Key? key,
     required this.controller,
     this.suggestions = const [],
+    this.noResulteLabel,
     this.style,
     this.readOnly = false,
     this.labelText,
@@ -39,6 +40,7 @@ class WeTextField extends StatefulWidget {
   }) : super(key: key);
   final TextEditingController controller;
   final List<String> suggestions;
+  final String? noResulteLabel;
   final TextStyle? style;
   final bool readOnly;
   final String? labelText;
@@ -81,6 +83,8 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   final FocusNode _focusNode = FocusNode();
   int nowSelection = 0;
   SuggestionsBoxController suggestionBoxController = SuggestionsBoxController();
+
+  List<String> suggestions = [];
 
   @override
   void initState() {
@@ -149,6 +153,14 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
 
     matches.retainWhere((s) => s.toLowerCase().contains(query.toLowerCase()));
     return matches;
+  }
+
+  /// Widget that will be displayed when no results were found
+  Widget getNoResultText(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Text(widget.noResulteLabel ?? "No results found!"),
+    );
   }
 
   void setSelection() {
@@ -262,12 +274,16 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         ),
         itemBuilder: (context, String suggestion) {
           return ListTile(
-            title: Text(suggestion),
+            title: Text(
+              suggestion,
+              style: TextStyle(
+                color: widget.isDark ? Colors.white : Colors.black,
+              ),
+            ),
           );
         },
-        suggestionsCallback: (pattern) {
-          return getSuggestions(pattern);
-        },
+        suggestionsCallback: getSuggestions,
+        noItemsFoundBuilder: getNoResultText,
         onSuggestionSelected: (String suggestion) {
           isChange = true;
           nowSelection = widget.controller.selection.baseOffset;
