@@ -76,7 +76,6 @@ class WeTextField extends StatefulWidget {
 }
 
 class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
-  String oldStr = "";
   String changedStr = "";
   bool _obscureText = false;
   bool isChange = false;
@@ -90,7 +89,6 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   void initState() {
     _obscureText = widget.obscureText;
     _focusNode.addListener(onFocus);
-    oldStr = widget.controller.text;
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -133,9 +131,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       isRegExp = widget.onSubRegExp!.hasMatch(v);
     }
     if (!isRegExp) {
-      v = oldStr;
-    } else {
-      oldStr = v;
+      v = "";
     }
     if ((v != widget.controller.text) ||
         (changedStr != widget.controller.text)) {
@@ -207,7 +203,6 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
               ? null
               : () {
                   widget.controller.text = "";
-                  oldStr = "";
                   widget.onChanged(widget.id, "", false);
                   // nowSelection = 0;
                 },
