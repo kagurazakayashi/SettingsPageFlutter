@@ -999,12 +999,12 @@ Widget getWidget(
       double cellWidth = weWidth - 107;
       int titleMaxLines = 1;
       if (valWidth > cellWidth / 2) {
-        valWidth = cellWidth / 2;
         if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
           titleWidth = cellWidth / 2 + 12;
           titleMaxLines = 99;
         }
         valWidth = cellWidth - titleWidth;
+        titleMaxLines = 99;
       } else {
         if (titleWidth > cellWidth) {
           titleMaxLines = 99;
@@ -1017,6 +1017,7 @@ Widget getWidget(
       if (!isReadonly && (titleValues != null)) {
         titleWidth = cellWidth / 2;
         valWidth = cellWidth / 2;
+        titleMaxLines = 99;
       }
       double titleHeight = calculateTextHeight(
           title, tsMaincalculate, titleWidth,
@@ -1028,6 +1029,7 @@ Widget getWidget(
       }
       if (valWidth > cellWidth / 2 - 20) {
         valWidth = valWidth - 30;
+        titleMaxLines = 99;
       }
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
