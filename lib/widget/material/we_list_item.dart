@@ -19,6 +19,7 @@ class WeListItem extends StatelessWidget {
     this.onClick,
     required this.onChanged,
     this.openFile,
+    this.saveFile,
   }) : super(key: key);
 
   /// {@template settingspageflutter.widget.wegroupitem.isDev}
@@ -177,6 +178,15 @@ class WeListItem extends StatelessWidget {
   /// {@endtemplate}
   final Function(String key, List<String> extList)? openFile;
 
+  ///  {@template settingspageflutter.widget.welistitem.saveFile}
+  /// 保存文件事件
+  /// 
+  /// * [path] 为数据中的key`Path`的值,用于需要修改项的key
+  /// 
+  /// {@endtemplate}
+  /// 
+  final Function(String path)? saveFile;
+
   @override
   Widget build(BuildContext context) {
     String type = data.containsKey("Type") ? data["Type"] : "";
@@ -191,6 +201,7 @@ class WeListItem extends StatelessWidget {
       data,
       onChanged,
       openFile: openFile,
+      saveFile: saveFile,
       visibilitySemantics: visibilitySemantics,
       clearSemantics: clearSemantics,
       fillColor:fillColor,

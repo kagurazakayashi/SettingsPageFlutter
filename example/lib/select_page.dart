@@ -219,6 +219,9 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                       // User canceled the picker
                     }
                   },
+                  saveFile: (path) {
+                    BotToast.showText(text: "saveFile: $path");
+                  },
                 );
               },
             )

@@ -75,6 +75,7 @@ Widget getWidget(
   Map<String, dynamic> data,
   final Function(String key, dynamic value, bool isTip) onChanged, {
   final Function(String key, List<String> extList)? openFile,
+  final Function(String path)? saveFile,
   String? visibilitySemantics,
   String? clearSemantics,
   Color? fillColor,
@@ -231,6 +232,7 @@ Widget getWidget(
       int? maxLength; //最大长度
       bool autofocus = false; //是否自动获取焦点
       bool isFile = false; //是否为文件
+      String savePath = ""; // 保存路径,有此项则显示下载按钮
       List<String> fileExt = []; //文件扩展名
 
       //自动纠正拼写
@@ -560,6 +562,13 @@ Widget getWidget(
           }
           break;
       }
+      //是否保存为文件
+      temp = data.containsKey('SavePath') ? data['SavePath'] : "";
+      switch (temp.runtimeType) {
+        case String:
+          savePath = temp as String;
+          break;
+      }
       //文件扩展名
       temp = data.containsKey('FileExt') ? data['FileExt'] : [];
       switch (temp.runtimeType) {
@@ -626,6 +635,14 @@ Widget getWidget(
         c = Row(
           children: [
             Expanded(child: c),
+            if(savePath.isNotEmpty&& saveFile!=null)
+              IconButton(
+                 icon: Icon(
+                  Icons.download,
+                  color: !isDark ?controller.text.isEmpty?Colors.black26: Colors.black54 : null,
+                ),
+                onPressed:controller.text.isEmpty?null: ()=>saveFile(savePath),
+              ),
             IconButton(
               icon: Icon(
                 Icons.folder_open,

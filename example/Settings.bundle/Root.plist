@@ -9,6 +9,20 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>IsFile</key>
+			<true/>
+			<key>SavePath</key>
+			<string>{DeviceName}/data.json</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>data</string>
+			<key>Key</key>
+			<string>123</string>
+			<key>MaxLines</key>
+			<string>5</string>
+		</dict>
+		<dict>
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
