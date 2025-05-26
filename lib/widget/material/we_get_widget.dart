@@ -75,7 +75,7 @@ Widget getWidget(
   Map<String, dynamic> data,
   final Function(String key, dynamic value, bool isTip) onChanged, {
   final Function(String key, List<String> extList)? openFile,
-  final Function(String path)? saveFile,
+  final Function(String path, String value)? saveFile,
   String? visibilitySemantics,
   String? clearSemantics,
   Color? fillColor,
@@ -641,7 +641,7 @@ Widget getWidget(
                   Icons.download,
                   color: !isDark ?controller.text.isEmpty?Colors.black26: Colors.black54 : null,
                 ),
-                onPressed:controller.text.isEmpty?null: ()=>saveFile(savePath),
+                onPressed:controller.text.isEmpty?null: ()=>saveFile(savePath, controller.text),
               ),
             IconButton(
               icon: Icon(

@@ -187,9 +187,11 @@ class WeColumn extends StatelessWidget {
   /// 
   /// * [path] 为数据中的key`Path`的值,用于需要修改项的key
   /// 
+  /// * [value] 为数据中的key`Value`的值,当期输入框中的值
+  /// 
   /// {@endtemplate}
   /// 
-  final Function(String path)? saveFile;
+  final Function(String path, String value)? saveFile;
 
   @override
   Widget build(BuildContext context) {
