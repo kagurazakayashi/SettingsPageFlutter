@@ -631,7 +631,7 @@ Widget getWidget(
           isDark: isDark,
         ),
       );
-      if (isFile) {
+      if (isFile||(savePath.isNotEmpty&& saveFile!=null)) {
         c = Row(
           children: [
             Expanded(child: c),
@@ -643,13 +643,14 @@ Widget getWidget(
                 ),
                 onPressed:controller.text.isEmpty?null: ()=>saveFile(savePath, controller.text),
               ),
-            IconButton(
-              icon: Icon(
-                Icons.folder_open,
-                color: !isDark ? Colors.black54 : null,
+            if(isFile)
+              IconButton(
+                icon: Icon(
+                  Icons.folder_open,
+                  color: !isDark ? Colors.black54 : null,
+                ),
+                onPressed: () => openFile!(id, fileExt),
               ),
-              onPressed: () => openFile!(id, fileExt),
-            ),
           ],
         );
       }
