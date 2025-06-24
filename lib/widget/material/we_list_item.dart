@@ -20,6 +20,7 @@ class WeListItem extends StatelessWidget {
     required this.onChanged,
     this.openFile,
     this.saveFile,
+    this.btnClick,
   }) : super(key: key);
 
   /// {@template settingspageflutter.widget.wegroupitem.isDev}
@@ -180,14 +181,24 @@ class WeListItem extends StatelessWidget {
 
   ///  {@template settingspageflutter.widget.welistitem.saveFile}
   /// 保存文件事件
-  /// 
+  ///
   /// * [path] 为数据中的key`Path`的值,用于需要修改项的key
-  /// 
+  ///
   /// * [value] 为数据中的key`Value`的值,当期输入框中的值
-  /// 
+  ///
   /// {@endtemplate}
-  /// 
+  ///
   final Function(String path, String value)? saveFile;
+
+  ///  {@template settingspageflutter.widget.welistitem.btnClick}
+  /// 按钮点击事件
+  ///
+  /// * [keyList] 为数据中的key`Key`的值,用于需要修改项的key
+  ///
+  /// * [actionList] 为数据中的key`Action`的值,用于需要修改项的key
+  ///
+  /// {@endtemplate}
+  final Function(List keyList, List actionList)? btnClick;
 
   @override
   Widget build(BuildContext context) {
@@ -206,9 +217,10 @@ class WeListItem extends StatelessWidget {
       saveFile: saveFile,
       visibilitySemantics: visibilitySemantics,
       clearSemantics: clearSemantics,
-      fillColor:fillColor,
+      fillColor: fillColor,
       isDev: isDev,
       isDark: isDark,
+      onClick: btnClick,
     );
     Function()? onTap;
 

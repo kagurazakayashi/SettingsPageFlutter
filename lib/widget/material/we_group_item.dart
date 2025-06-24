@@ -22,6 +22,7 @@ class WeGroupItem extends StatelessWidget {
     required this.onChanged,
     this.openFile,
     this.saveFile,
+    this.btnClick,
   }) : super(key: key);
 
   /// {@template settingspageflutter.widget.wegroupitem.isDev}
@@ -191,6 +192,16 @@ class WeGroupItem extends StatelessWidget {
   /// 
   final Function(String path, String value)? saveFile;
 
+  ///  {@template settingspageflutter.widget.welistitem.btnClick}
+  /// 按钮点击事件
+  ///
+  /// * [keyList] 为数据中的key`Key`的值,用于需要修改项的key
+  ///
+  /// * [actionList] 为数据中的key`Action`的值,用于需要修改项的key
+  ///
+  /// {@endtemplate}
+  final Function(List keyList, List actionList)? btnClick;
+
   @override
   Widget build(BuildContext context) {
     // 从数据中获取需要的值
@@ -241,6 +252,7 @@ class WeGroupItem extends StatelessWidget {
                             onChanged: onChanged,
                             openFile: openFile,
                             saveFile: saveFile,
+                            btnClick: btnClick,
                           )
                         : null,
                   )
@@ -260,6 +272,7 @@ class WeGroupItem extends StatelessWidget {
                       onChanged: onChanged,
                       openFile: openFile,
                       saveFile: saveFile,
+                      btnClick: btnClick,
                     ),
                   ),
           )

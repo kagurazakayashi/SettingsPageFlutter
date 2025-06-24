@@ -76,6 +76,7 @@ Widget getWidget(
   final Function(String key, dynamic value, bool isTip) onChanged, {
   final Function(String key, List<String> extList)? openFile,
   final Function(String path, String value)? saveFile,
+  final Function(List keyList, List actionList)? onClick,
   String? visibilitySemantics,
   String? clearSemantics,
   Color? fillColor,
@@ -218,7 +219,8 @@ Widget getWidget(
               ? data['DefaultValue']
               : ""; //提示文本
       List<String> suggestions = <String>[];
-      String? noResulteLabel =data.containsKey('NoResulteLabel')?data['NoResulteLabel']:null;
+      String? noResulteLabel =
+          data.containsKey('NoResulteLabel') ? data['NoResulteLabel'] : null;
       bool autoCorrect = false; //自动纠正拼写
       bool readOnly = false; //是否为只读
       TextCapitalization autoCapitalization = TextCapitalization.none; //自动大写
@@ -288,15 +290,15 @@ Widget getWidget(
           }
           break;
       }
-      temp=data.containsKey('Suggestions')?data['Suggestions']:[];
-      switch(temp.runtimeType){
+      temp = data.containsKey('Suggestions') ? data['Suggestions'] : [];
+      switch (temp.runtimeType) {
         case List:
         case List<Object>:
         case List<int>:
         case List<String>:
-        for (var e in temp as List) {
-          suggestions.add(e.toString());
-        }
+          for (var e in temp as List) {
+            suggestions.add(e.toString());
+          }
       }
       //是否密文显示
       temp = data.containsKey('TextFieldIsSecure')
@@ -631,19 +633,25 @@ Widget getWidget(
           isDark: isDark,
         ),
       );
-      if (isFile||(savePath.isNotEmpty&& saveFile!=null)) {
+      if (isFile || (savePath.isNotEmpty && saveFile != null)) {
         c = Row(
           children: [
             Expanded(child: c),
-            if(savePath.isNotEmpty&& saveFile!=null)
+            if (savePath.isNotEmpty && saveFile != null)
               IconButton(
-                 icon: Icon(
+                icon: Icon(
                   Icons.download,
-                  color: !isDark ?controller.text.isEmpty?Colors.black26: Colors.black54 : null,
+                  color: !isDark
+                      ? controller.text.isEmpty
+                          ? Colors.black26
+                          : Colors.black54
+                      : null,
                 ),
-                onPressed:controller.text.isEmpty?null: ()=>saveFile(savePath, controller.text),
+                onPressed: controller.text.isEmpty
+                    ? null
+                    : () => saveFile(savePath, controller.text),
               ),
-            if(isFile)
+            if (isFile)
               IconButton(
                 icon: Icon(
                   Icons.folder_open,
@@ -985,6 +993,155 @@ Widget getWidget(
         ),
       );
 
+      break;
+    case "PSButtonSpecifier":
+      List keyList = [];
+      List actionList = [];
+
+      int sideColor = 0xFFFFFFFF;
+      double sideWidth = 0;
+      int backgroundColor = 0;
+      double paddingVertical = 0;
+      double paddingHorizontal = 0;
+      double borderRadius = 0;
+      int textColor = 0;
+      double? textSize;
+      TextAlign textAlign = TextAlign.center;
+
+      Object temp = data.containsKey("KeyList") ? data["KeyList"] : [];
+      if (temp is List) {
+        for (var item in temp) {
+          keyList.add(item);
+        }
+      }
+      temp = data.containsKey("Action") ? data["Action"] : [];
+      if (temp is List) {
+        for (var item in temp) {
+          actionList.add(item);
+        }
+      }
+
+      temp = data.containsKey("Side color") ? data["Side color"] : 0xFFFFFFFF;
+      if (temp is int) {
+        sideColor = temp;
+      } else if (temp is String) {
+        sideColor = int.parse(temp);
+      }
+      temp = data.containsKey("Side width") ? data["Side width"] : 0;
+      if (temp is int) {
+        sideWidth = double.parse(temp.toString());
+      } else if (temp is double) {
+        sideWidth = temp;
+      } else if (temp is String) {
+        sideWidth = double.parse(temp);
+      }
+      temp = data.containsKey("backgroundColor") ? data["backgroundColor"] : 0;
+      if (temp is int) {
+        backgroundColor = temp;
+      } else if (temp is String) {
+        backgroundColor = int.parse(temp);
+      }
+
+      temp =
+          data.containsKey("padding vertical") ? data["padding vertical"] : 0;
+      if (temp is int) {
+        paddingVertical = double.parse(temp.toString());
+      } else if (temp is double) {
+        paddingVertical = temp;
+      } else if (temp is String) {
+        paddingVertical = double.parse(temp);
+      }
+
+      temp = data.containsKey("padding horizontal")
+          ? data["padding horizontal"]
+          : 0;
+      if (temp is int) {
+        paddingHorizontal = double.parse(temp.toString());
+      } else if (temp is double) {
+        paddingHorizontal = temp;
+      } else if (temp is String) {
+        paddingHorizontal = double.parse(temp);
+      }
+
+      temp = data.containsKey("borderRadius") ? data["borderRadius"] : 0;
+      if (temp is int) {
+        borderRadius = double.parse(temp.toString());
+      } else if (temp is double) {
+        borderRadius = temp;
+      } else if (temp is String) {
+        borderRadius = double.parse(temp);
+      }
+
+      temp = data.containsKey("TextColor") ? data["TextColor"] : 0;
+      if (temp is int) {
+        textColor = temp;
+      } else if (temp is String) {
+        print(">>> TextColor $temp");
+        textColor = int.parse(temp);
+      }
+
+      temp = data.containsKey("TextSize") ? data["TextSize"] : 0;
+      if (temp is int) {
+        textSize = double.parse(temp.toString());
+      } else if (temp is double) {
+        textSize = temp;
+      } else if (temp is String) {
+        textSize = double.parse(temp);
+      }
+
+      temp = data.containsKey("TextAlignment") ? data["TextAlignment"] : "";
+      switch (temp) {
+        case "Left":
+          textAlign = TextAlign.left;
+          break;
+        case "Center":
+          textAlign = TextAlign.center;
+          break;
+        case "Right":
+          textAlign = TextAlign.right;
+          break;
+        default:
+          textAlign = TextAlign.left;
+          break;
+      }
+      c = ElevatedButton(
+        style: ButtonStyle(
+          side: sideWidth == 0
+              ? null
+              : WidgetStateProperty.all(
+                  BorderSide(color: Color(sideColor), width: sideWidth),
+                ),
+          backgroundColor: textColor == 0
+              ? null
+              : WidgetStateProperty.all(onClick == null
+                  ? Color(backgroundColor).withValues(alpha: 0.1)
+                  : Color(backgroundColor)),
+          padding: WidgetStateProperty.all(
+            EdgeInsets.symmetric(
+              vertical: paddingVertical,
+              horizontal: paddingHorizontal,
+            ),
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
+          ),
+          elevation: WidgetStateProperty.all(0),
+        ),
+        onPressed: onClick == null ? null : () => onClick(keyList, actionList),
+        child: Text(
+          title,
+          style: TextStyle(
+              fontSize: textSize,
+              color: textColor == 0
+                  ? null
+                  : onClick == null
+                      ? Color(textColor).withValues(alpha: 0.6)
+                      : Color(textColor)),
+          textAlign: textAlign,
+        ),
+      );
       break;
     default: //其他
       String key = data.containsKey("Key") ? data["Key"] : ""; //键

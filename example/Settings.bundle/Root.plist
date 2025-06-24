@@ -38,6 +38,40 @@
 				<integer>-10</integer>
 				<integer>10</integer>
 			</array>
+		<dict>
+			<key>Type</key>
+			<string>PSButtonSpecifier</string>
+			<key>Title</key>
+			<string>Button test</string>
+			<key>Key</key>
+			<string>btn test</string>
+			<key>padding vertical</key>
+			<string>15</string>
+			<key>padding horizontal</key>
+			<string>32</string>
+			<key>backgroundColor</key>
+			<integer>0xFF02B7FF</integer>
+			<key>borderRadius</key>
+			<string>5</string>
+			<!-- <key>Side color</key>
+			<integer>0xFFFFFFFF</integer>
+			<key>Side width</key>
+			<string>1</string> -->
+			<key>TextColor</key>
+			<integer>0xFF000000</integer>
+			<key>TextAlignment</key>
+			<string>center</string>
+			<key>TextSize</key>
+			<string>16</string>
+			<key>KeyList</key>
+			<array>
+				<string>rang test</string>
+			</array>
+			<key>Action</key>
+			<array> 
+				<string>showAlert</string>
+			</array>
+		</dict>
 		</dict>
 		<dict>
 			<key>Type</key>

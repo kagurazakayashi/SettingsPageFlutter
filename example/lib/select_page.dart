@@ -222,6 +222,9 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                   saveFile: (path, value) {
                     BotToast.showText(text: "saveFile: $path\n$value");
                   },
+                  btnClick: (keyList, actionList) {
+                    print(">>> btnClick: $keyList, $actionList");
+                  },
                 );
               },
             )
