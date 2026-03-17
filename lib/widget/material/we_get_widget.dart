@@ -917,10 +917,10 @@ Widget getWidget(
       double cellWidth = weWidth - 135;
       int titleMaxLines = 1;
       if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
-        titleWidth = weWidth - 190;
+        titleWidth -= 100;
         titleMaxLines = 99;
       }
-      double titleHeight = calculateTextHeight(
+      Size titleSize = calculateText(
         context,
         title,
         tsMaincalculate,
@@ -928,7 +928,7 @@ Widget getWidget(
         maxLines: titleMaxLines,
       );
       c = SizedBox(
-        height: titleHeight,
+        height: titleSize.height,
         child: Semantics(
           child: InkWell(
             onTap: isReadonly
@@ -970,8 +970,8 @@ Widget getWidget(
                   children: [
                     if (title.isNotEmpty)
                       SizedBox(
-                        width: titleWidth,
-                        height: titleHeight,
+                        width: titleSize.width,
+                        height: titleSize.height,
                         child: Text(
                           title,
                           style: tsMaincalculate,
@@ -1188,8 +1188,10 @@ Widget getWidget(
         valWidth = cellWidth - titleWidth;
         titleMaxLines = 99;
       } else {
-        if (titleWidth > cellWidth) {
+        if (titleWidth > cellWidth * 0.7) {
           titleMaxLines = 99;
+        }
+        if (titleWidth > cellWidth) {
           titleWidth = cellWidth - valWidth;
           if (valWidth != 0) {
             titleWidth -= 30;
@@ -1201,7 +1203,7 @@ Widget getWidget(
         valWidth = cellWidth / 2;
         titleMaxLines = 99;
       }
-      double titleHeight = calculateTextHeight(
+      Size titleSize = calculateText(
         context,
         title,
         tsMaincalculate,
@@ -1220,7 +1222,7 @@ Widget getWidget(
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
-          height: titleHeight,
+          height: titleSize.height,
           child: Semantics(
             container: true,
             selected: (childs != null || file != null || titleValues != null),
@@ -1234,14 +1236,14 @@ Widget getWidget(
                   children: [
                     if (title.isNotEmpty)
                       SizedBox(
-                        width: titleWidth,
-                        height: titleHeight,
+                        width: titleSize.width,
+                        height: titleSize.height,
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             title,
                             style: tsMaincalculate,
-                            maxLines: maxLine,
+                            maxLines: titleMaxLines,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -1363,7 +1365,7 @@ double calculateTextWidth(
     textScaler: MediaQuery.textScalerOf(context), //获取当前设备的文字缩放比例
     textWidthBasis: TextWidthBasis.longestLine, // 确保按最长行计算宽度，而不是尝试压缩
   )..layout(minWidth: 0, maxWidth: double.infinity);
-  return textPainter.width.ceilToDouble() + 3.0;
+  return textPainter.maxIntrinsicWidth.ceilToDouble() * 1.05;
 }
 
 double calculateTextHeight(
@@ -1380,7 +1382,36 @@ double calculateTextHeight(
     textScaler: MediaQuery.textScalerOf(context), //获取当前设备的文字缩放比例
     textWidthBasis: TextWidthBasis.longestLine, // 确保按最长行计算宽
   )..layout(minWidth: 0, maxWidth: maxWidth);
-  return textPainter.height.ceilToDouble() + 3.0;
+
+  // 获取总行数
+  List<LineMetrics> lines = textPainter.computeLineMetrics();
+  int actualLineCount = lines.length;
+  return textPainter.height.ceilToDouble() + (actualLineCount - 1) * 16.0;
+}
+
+Size calculateText(
+    BuildContext context, String text, TextStyle style, double maxWidth,
+    {int maxLines = 1}) {
+  final TextPainter textPainter = TextPainter(
+    text: TextSpan(text: text, style: style),
+    maxLines: maxLines,
+    textDirection: TextDirection.ltr,
+    textHeightBehavior: const TextHeightBehavior(
+      applyHeightToFirstAscent: true,
+      applyHeightToLastDescent: true,
+    ),
+    textScaler: MediaQuery.textScalerOf(context), //获取当前设备的文字缩放比例
+    textWidthBasis: TextWidthBasis.longestLine, // 确保按最长行计算宽
+  )..layout(minWidth: 0, maxWidth: maxWidth);
+
+  // 获取总行数
+  List<LineMetrics> lines = textPainter.computeLineMetrics();
+  int actualLineCount = lines.length;
+  var jitterValue = 3.0+(actualLineCount - 1) * 16.0;
+  return Size(
+    textPainter.width.ceilToDouble() * 1.05,
+    textPainter.height.ceilToDouble() + jitterValue,
+  );
 }
 
 String doubleToStr(double? value) {
