@@ -142,7 +142,6 @@ Widget getWidget(
           }
           break;
       }
-
       const int maxLine = 99;
       List<String> texts = [title];
       List<TextStyle> styles = [tsMaincalculate];
@@ -150,7 +149,7 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double titleWidth = calculateMaxTextWidth(context, texts, styles);
       double cellWidth = weWidth - 135;
       int titleMaxLines = 1;
       if (titleWidth > cellWidth / 2) {
@@ -158,8 +157,12 @@ Widget getWidget(
         titleMaxLines = 99;
       }
       double titleHeight = calculateTextHeight(
-          title, tsMaincalculate, titleWidth,
-          maxLines: titleMaxLines);
+        context,
+        title,
+        tsMaincalculate,
+        titleWidth,
+        maxLines: titleMaxLines,
+      );
       c = SizedBox(
         child: Semantics(
           toggled: val,
@@ -178,7 +181,7 @@ Widget getWidget(
                       height: titleHeight,
                       child: Text(
                         title,
-                        style: tsMain,
+                        style: tsMaincalculate,
                         maxLines: maxLine,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
@@ -796,21 +799,22 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double titleWidth = calculateMaxTextWidth(context, texts, styles);
       double cellWidth = weWidth - 107;
       if (titleWidth > cellWidth / 3) {
         titleWidth = cellWidth / 3 + 12;
         titleMaxLines = 99;
       }
       double titleHeight = calculateTextHeight(
+        context,
         title,
         tsMaincalculate,
         titleWidth,
         maxLines: titleMaxLines,
       );
       double valWidth = cellWidth - titleWidth;
-      double valTxtWidth =
-          calculateMaxTextWidth([max.toStringAsFixed(accuracy)], styles);
+      double valTxtWidth = calculateMaxTextWidth(
+          context, [max.toStringAsFixed(accuracy)], styles);
       double sliderWidth = valWidth - valTxtWidth / 2 + 10;
       if (sliderWidth < 150) {
         sliderWidth += 20;
@@ -838,7 +842,7 @@ Widget getWidget(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           title,
-                          style: tsMain,
+                          style: tsMaincalculate,
                           maxLines: titleMaxLines,
                         ),
                       ),
@@ -909,7 +913,7 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(texts, styles);
+      double titleWidth = calculateMaxTextWidth(context, texts, styles);
       double cellWidth = weWidth - 135;
       int titleMaxLines = 1;
       if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
@@ -917,8 +921,12 @@ Widget getWidget(
         titleMaxLines = 99;
       }
       double titleHeight = calculateTextHeight(
-          title, tsMaincalculate, titleWidth,
-          maxLines: titleMaxLines);
+        context,
+        title,
+        tsMaincalculate,
+        titleWidth,
+        maxLines: titleMaxLines,
+      );
       c = SizedBox(
         height: titleHeight,
         child: Semantics(
@@ -966,7 +974,7 @@ Widget getWidget(
                         height: titleHeight,
                         child: Text(
                           title,
-                          style: tsMain,
+                          style: tsMaincalculate,
                           maxLines: maxLine,
                           softWrap: true,
                           overflow: TextOverflow.ellipsis,
@@ -1076,7 +1084,6 @@ Widget getWidget(
       if (temp is int) {
         textColor = temp;
       } else if (temp is String) {
-        print(">>> TextColor $temp");
         textColor = int.parse(temp);
       }
 
@@ -1166,8 +1173,8 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(texts, styles);
-      double valWidth = calculateMaxTextWidth([val], styles);
+      double titleWidth = calculateMaxTextWidth(context, texts, styles);
+      double valWidth = calculateMaxTextWidth(context, [val], styles);
       if (valWidth != 0) {
         valWidth += 10;
       }
@@ -1195,11 +1202,15 @@ Widget getWidget(
         titleMaxLines = 99;
       }
       double titleHeight = calculateTextHeight(
-          title, tsMaincalculate, titleWidth,
-          maxLines: titleMaxLines);
+        context,
+        title,
+        tsMaincalculate,
+        titleWidth,
+        maxLines: titleMaxLines,
+      );
       if (valWidth < 0) valWidth = 0;
       TextAlign valAlign = TextAlign.right;
-      if (valWidth < calculateTextWidth(val, tsMaincalculate)) {
+      if (valWidth < calculateTextWidth(context, val, tsMaincalculate)) {
         valAlign = TextAlign.left;
       }
       if (valWidth > cellWidth / 2 - 20) {
@@ -1229,7 +1240,7 @@ Widget getWidget(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             title,
-                            style: tsMain,
+                            style: tsMaincalculate,
                             maxLines: maxLine,
                             softWrap: true,
                             overflow: TextOverflow.ellipsis,
@@ -1314,13 +1325,21 @@ int colorStrHanlder(String colorStr) {
   return color;
 }
 
-double calculateMaxTextWidth(List<String> texts, List<TextStyle> styles) {
+double calculateMaxTextWidth(
+  BuildContext context,
+  List<String> texts,
+  List<TextStyle> styles,
+) {
   double max = 0;
   for (int i = 0; i < texts.length; i++) {
     if (i >= styles.length) {
       continue;
     }
-    double width = calculateTextWidth(texts[i], styles[i]);
+    double width = calculateTextWidth(
+      context,
+      texts[i],
+      styles[i],
+    );
     if (width > max) {
       max = width;
     }
@@ -1328,23 +1347,40 @@ double calculateMaxTextWidth(List<String> texts, List<TextStyle> styles) {
   return max;
 }
 
-double calculateTextWidth(String text, TextStyle style) {
+double calculateTextWidth(
+  BuildContext context,
+  String text,
+  TextStyle style,
+) {
   final TextPainter textPainter = TextPainter(
     text: TextSpan(text: text, style: style),
     maxLines: 1,
     textDirection: TextDirection.ltr,
+    textHeightBehavior: const TextHeightBehavior(
+      applyHeightToFirstAscent: true,
+      applyHeightToLastDescent: true,
+    ),
+    textScaler: MediaQuery.textScalerOf(context), //获取当前设备的文字缩放比例
+    textWidthBasis: TextWidthBasis.longestLine, // 确保按最长行计算宽度，而不是尝试压缩
   )..layout(minWidth: 0, maxWidth: double.infinity);
-  return textPainter.width;
+  return textPainter.width.ceilToDouble() + 3.0;
 }
 
-double calculateTextHeight(String text, TextStyle style, double maxWidth,
+double calculateTextHeight(
+    BuildContext context, String text, TextStyle style, double maxWidth,
     {int maxLines = 1}) {
   final TextPainter textPainter = TextPainter(
     text: TextSpan(text: text, style: style),
     maxLines: maxLines,
     textDirection: TextDirection.ltr,
+    textHeightBehavior: const TextHeightBehavior(
+      applyHeightToFirstAscent: true,
+      applyHeightToLastDescent: true,
+    ),
+    textScaler: MediaQuery.textScalerOf(context), //获取当前设备的文字缩放比例
+    textWidthBasis: TextWidthBasis.longestLine, // 确保按最长行计算宽
   )..layout(minWidth: 0, maxWidth: maxWidth);
-  return textPainter.height;
+  return textPainter.height.ceilToDouble() + 3.0;
 }
 
 String doubleToStr(double? value) {
