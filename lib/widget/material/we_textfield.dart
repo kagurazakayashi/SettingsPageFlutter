@@ -329,6 +329,9 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
       maxLength: widget.maxLength,
       autofocus: widget.autofocus,
       onChanged: (val) {
+        if (widget.controller.value.composing.isValid) {
+          return;
+        }
         isChange = true;
         nowSelection = widget.controller.selection.baseOffset;
         checkRegExp(isSubmitted: false, val: val);
