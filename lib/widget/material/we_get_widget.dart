@@ -149,8 +149,13 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(context, texts, styles);
       double cellWidth = weWidth - 135;
+      double titleWidth = calculateMaxTextWidth(
+        context,
+        texts,
+        cellWidth,
+        styles,
+      );
       int titleMaxLines = 1;
       if (titleWidth > cellWidth / 2) {
         titleWidth = weWidth - 180;
@@ -799,8 +804,13 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(context, texts, styles);
       double cellWidth = weWidth - 107;
+      double titleWidth = calculateMaxTextWidth(
+        context,
+        texts,
+        cellWidth,
+        styles,
+      );
       if (titleWidth > cellWidth / 3) {
         titleWidth = cellWidth / 3 + 12;
         titleMaxLines = 99;
@@ -814,7 +824,11 @@ Widget getWidget(
       );
       double valWidth = cellWidth - titleWidth;
       double valTxtWidth = calculateMaxTextWidth(
-          context, [max.toStringAsFixed(accuracy)], styles);
+        context,
+        [max.toStringAsFixed(accuracy)],
+        cellWidth,
+        styles,
+      );
       double sliderWidth = valWidth - valTxtWidth / 2 + 10;
       if (sliderWidth < 150) {
         sliderWidth += 20;
@@ -913,8 +927,13 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(context, texts, styles);
       double cellWidth = weWidth - 135;
+      double titleWidth = calculateMaxTextWidth(
+        context,
+        texts,
+        cellWidth,
+        styles,
+      );
       int titleMaxLines = 1;
       if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
         titleWidth -= 100;
@@ -1173,12 +1192,22 @@ Widget getWidget(
         texts.add(key);
         styles.add(tsGroupTagcalculate);
       }
-      double titleWidth = calculateMaxTextWidth(context, texts, styles);
-      double valWidth = calculateMaxTextWidth(context, [val], styles);
+      double cellWidth = weWidth - 107;
+      double titleWidth = calculateMaxTextWidth(
+        context,
+        texts,
+        cellWidth,
+        styles,
+      );
+      double valWidth = calculateMaxTextWidth(
+        context,
+        [val],
+        cellWidth,
+        styles,
+      );
       if (valWidth != 0) {
         valWidth += 10;
       }
-      double cellWidth = weWidth - 107;
       int titleMaxLines = 1;
       if (valWidth > cellWidth / 2) {
         if (titleWidth > cellWidth / 2 && val.isNotEmpty) {
@@ -1212,17 +1241,27 @@ Widget getWidget(
       );
       if (valWidth < 0) valWidth = 0;
       TextAlign valAlign = TextAlign.right;
-      if (valWidth < calculateTextWidth(context, val, tsMaincalculate)) {
+      if (valWidth <
+          calculateTextWidth(context, val, cellWidth, tsMaincalculate)) {
         valAlign = TextAlign.left;
       }
       if (valWidth > cellWidth / 2 - 20) {
         valWidth = valWidth - 30;
         titleMaxLines = 99;
       }
+      Size valSize = calculateText(
+        context,
+        val,
+        tsMainVal,
+        valWidth,
+        maxLines: maxLine,
+      );
+      double maxHeight =
+          titleSize.height > valSize.height ? titleSize.height : valSize.height;
       c = Padding(
         padding: const EdgeInsets.only(top: 6.0, bottom: 6),
         child: SizedBox(
-          height: titleSize.height,
+          height: maxHeight,
           child: Semantics(
             container: true,
             selected: (childs != null || file != null || titleValues != null),
@@ -1265,14 +1304,18 @@ Widget getWidget(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: valWidth,
-                          child: Text(
-                            val,
-                            style: tsMainVal,
-                            textAlign: valAlign,
-                            maxLines: maxLine,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
+                          width: valSize.width,
+                          height: valSize.height,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              val,
+                              style: tsMainVal,
+                              textAlign: valAlign,
+                              maxLines: maxLine,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                         if (!isReadonly &&
@@ -1330,6 +1373,7 @@ int colorStrHanlder(String colorStr) {
 double calculateMaxTextWidth(
   BuildContext context,
   List<String> texts,
+  double cellWidth,
   List<TextStyle> styles,
 ) {
   double max = 0;
@@ -1340,6 +1384,7 @@ double calculateMaxTextWidth(
     double width = calculateTextWidth(
       context,
       texts[i],
+      cellWidth,
       styles[i],
     );
     if (width > max) {
@@ -1352,6 +1397,7 @@ double calculateMaxTextWidth(
 double calculateTextWidth(
   BuildContext context,
   String text,
+  double cellWidth,
   TextStyle style,
 ) {
   final TextPainter textPainter = TextPainter(
@@ -1365,7 +1411,8 @@ double calculateTextWidth(
     textScaler: MediaQuery.textScalerOf(context), //获取当前设备的文字缩放比例
     textWidthBasis: TextWidthBasis.longestLine, // 确保按最长行计算宽度，而不是尝试压缩
   )..layout(minWidth: 0, maxWidth: double.infinity);
-  return textPainter.maxIntrinsicWidth.ceilToDouble() * 1.05;
+  double thisWidth = textPainter.maxIntrinsicWidth.ceilToDouble() * 1.05;
+  return thisWidth > cellWidth ? cellWidth : thisWidth;
 }
 
 double calculateTextHeight(
@@ -1407,9 +1454,10 @@ Size calculateText(
   // 获取总行数
   List<LineMetrics> lines = textPainter.computeLineMetrics();
   int actualLineCount = lines.length;
-  var jitterValue = 3.0+(actualLineCount - 1) * 16.0;
+  var jitterValue = 3.0 + (actualLineCount - 1) * 16.0;
+  double thisWidth = textPainter.width.ceilToDouble() * 1.05;
   return Size(
-    textPainter.width.ceilToDouble() * 1.05,
+    thisWidth > maxWidth ? maxWidth : thisWidth,
     textPainter.height.ceilToDouble() + jitterValue,
   );
 }
