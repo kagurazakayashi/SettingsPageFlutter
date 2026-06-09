@@ -1,6 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'data.dart';
 import 'select_page.dart';
@@ -19,8 +18,90 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        primaryColor: const Color(0xFF35ADD6),
+        primaryColorLight: const Color(0xFF79CEEB),
         primarySwatch: Colors.blue,
+        hintColor: const Color(0xFF477D8F),
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF088AB6),
+          secondary: Colors.blue,
+        ),
+        appBarTheme: const AppBarTheme(
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: const Color.fromARGB(255, 255, 0, 0),
+            backgroundColor:
+                const Color.fromARGB(255, 255, 173, 173), // 设置按钮文字的颜色
+          ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor:
+                const Color.fromARGB(255, 255, 251, 0), // 设置按钮文字的颜色
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            foregroundColor: const Color.fromARGB(255, 99, 48, 241),
+            side: const BorderSide(
+                color: Color.fromARGB(255, 206, 145, 241)), // 设置按钮边框的颜色
+          ),
+        ),
+        iconButtonTheme: IconButtonThemeData(
+          style: ButtonStyle(
+            iconColor: WidgetStateProperty.all<Color>(Colors.red),
+          ),
+        ),
       ),
+      // theme: ThemeData(
+      //   primaryColor: const Color(0xFF35ADD6),
+      //   primaryColorLight: Colors.red[300],
+      //   primarySwatch: const Color(0xFF35ADD6),
+      //   colorScheme: const ColorScheme.dark(
+      //     primary: Colors.green,
+      //     primaryContainer: Colors.greenAccent,
+      //     primaryFixed: Colors.lightGreen,
+      //     primaryFixedDim: Colors.lightGreenAccent,
+      //     onPrimary: Colors.white,
+      //     secondary: Colors.blue,
+      //     error: const Color(0xFF35ADD6),
+      //     surface: Color.fromARGB(255, 116, 99, 73),
+      //     surfaceBright: Colors.orangeAccent,
+      //     surfaceDim: Colors.orange,
+      //     surfaceContainer: Colors.orangeAccent,
+      //     surfaceContainerHigh: Colors.orange,
+      //     surfaceContainerLow: Colors.orangeAccent,
+      //     surfaceContainerLowest: Colors.orange,
+      //     surfaceTint: Colors.orange,
+      //     onSurface: Colors.orange,
+      //     tertiary: Colors.purple,
+      //     brightness: Brightness.dark
+      //   ),
+      //   appBarTheme: const AppBarTheme(
+      //     titleTextStyle: TextStyle(
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      //   buttonTheme: const ButtonThemeData(
+      //     buttonColor: Colors.blue,
+      //     textTheme: ButtonTextTheme.primary,
+      //     colorScheme: ColorScheme(
+      //       brightness: Brightness.light,
+      //       primary: Colors.blue,
+      //       onPrimary: Colors.lightBlue,
+      //       secondary: Colors.green,
+      //       onSecondary: Colors.lightGreen,
+      //       error: const Color(0xFF35ADD6),
+      //       onError: Colors.redAccent,
+      //       surface: Colors.yellow,
+      //       onSurface: Colors.yellowAccent,
+      //     ),
+      //   ),
+      // ),
       builder: BotToastInit(), //1.调用BotToastInit
       navigatorObservers: [BotToastNavigatorObserver()], //2.注册路由观察者
       debugShowCheckedModeBanner: false,
@@ -60,7 +141,7 @@ class _TestTFPageState extends State<TestTFPage> {
   // final regExp = RegExp(r'^(25[0-5]|2[0-4]\d|[01]?\d{1,2})$');
   final regExp = RegExp(r'^\d+$');
   // final regExp = RegExp(
-      // r'^(25[0-5]|2[0-4]\d|[01]?\d{1,2}){3}(25[0-5]|2[0-4]\d|[01]?\d{1,2})$');
+  // r'^(25[0-5]|2[0-4]\d|[01]?\d{1,2}){3}(25[0-5]|2[0-4]\d|[01]?\d{1,2})$');
   bool? isIpv4;
 
   @override
