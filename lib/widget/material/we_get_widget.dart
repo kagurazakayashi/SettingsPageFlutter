@@ -1506,8 +1506,10 @@ double calculateTextWidth(
   double cellWidth,
   TextStyle style,
 ) {
+  // 合并 DefaultTextStyle，确保测量字体与 Text 实际渲染字体一致（避免全局字体不同导致尺寸不准）
+  TextStyle effectiveStyle = DefaultTextStyle.of(context).style.merge(style);
   final TextPainter textPainter = TextPainter(
-    text: TextSpan(text: text, style: style),
+    text: TextSpan(text: text, style: effectiveStyle),
     maxLines: 1,
     textDirection: TextDirection.ltr,
     textHeightBehavior: const TextHeightBehavior(
@@ -1524,8 +1526,10 @@ double calculateTextWidth(
 double calculateTextHeight(
     BuildContext context, String text, TextStyle style, double maxWidth,
     {int maxLines = 1}) {
+  // 合并 DefaultTextStyle，确保测量字体与 Text 实际渲染字体一致
+  TextStyle effectiveStyle = DefaultTextStyle.of(context).style.merge(style);
   final TextPainter textPainter = TextPainter(
-    text: TextSpan(text: text, style: style),
+    text: TextSpan(text: text, style: effectiveStyle),
     maxLines: maxLines,
     textDirection: TextDirection.ltr,
     textHeightBehavior: const TextHeightBehavior(
@@ -1545,8 +1549,10 @@ double calculateTextHeight(
 Size calculateText(
     BuildContext context, String text, TextStyle style, double maxWidth,
     {int maxLines = 1}) {
+  // 合并 DefaultTextStyle，确保测量字体与 Text 实际渲染字体一致
+  TextStyle effectiveStyle = DefaultTextStyle.of(context).style.merge(style);
   final TextPainter textPainter = TextPainter(
-    text: TextSpan(text: text, style: style),
+    text: TextSpan(text: text, style: effectiveStyle),
     maxLines: maxLines,
     textDirection: TextDirection.ltr,
     textHeightBehavior: const TextHeightBehavior(

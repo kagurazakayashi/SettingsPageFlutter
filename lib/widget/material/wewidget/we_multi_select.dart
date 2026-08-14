@@ -161,7 +161,6 @@ class _WeMultiSelectState extends State<WeMultiSelect> {
     int selectedBits =
         multiSelectSelectedBits(widget.value, widget.options, widget.invert);
     List<String> selected = multiSelectSelectedTitles(selectedBits, widget.options);
-    String summary = selected.join(" ");
 
     return Semantics(
       container: true,
@@ -191,8 +190,9 @@ class _WeMultiSelectState extends State<WeMultiSelect> {
                         widget.id,
                         style: tsGroupTag,
                       ),
-                    // 已选项：在标题下方，用分割线隔离，长内容可换行显示
-                    if (summary.isNotEmpty) ...[
+                    // 已选项：在标题下方，用分割线隔离，长内容可换行显示。
+                    // 使用 Wrap 让每个选项标题独立换行，避免长单词被裁剪。
+                    if (selected.isNotEmpty) ...[
                       const SizedBox(height: 8),
                       Divider(
                         height: 1,
@@ -200,10 +200,17 @@ class _WeMultiSelectState extends State<WeMultiSelect> {
                         color: widget.isDark ? Colors.white24 : Colors.grey[300],
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        summary,
-                        style: widget.summaryStyle ?? tsMainVal,
-                        softWrap: true,
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 2,
+                        children: selected
+                            .map(
+                              (s) => Text(
+                                s,
+                                style: widget.summaryStyle ?? tsMainVal,
+                              ),
+                            )
+                            .toList(),
                       ),
                     ],
                   ],
