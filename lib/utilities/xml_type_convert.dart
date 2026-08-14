@@ -169,6 +169,38 @@ class XMLDataTypeConvert {
     return list;
   }
 
+  /// 根据 [key]（Titles）自动生成位值列表（2 的幂次：1、2、4、8...）。
+  ///
+  /// 用于 `PSMultiSelectSpecifier` 在 `UseValues=false` 时的场景，
+  /// 无需显式提供 `Values` 数组，位值按标题顺序自动递增。
+  static List<Map<String, dynamic>> titlesXmlNodeToListMap(
+    XmlElement key, {
+    String keyName = "Title",
+    String valName = "Val",
+    logTitle = "",
+  }) {
+    SettingsPageFlutterDebug log =
+        SettingsPageFlutterDebug(className: "XMLConvert");
+    List<Map<String, dynamic>> list = [];
+    List<XmlNode> keys = key.children;
+    int bit = 1;
+    for (int i = 0; i < keys.length; i++) {
+      XmlNode nKey = keys[i];
+      if (nKey.nodeType != XmlNodeType.ELEMENT) {
+        continue;
+      }
+      list.add({
+        keyName: nKey.text,
+        valName: bit,
+      });
+      bit <<= 1; // 位值翻倍
+    }
+    if (Global.i.isShowLog) {
+      log.i("$logTitle = (${list.runtimeType}) $list");
+    }
+    return list;
+  }
+
   /// 將類似於 `<key></key><string></string><key></key><integer></integer><key></key><true/>` 這樣的 [node] 轉換為 [Map] 。
   /// [node] 可以是 [XmlElement] 或 [XmlNode] 。
   /// 可以識別的資料型別有: [String] , [int] , [bool] , [XmlElement] , [XmlNode] 。

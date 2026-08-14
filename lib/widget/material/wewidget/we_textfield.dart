@@ -2,6 +2,8 @@ import 'package:drop_down_search_field/drop_down_search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import "../../we_localization.dart";
+
 class WeTextField extends StatefulWidget {
   const WeTextField({
     Key? key,
@@ -155,7 +157,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   Widget getNoResultText(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10),
-      child: Text(widget.noResulteLabel ?? "No results found!"),
+      child: Text(widget.noResulteLabel ?? weTr(context, "noResultsFound")),
     );
   }
 

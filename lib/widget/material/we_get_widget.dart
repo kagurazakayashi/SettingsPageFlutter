@@ -1,7 +1,8 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:settingspageflutter/widget/material/we_TextField.dart";
-import "package:settingspageflutter/widget/material/we_timepicker.dart";
+import "package:settingspageflutter/widget/material/wewidget/we_TextField.dart";
+import "package:settingspageflutter/widget/material/wewidget/we_timepicker.dart";
+import "package:settingspageflutter/widget/material/wewidget/we_multi_select.dart";
 import "package:settingspageflutter/widget/we_size.dart";
 
 import "../we_handle.dart";
@@ -1020,6 +1021,66 @@ Widget getWidget(
         ),
       );
 
+      break;
+    case "PSMultiSelectSpecifier": //数字多选(位掩码多选)
+      String key = data.containsKey("Key") ? data["Key"] : ""; //键
+      //当前值,如果Value不存在,则使用DefaultValue
+      Object multiVal = data.containsKey("Value")
+          ? data["Value"]
+          : data.containsKey("DefaultValue")
+              ? data["DefaultValue"]
+              : 0;
+      //是否为只读
+      bool multiReadOnly = false;
+      Object mTemp = data.containsKey("IsReadonly") ? data["IsReadonly"] : false;
+      switch (mTemp.runtimeType) {
+        case bool:
+          multiReadOnly = mTemp as bool;
+          break;
+        case String:
+          if (mTemp == "true") {
+            multiReadOnly = true;
+          } else if (mTemp == "false") {
+            multiReadOnly = false;
+          }
+          break;
+      }
+      //是否取反(反向):true时值为「未选中位」的按位或
+      bool multiInvert = false;
+      mTemp = data.containsKey("InvertValue") ? data["InvertValue"] : false;
+      switch (mTemp.runtimeType) {
+        case bool:
+          multiInvert = mTemp as bool;
+          break;
+        case String:
+          if (mTemp == "true") {
+            multiInvert = true;
+          } else if (mTemp == "false") {
+            multiInvert = false;
+          }
+          break;
+      }
+      //选项列表(由加载器从Titles/Values转换而来)
+      List<Map<String, dynamic>> multiOptions = [];
+      mTemp = data.containsKey("TitleValues") ? data["TitleValues"] : [];
+      if (mTemp is List) {
+        for (var o in mTemp) {
+          if (o is Map) {
+            multiOptions.add(Map<String, dynamic>.from(o));
+          }
+        }
+      }
+      c = WeMultiSelect(
+        id: id,
+        title: title,
+        value: multiVal,
+        options: multiOptions,
+        readOnly: multiReadOnly,
+        isDev: isDev,
+        isDark: isDark,
+        invert: multiInvert,
+        onChanged: onChanged,
+      );
       break;
     case "PSButtonSpecifier":
       List keyList = [];

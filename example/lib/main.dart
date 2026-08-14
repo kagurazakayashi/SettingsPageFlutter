@@ -1,10 +1,13 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:settingspageflutter/widget/we_localization.dart';
 
 import 'data.dart';
 import 'select_page.dart';
 
 void main() {
+  // 测试：设置当前语言为西班牙语
+  setWeLocale(null);
   runApp(const MyApp());
 }
 

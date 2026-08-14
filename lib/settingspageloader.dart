@@ -131,17 +131,28 @@ class SettingsPageLoader {
           // log.d("不處於分組狀態中，直接新增");
           data.preferenceSpecifiers.add(cofigInfos);
         }
-        if ((cofigInfos["Type"] ?? "") == "PSMultiValueSpecifier") {
+        if ((cofigInfos["Type"] ?? "") == "PSMultiValueSpecifier" ||
+            (cofigInfos["Type"] ?? "") == "PSMultiSelectSpecifier") {
           // log.d("遇到多項選擇 PSMultiValueSpecifier 物件，額外處理");
           String newTitleValueKey = "TitleValues";
-          // cofigInfos[newTitleValueKey] = XMLDataTypeConvert.doubleArrayXmlNodeToMap(cofigInfos["Titles"], cofigInfos["Values"], logTitle: newTitleValueKey);
           if (cofigInfos.containsKey("Titles")) {
-            List<Map<String, dynamic>> nList =
-                XMLDataTypeConvert.doubleArrayXmlNodeToListMap(
-              cofigInfos["Titles"],
-              cofigInfos["Values"],
-              logTitle: newTitleValueKey,
-            );
+            bool isMultiSelect =
+                (cofigInfos["Type"] ?? "") == "PSMultiSelectSpecifier";
+            List<Map<String, dynamic>> nList;
+            if (isMultiSelect && !cofigInfos.containsKey("Values")) {
+              // PSMultiSelectSpecifier 未提供 Values 时，自动按 2 的幂次生成位值
+              nList = XMLDataTypeConvert.titlesXmlNodeToListMap(
+                cofigInfos["Titles"],
+                logTitle: newTitleValueKey,
+              );
+            } else {
+              // 使用显式 Values
+              nList = XMLDataTypeConvert.doubleArrayXmlNodeToListMap(
+                cofigInfos["Titles"],
+                cofigInfos["Values"],
+                logTitle: newTitleValueKey,
+              );
+            }
             cofigInfos["TitleValues"] = nList;
             cofigInfos.remove("Titles");
             cofigInfos.remove("Values");

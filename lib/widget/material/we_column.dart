@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:settingspageflutter/widget/we_size.dart';
 
+import "../we_localization.dart";
 import 'we_list_item.dart';
 
 class WeColumn extends StatelessWidget {
@@ -242,7 +243,7 @@ class WeColumn extends StatelessWidget {
     return data.isEmpty
         ? Center(
             child: Text(
-              "No Data",
+              weTr(context, "noData"),
               style: TextStyle(
                 fontSize: 16 * weSP,
                 color: Colors.grey,

@@ -11,6 +11,16 @@ void setTextStyle({bool isDark = false}) {
     color: isDark ? Colors.white : Colors.black,
   );
 
+  tsMaincalculate = TextStyle(
+    fontSize: 18 * weSP,
+    color: isDark ? Colors.white : Colors.black,
+  );
+
+  tsGroupTagcalculate = TextStyle(
+    fontSize: 15 * weSP,
+    color: isDark ? Colors.white : Colors.black,
+  );
+
   tsMainVal = TextStyle(
     fontSize: 15 * weSP,
     color: isDark ? Colors.white70 : Colors.grey[500],
