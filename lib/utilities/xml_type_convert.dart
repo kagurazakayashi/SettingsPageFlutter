@@ -29,7 +29,7 @@ class XMLDataTypeConvert {
   /// 將 [element] 轉換為對應的數據類型。
   static dynamic xmlElementTypeConvert(XmlElement element) {
     String type = element.name.toString();
-    String text = element.text;
+    String text = element.innerText;
     switch (type) {
       case "string":
         return text;
@@ -56,7 +56,7 @@ class XMLDataTypeConvert {
           for (XmlNode node in element.children) {
             if (node.nodeType != XmlNodeType.ELEMENT) continue;
             XmlElement e = node as XmlElement;
-            String key = e.text;
+            String key = e.innerText;
             dynamic val = xmlElementTypeConvert(e);
             map[key] = val;
           }
@@ -159,7 +159,7 @@ class XMLDataTypeConvert {
         continue;
       }
       list.add({
-        keyName: nKey.text,
+        keyName: nKey.innerText,
         valName: XMLDataTypeConvert.xmlElementTypeConvert(nVal as XmlElement)
       });
     }
@@ -190,7 +190,7 @@ class XMLDataTypeConvert {
         continue;
       }
       list.add({
-        keyName: nKey.text,
+        keyName: nKey.innerText,
         valName: bit,
       });
       bit <<= 1; // 位值翻倍

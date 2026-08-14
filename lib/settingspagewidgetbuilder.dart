@@ -88,7 +88,7 @@ class SettingsPageWidgetBuilder {
     return Switch(
       value: config["Default Value"] ?? false,
       onChanged: (bool value) {},
-      activeColor: uiSwitchStyle["activeColor"] ?? Colors.blue,
+      activeThumbColor: uiSwitchStyle["activeColor"] ?? Colors.blue,
       activeTrackColor: uiSwitchStyle["activeTrackColor"] ?? Colors.blue,
       inactiveThumbColor: uiSwitchStyle["inactiveThumbColor"] ?? Colors.grey,
       inactiveTrackColor: uiSwitchStyle["inactiveTrackColor"] ?? Colors.grey,

@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 
 import "../../we_localization.dart";
-import "../../we_size.dart";
 import "../../we_textstyle.dart";
 
 /// 将动态类型转换为整数（位掩码值）。

@@ -51,7 +51,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
               plistFileName: widget.file)
           .then((value) {
         _settingData = value.preferenceSpecifiers;
-        print(_settingData);
+        debugPrint("$_settingData");
         _title = value.title;
         setState(() {});
       });
@@ -179,7 +179,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                   },
                   onChanged: (key, value, isTip) {
                     bool isUpLoad = weSetVal(_settingData, key, value);
-                    // print(">>>> $key $value $isUpLoad");
+                    // debugPrint(">>>> $key $value $isUpLoad");
                     if (isUpLoad) {
                       NotificationCenter.instance
                           .postNotification(nkey, [key, value]);
@@ -196,18 +196,18 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                       type: FileType.custom,
                       allowedExtensions: extList,
                     );
-                    print(">>> extList: $extList");
+                    debugPrint(">>> extList: $extList");
 
                     if (result != null && result.files.single.path != null) {
                       File file = File(result.files.single.path!);
                       String crtStr = file.readAsStringSync();
-                      print(" ================ ");
-                      print(file);
-                      print(crtStr);
+                      debugPrint(" ================ ");
+                      debugPrint("$file");
+                      debugPrint(crtStr);
                       List<int> bytes = crtStr.codeUnits;
-                      print(bytes);
+                      debugPrint("$bytes");
                       bytes = file.readAsBytesSync();
-                      print(bytes);
+                      debugPrint("$bytes");
 
                       bool isUpLoad = weSetVal(_settingData, key, crtStr);
                       if (isUpLoad) {
@@ -222,7 +222,7 @@ class _SelectPageState extends State<SelectPage> with WidgetsBindingObserver {
                     BotToast.showText(text: "saveFile: $path\n$value");
                   },
                   btnClick: (keyList, actionList) {
-                    print(">>> btnClick: $keyList, $actionList");
+                    debugPrint(">>> btnClick: $keyList, $actionList");
                   },
                 );
               },

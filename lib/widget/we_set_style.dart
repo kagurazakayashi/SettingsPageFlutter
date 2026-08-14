@@ -38,7 +38,9 @@ void setSize(Size size, {double pixelRatio = -1.0}) {
   weWidth = weSize.width;
   weHeight = weSize.height;
   weSP = (((weWidth + weHeight) +
-              ((pixelRatio != -1 ? pixelRatio : window.devicePixelRatio) *
+              ((pixelRatio != -1
+                      ? pixelRatio
+                      : PlatformDispatcher.instance.views.first.devicePixelRatio) *
                   aspectRatio(weWidth, weHeight))) /
           10.8) /
       100;

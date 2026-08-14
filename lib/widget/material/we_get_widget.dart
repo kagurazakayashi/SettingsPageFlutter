@@ -1023,7 +1023,6 @@ Widget getWidget(
 
       break;
     case "PSMultiSelectSpecifier": //数字多选(位掩码多选)
-      String key = data.containsKey("Key") ? data["Key"] : ""; //键
       //当前值,如果Value不存在,则使用DefaultValue
       Object multiVal = data.containsKey("Value")
           ? data["Value"]
