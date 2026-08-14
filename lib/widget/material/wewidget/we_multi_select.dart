@@ -95,6 +95,8 @@ class WeMultiSelect extends StatefulWidget {
     this.isDev = false,
     this.isDark = false,
     this.invert = false,
+    this.titleStyle,
+    this.summaryStyle,
   }) : super(key: key);
 
   /// 数据的键（用于修改对应项）
@@ -123,6 +125,12 @@ class WeMultiSelect extends StatefulWidget {
 
   /// 是否取反（反向）：为 true 时，值为「未选中位」的按位或
   final bool invert;
+
+  /// 标题文字样式，为 null 时使用默认样式（[tsMaincalculate]）
+  final TextStyle? titleStyle;
+
+  /// 已选项摘要文字样式，为 null 时使用默认样式（[tsMainVal]）
+  final TextStyle? summaryStyle;
 
   @override
   State<WeMultiSelect> createState() => _WeMultiSelectState();
@@ -173,7 +181,7 @@ class _WeMultiSelectState extends State<WeMultiSelect> {
                     if (widget.title.isNotEmpty)
                       Text(
                         widget.title,
-                        style: tsMaincalculate,
+                        style: widget.titleStyle ?? tsMaincalculate,
                         maxLines: 99,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
@@ -194,7 +202,7 @@ class _WeMultiSelectState extends State<WeMultiSelect> {
                       const SizedBox(height: 8),
                       Text(
                         summary,
-                        style: tsMainVal,
+                        style: widget.summaryStyle ?? tsMainVal,
                         softWrap: true,
                       ),
                     ],

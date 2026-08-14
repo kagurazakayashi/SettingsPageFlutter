@@ -1069,6 +1069,50 @@ Widget getWidget(
           }
         }
       }
+      //标题字号(可选,支持 int/double/string,逻辑像素)
+      double? multiTitleFontSize;
+      mTemp = data.containsKey("TitleFontSize") ? data["TitleFontSize"] : 'null';
+      switch (mTemp.runtimeType) {
+        case int:
+          multiTitleFontSize = (mTemp as int).toDouble();
+          break;
+        case double:
+          multiTitleFontSize = mTemp as double;
+          break;
+        case String:
+          try {
+            multiTitleFontSize = double.parse(mTemp as String);
+          } catch (_) {
+            multiTitleFontSize = null;
+          }
+          break;
+      }
+      //已选项摘要字号(可选)
+      double? multiSummaryFontSize;
+      mTemp =
+          data.containsKey("SummaryFontSize") ? data["SummaryFontSize"] : 'null';
+      switch (mTemp.runtimeType) {
+        case int:
+          multiSummaryFontSize = (mTemp as int).toDouble();
+          break;
+        case double:
+          multiSummaryFontSize = mTemp as double;
+          break;
+        case String:
+          try {
+            multiSummaryFontSize = double.parse(mTemp as String);
+          } catch (_) {
+            multiSummaryFontSize = null;
+          }
+          break;
+      }
+      //构造字体样式,保留默认颜色(深色适配),仅覆盖字号
+      TextStyle? multiTitleStyle = multiTitleFontSize == null
+          ? null
+          : tsMaincalculate.copyWith(fontSize: multiTitleFontSize);
+      TextStyle? multiSummaryStyle = multiSummaryFontSize == null
+          ? null
+          : tsMainVal.copyWith(fontSize: multiSummaryFontSize);
       c = WeMultiSelect(
         id: id,
         title: title,
@@ -1078,6 +1122,8 @@ Widget getWidget(
         isDev: isDev,
         isDark: isDark,
         invert: multiInvert,
+        titleStyle: multiTitleStyle,
+        summaryStyle: multiSummaryStyle,
         onChanged: onChanged,
       );
       break;
