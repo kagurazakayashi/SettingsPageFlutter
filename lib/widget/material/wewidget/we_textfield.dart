@@ -1,4 +1,5 @@
 import 'package:drop_down_search_field/drop_down_search_field.dart';
+import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -88,11 +89,15 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
 
   List<String> suggestions = [];
 
+  bool get _isIOS => defaultTargetPlatform == TargetPlatform.iOS;
+
   @override
   void initState() {
     _obscureText = widget.obscureText;
     _focusNode.addListener(onFocus);
-    widget.controller.addListener(_onControllerChanged);
+    if (_isIOS) {
+      widget.controller.addListener(_onControllerChanged);
+    }
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -106,7 +111,9 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   @override
   void dispose() {
     _focusNode.removeListener(onFocus);
-    widget.controller.removeListener(_onControllerChanged);
+    if (_isIOS) {
+      widget.controller.removeListener(_onControllerChanged);
+    }
     _focusNode.dispose();
     widget.controller.dispose();
     suggestionBoxController.close();
@@ -114,11 +121,12 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     super.dispose();
   }
 
-  /// 监听输入法组合状态, 在组合结束(点选中文/回车确认英文)时保存
+  /// iOS 输入法组合状态监听, 在组合结束(点选中文/回车确认英文)时保存
   void _onControllerChanged() {
     final bool composing = widget.controller.value.composing.isValid;
     if (_wasComposing && !composing) {
       _wasComposing = false;
+      nowSelection = widget.controller.selection.baseOffset;
       checkRegExp(val: widget.controller.text);
     } else if (composing) {
       _wasComposing = true;
@@ -127,7 +135,11 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
 
   void onFocus() {
     if (!_focusNode.hasFocus) {
-      checkRegExp(val: widget.controller.text);
+      if (_isIOS) {
+        checkRegExp(val: widget.controller.text);
+      } else {
+        checkRegExp();
+      }
       if (isChange) {
         setSelection();
       }
@@ -149,13 +161,13 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     if (!isRegExp) {
       v = "";
     }
-    if (v != widget.controller.text) {
+    if ((v != widget.controller.text) ||
+        (changedStr != widget.controller.text)) {
       widget.controller.text = v;
-      setSelection();
-    }
-    if (changedStr != v) {
-      changedStr = v;
+      changedStr = widget.controller.text;
       widget.onChanged(widget.id, v, true);
+
+      setSelection();
     }
   }
 
@@ -176,7 +188,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   }
 
   void setSelection() {
-    if (widget.controller.value.composing.isValid) {
+    if (_isIOS && widget.controller.value.composing.isValid) {
       return;
     }
     if (nowSelection > widget.controller.selection.baseOffset) {
@@ -235,6 +247,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         ),
       ));
     }
+    setSelection();
     if (widget.suggestions.isNotEmpty) {
       return DropDownSearchField(
         textFieldConfiguration: TextFieldConfiguration(
@@ -270,7 +283,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
           onChanged: widget.readOnly
               ? null
               : (val) {
-                  if (widget.controller.value.composing.isValid) {
+                  if (_isIOS && widget.controller.value.composing.isValid) {
                     return;
                   }
                   isChange = true;
