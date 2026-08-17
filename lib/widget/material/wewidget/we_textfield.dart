@@ -81,6 +81,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   String changedStr = "";
   bool _obscureText = false;
   bool isChange = false;
+  bool _wasComposing = false;
   final FocusNode _focusNode = FocusNode();
   int nowSelection = 0;
   SuggestionsBoxController suggestionBoxController = SuggestionsBoxController();
@@ -91,6 +92,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   void initState() {
     _obscureText = widget.obscureText;
     _focusNode.addListener(onFocus);
+    widget.controller.addListener(_onControllerChanged);
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -104,6 +106,7 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   @override
   void dispose() {
     _focusNode.removeListener(onFocus);
+    widget.controller.removeListener(_onControllerChanged);
     _focusNode.dispose();
     widget.controller.dispose();
     suggestionBoxController.close();
@@ -111,9 +114,20 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  /// 监听输入法组合状态, 在组合结束(点选中文/回车确认英文)时保存
+  void _onControllerChanged() {
+    final bool composing = widget.controller.value.composing.isValid;
+    if (_wasComposing && !composing) {
+      _wasComposing = false;
+      checkRegExp(val: widget.controller.text);
+    } else if (composing) {
+      _wasComposing = true;
+    }
+  }
+
   void onFocus() {
     if (!_focusNode.hasFocus) {
-      checkRegExp();
+      checkRegExp(val: widget.controller.text);
       if (isChange) {
         setSelection();
       }
@@ -135,13 +149,13 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
     if (!isRegExp) {
       v = "";
     }
-    if ((v != widget.controller.text) ||
-        (changedStr != widget.controller.text)) {
+    if (v != widget.controller.text) {
       widget.controller.text = v;
-      changedStr = widget.controller.text;
-      widget.onChanged(widget.id, v, true);
-
       setSelection();
+    }
+    if (changedStr != v) {
+      changedStr = v;
+      widget.onChanged(widget.id, v, true);
     }
   }
 
@@ -221,7 +235,6 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
         ),
       ));
     }
-    setSelection();
     if (widget.suggestions.isNotEmpty) {
       return DropDownSearchField(
         textFieldConfiguration: TextFieldConfiguration(
