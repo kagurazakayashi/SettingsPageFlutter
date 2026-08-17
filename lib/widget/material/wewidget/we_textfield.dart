@@ -162,6 +162,9 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
   }
 
   void setSelection() {
+    if (widget.controller.value.composing.isValid) {
+      return;
+    }
     if (nowSelection > widget.controller.selection.baseOffset) {
       return;
     }
@@ -254,6 +257,9 @@ class _WeTextFieldState extends State<WeTextField> with WidgetsBindingObserver {
           onChanged: widget.readOnly
               ? null
               : (val) {
+                  if (widget.controller.value.composing.isValid) {
+                    return;
+                  }
                   isChange = true;
                   nowSelection = widget.controller.selection.baseOffset;
                   checkRegExp(isSubmitted: false, val: val);
